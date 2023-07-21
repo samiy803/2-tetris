@@ -3,13 +3,13 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include "game.h"
 
 typedef unsigned long Pixel;
 
 typedef XImage Image;
 
 class XWindow {
+    friend class Game;
     Display *d;
     Drawable w;
     GC gc;
@@ -23,7 +23,6 @@ class XWindow {
     XWindow(const XWindow&) = delete;        // Disallow copy ctor.
     XWindow &operator=(const XWindow&) = delete; // Disallow copy assign.
     void darkMode(); // TODO figure this out
-    void drawGame(Game game);
 };
 
 #endif // !XWINDOW_H
