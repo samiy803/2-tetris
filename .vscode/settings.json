@@ -3,6 +3,7 @@
         "*.mdx": "markdown",
         "*.mustache": "html",
         "*.toml": "toml",
-        "vector": "cpp"
+        "vector": "cpp",
+        "iostream": "cpp"
     }
 }
