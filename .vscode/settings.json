@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.mdx": "markdown",
+        "*.mustache": "html",
+        "*.toml": "toml",
+        "vector": "cpp"
+    }
+}
