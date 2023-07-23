@@ -2,3 +2,8 @@ biquadris
 Makefile
 .vscode
 .DS_Store
+*.o
+*.d
+**/*.o
+**/*.d
+biquadris
