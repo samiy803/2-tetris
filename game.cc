@@ -6,9 +6,17 @@ using std::endl;
 Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel) : isGraphics{isGraphics}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
     player1 = new Player();
     player2 = new Player();
+    // don't know if this is right
+    this->seed = seed;
+    this->startLevel = startLevel;
     currentPlayer = player1;
     turn_count = 0;
     window = isGraphics ? new XWindow() : nullptr;
+}
+
+string Game::parseCommand(){
+    // implement
+    return "";
 }
 
 void Game::restart() {
