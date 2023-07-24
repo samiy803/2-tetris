@@ -1,6 +1,8 @@
 #include "game.h"
 
 using std::cerr;
+using std::string;
+using std::cin;
 using std::endl;
 
 Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel) : isGraphics{isGraphics}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
@@ -15,8 +17,10 @@ Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel
 }
 
 string Game::parseCommand(){
-    // implement
-    return "";
+    // TODO: implement
+    string s;
+    cin >> s;
+    return s;
 }
 
 void Game::restart() {
