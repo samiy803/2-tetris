@@ -8,12 +8,14 @@
 using std::string;
 
 class Board {
-    const int COLS = 11;
-    const int ROWS = 15;
+    friend class Game; // Game should have access to Board's privates
     vector<Block*> blocks;
     Block* currentBlock;
     string toString(); 
     void drop();
+    public:
+    static const int COLS = 11;
+    static const int ROWS = 15;
 };
 
 #endif // !BOARD_H

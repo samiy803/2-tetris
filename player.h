@@ -3,18 +3,30 @@
 
 #include "board.h"
 #include "blockFactory.h"
+#include "level0Factory.h"
+
+/**
+ * Prime factorization of effects:
+ * 1: none
+ * 2: blind
+ * 3: heavy
+ * 5,7,11,13,17,19,23: force I, J, L, O, S, T, Z respectively
+*/
 
 class Player {
-    Board gameboard;
+    friend class Game; // Game should have to access to Player's privates
+    Board gameBoard;
     BlockFactory* blockFactory;
     int score;
     int level;
     int effect;
     public:
-    Player();
-    void setBlind();
-    void setHeavy();
+    Player(int score = 0, int level = 0, int effect = 1);
+    void setBlind(bool blind);
+    void setHeavy(bool heavy);
     void setForce(string block);
+    void setLevel(int level);
+    ~Player();
 };
 
 #endif // !PLAYER_H

@@ -15,14 +15,18 @@ using std::vector;
  * The effects integer is an integer that represents the effects using prime factorization.
 */
 class Block {
+    protected:
     Position start;
     vector<Position> offsets;
     int effects;
+    short rotation;
     public:
     void left();
     void right();
     void down();
     virtual void clockwise() = 0;
+    vector<Position> getPositions();
     virtual void counterClockwise() = 0;
+    char c;
 };
 #endif // !BLOCK_H

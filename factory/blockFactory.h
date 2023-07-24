@@ -6,6 +6,7 @@
 class BlockFactory {
     public:
     virtual Block* getNext(int effects) = 0;
+    virtual ~BlockFactory();
 };
 
 #endif // !BLOCK_FACTORY_H

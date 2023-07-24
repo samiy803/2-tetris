@@ -1,6 +1,16 @@
 #include "block.h"
+#include "../board.h"
 
-// TODO: Handle collisions
+vector<Position> Block::getPositions() {
+    vector<Position> positions;
+    for (Position offset : offsets) {
+        offset.x += start.x;
+        offset.y += start.y;
+        positions.push_back(offset);
+    }
+    positions.push_back(start);
+    return positions;
+}
 
 void Block::left() {
     start.x--;

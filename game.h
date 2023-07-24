@@ -5,6 +5,7 @@
 #include "xwindow.h"
 #include <string>
 #include <sstream>
+#include <iostream>
 
 using std::string;
 using std::istringstream;

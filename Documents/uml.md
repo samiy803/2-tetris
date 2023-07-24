@@ -42,7 +42,7 @@ classDiagram
         + counterclockwise()
     }
     class Player {
-        - gameboard: Board
+        - gameBoard: Board
         - factory: BlockFactory
         - effects: Integer
         - level: Integer
