@@ -11,7 +11,8 @@ class Board {
     friend class Game; // Game should have access to Board's privates
     vector<Block*> blocks;
     Block* currentBlock;
-    string toString(); 
+    Block* nextBlock;
+    string toString(bool includeCurrentBlock); 
     void drop();
     public:
     static const int COLS = 11;

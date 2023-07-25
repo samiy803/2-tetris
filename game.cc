@@ -1,9 +1,7 @@
 #include "game.h"
+#include <cassert>
 
-using std::cerr;
-using std::string;
-using std::cin;
-using std::endl;
+using namespace std;
 
 Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel) : isGraphics{isGraphics}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
     player1 = new Player();
@@ -39,8 +37,49 @@ void Game::restart() {
     }
 }
 
+void Game::renderGame() {
+}
+
+void Game::initGame() {
+    if (turn_count != 0) return;
+    player1->setLevel(startLevel);
+    player2->setLevel(startLevel);
+    player1->blockFactory->setSeed(seed);
+    player2->blockFactory->setSeed(seed);
+    player1->gameBoard.currentBlock = player1->blockFactory->getNext(player1->effect);
+    player2->gameBoard.currentBlock = player2->blockFactory->getNext(player2->effect);
+    player1->gameBoard.nextBlock = player1->blockFactory->getNext(player1->effect);
+    player2->gameBoard.nextBlock = player2->blockFactory->getNext(player2->effect);
+}
+
+void Game::printGame() {
+    assert(player1 != nullptr);
+    assert(player2 != nullptr);
+    assert(currentPlayer != nullptr);
+    assert(player1->gameBoard.COLS == player2->gameBoard.COLS);
+    assert(player1->gameBoard.ROWS == player2->gameBoard.ROWS);
+    string player1Board = player1->gameBoard.toString(currentPlayer == player1);
+    string player2Board = player2->gameBoard.toString(currentPlayer == player2);
+    assert(player1Board.length() == player2Board.length());
+    cout << "Level:\t" << player1->level << "\t\t" << "Level:\t" << player2->level << endl;
+    cout << "Score:\t" << player1->score << "\t\t" << "Score:\t" << player2->score << endl;
+    cout << "-----------\t\t-----------" << endl;
+    for (int i = 0; i < player1->gameBoard.ROWS; ++i) {
+        cout << player1Board.substr(i * player1->gameBoard.COLS, player1->gameBoard.COLS) << "\t\t" << player2Board.substr(i * player2->gameBoard.COLS, player2->gameBoard.COLS) << endl;
+    }
+    cout << "-----------\t\t-----------" << endl;
+    cout << "Next:\t" << player1->gameBoard.nextBlock->c << "\t\t" << "Next:\t" << player2->gameBoard.nextBlock->c << endl;
+}
+
 void Game::runMainLoop() {
+
     while (true) {
+        if (isGraphics) {
+            renderGame();
+        }
+
+        printGame();
+
         // Parse command
         string command = parseCommand();
 
@@ -60,7 +99,10 @@ void Game::runMainLoop() {
             currentPlayer->gameBoard.currentBlock->counterClockwise();
         }
         else if (command == "drop") {
-            currentPlayer->gameBoard.drop();
+            currentPlayer->gameBoard.drop(); // next block is now nullptr
+            currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect); // no longer nullptr
+            currentPlayer = currentPlayer == player1 ? player2 : player1;
+            turn_count++;
         }
         else if (command == "levelup") {
             currentPlayer->setLevel(currentPlayer->level + 1);
@@ -91,6 +133,20 @@ void Game::runMainLoop() {
         }
         else if (command == "restart") {
             restart();
+        }
+        else if (command == "quit") {
+            break;
+        }
+        else if (command == "sequence") {
+            cerr << "Sequence not implemented yet" << endl;
+        }
+        else if (command == "random") {
+            cerr << "Random not implemented yet" << endl;
+        }
+        else if (command == "norandom") {
+            string filename;
+            cin >> filename;
+            cerr << "Norandom not implemented yet" << endl;
         }
         else if (command == "hint") {
             cerr << "Hint not implemented yet" << endl;

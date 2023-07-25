@@ -7,6 +7,7 @@ class Level0Factory : public BlockFactory {
     public:
     Level0Factory();
     Block* getNext(int effects) override;
+    void setSeed(int seed) override;
     ~Level0Factory();
 };
 

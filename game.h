@@ -26,6 +26,9 @@ class Game {
     void runMainLoop();
     void restart();
     string parseCommand();
+    void renderGame();
+    void printGame();
+    void initGame();
 };
 
 

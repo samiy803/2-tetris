@@ -20,6 +20,7 @@ class Player {
     int score;
     int level;
     int effect;
+    int seed;
     public:
     Player(int score = 0, int level = 0, int effect = 1);
     void setBlind(bool blind);

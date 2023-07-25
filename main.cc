@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
     catch (...) {
         cerr << "Fatal error, could not create game. Contact DMK for more info" << endl;
     }
+    game->initGame();
     game->runMainLoop();
     delete game;
     return 0;
