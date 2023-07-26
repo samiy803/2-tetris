@@ -16,11 +16,6 @@ string Board::toString(bool includeCurrentBlock) {
             board[pos.y * COLS + pos.x] = currentBlock->c;
         }
     }
-    if(!includeCurrentBlock){
-        for(Position pos : nextBlock->getPositions()){
-            board[pos.y * COLS + pos.x] = currentBlock->c;
-        }
-    }
     string s = board;
     return s;
 }
