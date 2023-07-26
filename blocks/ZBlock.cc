@@ -1,7 +1,7 @@
 #include "ZBlock.h"
 
 const vector<Position> ZBlock::rotation0 = {{0, 0}, {1, 0}, {1, 1}, {2, 1}};
-const vector<Position> ZBlock::rotation1 = {{0, 2}, {0, 1}, {1, 1}, {1, 0}};
+const vector<Position> ZBlock::rotation1 = {{0, 1}, {0, 0}, {1, 0}, {1, -1}};
 
 ZBlock::ZBlock(Position p, int effects, short rotation) {
     this->effects = effects;

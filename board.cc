@@ -1,8 +1,6 @@
 #include "board.h"
 #include <map>
 
-using std::map;
-
 string Board::toString(bool includeCurrentBlock) {
     char board[ROWS * COLS];
     for (int i = 0; i < ROWS * COLS; i++) {
@@ -30,7 +28,7 @@ string Board::toString(bool includeCurrentBlock) {
 bool Board::validBoard() {
 
     // Check for overlap
-    // map<Position, int> positions;
+    vector<Position> positions;
 
     for (Position pos : currentBlock->getPositions()) {
         if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
@@ -43,10 +41,10 @@ bool Board::validBoard() {
             if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
                 return false;
             }
-            // if (positions.find(pos) != positions.end()) {
-            //     return false;
-            // }
-            // positions[pos] = 1;
+            if (std::find(positions.begin(), positions.end(), pos) != positions.end()) {
+                return false;
+            }
+            positions.push_back(pos);
         }
     }
     return true;

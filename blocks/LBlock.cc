@@ -1,9 +1,9 @@
 #include "LBlock.h"
 
 const vector<Position> LBlock::rotation0 = {{0, 0}, {0, 1}, {0, 2}, {1, 2}};
-const vector<Position> LBlock::rotation1 = {{0, 0}, {1, 0}, {2, 0}, {0, 1}};
+const vector<Position> LBlock::rotation1 = {{0, 1}, {1, 1}, {2, 1}, {0, 2}};
 const vector<Position> LBlock::rotation2 = {{0, 0}, {1, 0}, {1, 1}, {1, 2}};
-const vector<Position> LBlock::rotation3 = {{0, 1}, {1, 1}, {2, 1}, {2, 0}};
+const vector<Position> LBlock::rotation3 = {{0, 2}, {1, 2}, {2, 2}, {2, 1}};
 
 LBlock::LBlock(Position p, int effects, short rotation) {
     this->effects = effects;

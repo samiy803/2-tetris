@@ -1,9 +1,9 @@
 #include "TBlock.h"
 
 const vector<Position> TBlock::rotation0 = {{0, 0}, {1, 0}, {2, 0}, {1, 1}};
-const vector<Position> TBlock::rotation1 = {{0, 1}, {1, 0}, {1, 1}, {1, 2}};
+const vector<Position> TBlock::rotation1 = {{0, 0}, {1, -1}, {1, 0}, {1, 1}};
 const vector<Position> TBlock::rotation2 = {{0, 1}, {1, 1}, {2, 1}, {1, 0}};
-const vector<Position> TBlock::rotation3 = {{0, 0}, {0, 1}, {0, 2}, {1, 1}};
+const vector<Position> TBlock::rotation3 = {{0, -1}, {0, 0}, {0, 1}, {1, 0}};
 
 TBlock::TBlock(Position p, int effects, short rotation) {
     this->effects = effects;
