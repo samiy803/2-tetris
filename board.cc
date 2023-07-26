@@ -88,6 +88,11 @@ void Board::counterClockwise() {
 }
 
 void Board::drop() {
+    while(validBoard()){
+        currentBlock->down();
+    }
+    currentBlock->up();
+
     blocks.push_back(currentBlock);
     currentBlock = nextBlock;
     nextBlock = nullptr;
