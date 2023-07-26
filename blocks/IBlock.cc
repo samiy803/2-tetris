@@ -25,7 +25,7 @@ IBlock::IBlock(Position p, int effects, short rotation) {
 }
 
 void IBlock::clockwise() {
-    rotation = (rotation + 2) % 4;
+    rotation = (rotation + 1) % 4;
     switch (rotation) {
         case 0:
             offsets = rotation0;
@@ -43,7 +43,7 @@ void IBlock::clockwise() {
 }
 
 void IBlock::counterClockwise() {
-    rotation = (rotation + 2) % 4;
+    rotation = (rotation - 1) % 4;
     switch (rotation) {
         case 0:
             offsets = rotation0;

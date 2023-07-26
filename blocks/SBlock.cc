@@ -1,7 +1,7 @@
 #include "SBlock.h"
 
-const vector<Position> SBlock::rotation0 = {{0, 0}, {1, 0}, {1, 1}, {2, 1}};
-const vector<Position> SBlock::rotation1 = {{0, 2}, {0, 1}, {1, 1}, {2, 0}};
+const vector<Position> SBlock::rotation0 = {{0, 1}, {1, 1}, {1, 0}, {2, 0}};
+const vector<Position> SBlock::rotation1 = {{0, 0}, {0, 1}, {1, 1}, {1, 2}};
 
 SBlock::SBlock(Position p, int effects, short rotation) {
     this->effects = effects;
