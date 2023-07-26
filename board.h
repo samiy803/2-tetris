@@ -14,6 +14,7 @@ class Board {
     Block* nextBlock;
     string toString(bool includeCurrentBlock); 
     void drop();
+    bool validBoard();
     public:
     static const int COLS = 11;
     static const int ROWS = 15;
