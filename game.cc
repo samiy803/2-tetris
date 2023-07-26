@@ -81,11 +81,12 @@ void Game::printGame() {
         cout << player1Board.substr(i * player1->gameBoard.COLS, player1->gameBoard.COLS) << "\t\t" << player2Board.substr(i * player2->gameBoard.COLS, player2->gameBoard.COLS) << endl;
     }
     cout << "-----------\t\t-----------" << endl;
+    cout << "Next:\t\t\tNext:" << endl;
     if(currentPlayer == player1){
-        cout << "Next:\t" << player1->gameBoard.nextBlock->c << endl;
+        cout << player1->gameBoard.nextBlock->c << endl;
     } 
     else if(currentPlayer == player2){
-        cout << " \t\t\tNext:\t" << player1->gameBoard.nextBlock->c << endl;
+        cout << player1->gameBoard.nextBlock->c << endl;
     }
 }
 

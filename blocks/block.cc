@@ -11,6 +11,21 @@ vector<Position> Block::getPositions() {
     return positions;
 }
 
+// void Block::printBlock(){
+//     int maxX = 0;
+//     int maxY = 0;
+//     for (Position offset : offsets) {
+//         if(offset.x > maxX){
+//             maxX = offset.x;
+//         }
+//         if(offset.y > maxY){
+//             maxY = offset.y;
+//         }
+//     }
+//     char blockstr[maxX * maxY];
+
+// }
+
 void Block::left() {
     start.x--;
 }
