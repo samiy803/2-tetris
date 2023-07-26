@@ -58,8 +58,8 @@ void Game::printGame() {
     assert(currentPlayer != nullptr);
     assert(player1->gameBoard.COLS == player2->gameBoard.COLS);
     assert(player1->gameBoard.ROWS == player2->gameBoard.ROWS);
-    string player1Board = player1->gameBoard.toString(currentPlayer == player1);
-    string player2Board = player2->gameBoard.toString(currentPlayer == player2);
+    string player1Board = player1->gameBoard.toString(true);
+    string player2Board = player2->gameBoard.toString(true);
     assert(player1Board.length() == player2Board.length());
     cout << "Level:\t" << player1->level << "\t\t" << "Level:\t" << player2->level << endl;
     cout << "Score:\t" << player1->score << "\t\t" << "Score:\t" << player2->score << endl;
