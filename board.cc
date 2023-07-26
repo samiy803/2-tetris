@@ -19,14 +19,15 @@ string Board::toString(bool includeCurrentBlock) {
     return s;
 }
 
-bool validBoard() {
-    for (Block* block : blocks) {
+bool Board::validBoard() {
+    for (Block* block : this->blocks) {
         for (Position pos : block->getPositions()) {
-            if (pos.x < 0 || pos.x >= COLS || pos.y < 0 || pos.y >= ROWS) {
+            if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
                 return false;
             }
         }
     }
+    return true;
 }
 
 void Board::drop() {
