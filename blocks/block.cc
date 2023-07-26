@@ -8,7 +8,6 @@ vector<Position> Block::getPositions() {
         offset.y += start.y;
         positions.push_back(offset);
     }
-    positions.push_back(start);
     return positions;
 }
 

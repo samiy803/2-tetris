@@ -45,7 +45,11 @@ void TBlock::clockwise() {
 }
 
 void TBlock::counterClockwise() {
-    rotation = (rotation - 1) % 4;
+    if(rotation <= 0){
+        rotation = 4 + ((rotation - 1) % 4);
+    }else{
+        rotation = (rotation - 1) % 4;
+    }
     switch (rotation) {
         case 0:
             offsets = rotation0;

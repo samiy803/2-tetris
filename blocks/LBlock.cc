@@ -27,7 +27,7 @@ LBlock::LBlock(Position p, int effects, short rotation) {
 }
 
 void LBlock::clockwise() {
-    rotation = (rotation + 2) % 4;
+    rotation = (rotation + 1) % 4;
     switch (rotation) {
         case 0:
             offsets = rotation0;
@@ -45,7 +45,11 @@ void LBlock::clockwise() {
 }
 
 void LBlock::counterClockwise() {
-    rotation = (rotation + 2) % 4;
+    if(rotation <= 0){
+        rotation = 4 + ((rotation - 1) % 4);
+    }else{
+        rotation = (rotation - 1) % 4;
+    }
     switch (rotation) {
         case 0:
             offsets = rotation0;
