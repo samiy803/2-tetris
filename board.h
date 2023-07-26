@@ -8,11 +8,11 @@
 using std::string;
 
 class Board {
-    friend class Game; // Game should have access to Board's privates
+    friend class Game; // Game and Player should have access to Board's privates
+    friend class Player;
     vector<Block*> blocks;
     Block* currentBlock;
     Block* nextBlock;
-    string toString(bool includeCurrentBlock); 
     void drop();
     bool validBoard();
     void left();
@@ -23,6 +23,7 @@ class Board {
     public:
     static const int COLS = 11;
     static const int ROWS = 15;
+    string toString(bool includeCurrentBlock); 
 };
 
 #endif // !BOARD_H
