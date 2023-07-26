@@ -3,7 +3,7 @@
 Level0Factory::Level0Factory() {}
 
 Block* Level0Factory::getNext(int effects) {
-    return new ZBlock(Position{0,0}, effects, 0);
+    return new SBlock(Position{0,0}, effects, 0);
 }
 
 Level0Factory::~Level0Factory() {}

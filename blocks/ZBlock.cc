@@ -1,7 +1,7 @@
 #include "ZBlock.h"
 
-const vector<Position> ZBlock::rotation0 = {{0, 1}, {1, 1}, {1, 0}, {2, 0}};
-const vector<Position> ZBlock::rotation1 = {{0, 0}, {0, 1}, {1, 1}, {1, 2}};
+const vector<Position> ZBlock::rotation0 = {{0, 0}, {1, 0}, {1, 1}, {2, 1}};
+const vector<Position> ZBlock::rotation1 = {{0, 2}, {0, 1}, {1, 1}, {1, 0}};
 
 ZBlock::ZBlock(Position p, int effects, short rotation) {
     this->effects = effects;
@@ -25,7 +25,7 @@ ZBlock::ZBlock(Position p, int effects, short rotation) {
 }
 
 void ZBlock::clockwise() {
-    rotation = (rotation + 2) % 4;
+    rotation = (rotation + 1) % 4;
     switch (rotation) {
         case 0:
             offsets = rotation0;
@@ -43,7 +43,7 @@ void ZBlock::clockwise() {
 }
 
 void ZBlock::counterClockwise() {
-    rotation = (rotation + 2) % 4;
+    rotation = (rotation - 1) % 4;
     switch (rotation) {
         case 0:
             offsets = rotation0;

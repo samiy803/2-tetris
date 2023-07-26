@@ -1,8 +1,8 @@
 #include "TBlock.h"
 
-const vector<Position> TBlock::rotation0 = {{0, 1}, {1, 1}, {1, 0}, {2, 1}};
+const vector<Position> TBlock::rotation0 = {{0, 0}, {1, 0}, {2, 0}, {1, 1}};
 const vector<Position> TBlock::rotation1 = {{0, 1}, {1, 0}, {1, 1}, {1, 2}};
-const vector<Position> TBlock::rotation2 = {{0, 0}, {0, 1}, {0, 2}, {1, 1}};
+const vector<Position> TBlock::rotation2 = {{0, 1}, {1, 1}, {2, 1}, {1, 0}};
 const vector<Position> TBlock::rotation3 = {{0, 0}, {0, 1}, {0, 2}, {1, 1}};
 
 TBlock::TBlock(Position p, int effects, short rotation) {
@@ -27,7 +27,7 @@ TBlock::TBlock(Position p, int effects, short rotation) {
 }
 
 void TBlock::clockwise() {
-    rotation = (rotation + 2) % 4;
+    rotation = (rotation + 1) % 4;
     switch (rotation) {
         case 0:
             offsets = rotation0;
@@ -45,7 +45,7 @@ void TBlock::clockwise() {
 }
 
 void TBlock::counterClockwise() {
-    rotation = (rotation + 2) % 4;
+    rotation = (rotation - 1) % 4;
     switch (rotation) {
         case 0:
             offsets = rotation0;
