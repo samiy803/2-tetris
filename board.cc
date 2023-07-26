@@ -34,6 +34,12 @@ bool Board::validBoard() {
         if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
             return false;
         }
+        for (Position p : positions) {
+            if (p == pos) {
+                return false;
+            }
+        }
+        positions.push_back(pos);
     }
 
     for (Block* block : blocks) {
@@ -41,8 +47,10 @@ bool Board::validBoard() {
             if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
                 return false;
             }
-            if (std::find(positions.begin(), positions.end(), pos) != positions.end()) {
-                return false;
+            for (Position p : positions) {
+                if (p == pos) {
+                    return false;
+                }
             }
             positions.push_back(pos);
         }
