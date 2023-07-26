@@ -8,7 +8,6 @@ vector<Position> Block::getPositions() {
         offset.y += start.y;
         positions.push_back(offset);
     }
-    positions.push_back(start);
     return positions;
 }
 
@@ -20,4 +19,21 @@ void Block::right() {
 }
 void Block::down() {
     start.y++;
+}
+
+void Block::up() {
+    start.y--;
+}
+
+void Block::notify(int row) {
+    for (Position &pos : offsets) {
+        if (pos.y + start.y < row) {
+            pos.y++;
+        }
+        else if (pos.y + start.y == row) {
+            // Erase this offset
+            
+        }
+
+    }
 }

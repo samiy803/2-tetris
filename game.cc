@@ -4,8 +4,8 @@
 using namespace std;
 
 Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel) : isGraphics{isGraphics}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
-    player1 = new Player();
-    player2 = new Player();
+    player1 = new Player(file1);
+    player2 = new Player(file2);
     // don't know if this is right
     this->seed = seed;
     this->startLevel = startLevel;
@@ -68,7 +68,12 @@ void Game::printGame() {
         cout << player1Board.substr(i * player1->gameBoard.COLS, player1->gameBoard.COLS) << "\t\t" << player2Board.substr(i * player2->gameBoard.COLS, player2->gameBoard.COLS) << endl;
     }
     cout << "-----------\t\t-----------" << endl;
-    cout << "Next:\t" << player1->gameBoard.nextBlock->c << "\t\t" << "Next:\t" << player2->gameBoard.nextBlock->c << endl;
+    if(currentPlayer == player1){
+        cout << "Next:\t" << player1->gameBoard.nextBlock->c << endl;
+    } 
+    else if(currentPlayer == player2){
+        cout << " \t\t\tNext:\t" << player1->gameBoard.nextBlock->c << endl;
+    }
 }
 
 void Game::runMainLoop() {
@@ -84,19 +89,19 @@ void Game::runMainLoop() {
         string command = parseCommand();
 
         if (command == "left") {
-            currentPlayer->gameBoard.currentBlock->left();
+            currentPlayer->gameBoard.left();
         }
         else if (command == "right") {
-            currentPlayer->gameBoard.currentBlock->right();
+            currentPlayer->gameBoard.right();
         }
         else if (command == "down") {
-            currentPlayer->gameBoard.currentBlock->down();
+            currentPlayer->gameBoard.down();
         }
         else if (command == "clockwise") {
-            currentPlayer->gameBoard.currentBlock->clockwise();
+            currentPlayer->gameBoard.clockwise();
         }
         else if (command == "counterclockwise") {
-            currentPlayer->gameBoard.currentBlock->counterClockwise();
+            currentPlayer->gameBoard.counterClockwise();
         }
         else if (command == "drop") {
             currentPlayer->gameBoard.drop(); // next block is now nullptr

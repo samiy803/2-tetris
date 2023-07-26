@@ -3,6 +3,12 @@
 
 #include "block.h"
 #include "LBlock.h"
+#include "JBlock.h"
+#include "OBlock.h"
+#include "SBlock.h"
+#include "ZBlock.h"
+#include "TBlock.h"
+#include "IBlock.h"
 
 class BlockFactory {
     protected:

@@ -1,9 +1,9 @@
 #include "player.h"
 
-Player::Player(int score, int level, int effect) : score{score}, level{level}, effect{effect} {
+Player::Player(string filename, int score, int level, int effect) : score{score}, level{level}, effect{effect}, filename{filename} {
     switch (level) {
         case 0:
-            blockFactory = new Level0Factory();
+            blockFactory = new Level0Factory(filename);
             break;
         default:
             throw "Invalid level";
@@ -65,12 +65,30 @@ void Player::setLevel(int level) {
     delete blockFactory;
     switch (level) {
         case 0:
-            blockFactory = new Level0Factory();
+            blockFactory = new Level0Factory(filename);
             break;
         default:
             throw "Invalid level";
             break;
     }
+}
+
+void Player::clearRow() {
+    string board = gameBoard.toString(false);
+
+    for (int i = 0; i < Board::ROWS; ++i) {
+        for (int j = 0; j < Board::COLS; ++j) {
+            if (board[i * Board::COLS + j] == ' ') {
+                break;
+            }
+            if (j == Board::COLS - 1) {
+                for (auto block : gameBoard.blocks) {
+                    
+                }
+            }
+        }
+    }
+
 }
 
 

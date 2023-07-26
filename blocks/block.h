@@ -24,9 +24,11 @@ class Block {
     void left();
     void right();
     void down();
+    void up();
     virtual void clockwise() = 0;
     vector<Position> getPositions();
     virtual void counterClockwise() = 0;
+    void notify(int row);
     char c;
 };
 #endif // !BLOCK_H
