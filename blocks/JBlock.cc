@@ -1,9 +1,9 @@
 #include "JBlock.h"
 
 const vector<Position> JBlock::rotation0 = {{1, 0}, {1, 1}, {1, 2}, {0, 2}};
-const vector<Position> JBlock::rotation1 = {{0, 0}, {0, 1}, {1, 1}, {2, 1}};
+const vector<Position> JBlock::rotation1 = {{0, 1}, {0, 2}, {1, 2}, {2, 2}};
 const vector<Position> JBlock::rotation2 = {{0, 0}, {0, 1}, {0, 2}, {1, 0}};
-const vector<Position> JBlock::rotation3 = {{0, 0}, {1, 0}, {2, 0}, {2, 1}};
+const vector<Position> JBlock::rotation3 = {{0, 1}, {1, 1}, {2, 1}, {2, 2}};
 
 JBlock::JBlock(Position p, int effects, short rotation) {
     this->effects = effects;
