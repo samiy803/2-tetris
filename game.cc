@@ -4,8 +4,8 @@
 using namespace std;
 
 Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel) : isGraphics{isGraphics}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
-    player1 = new Player();
-    player2 = new Player();
+    player1 = new Player(file1);
+    player2 = new Player(file2);
     // don't know if this is right
     this->seed = seed;
     this->startLevel = startLevel;
