@@ -73,6 +73,24 @@ void Player::setLevel(int level) {
     }
 }
 
+void Player::clearRow() {
+    string board = gameBoard.toString(false);
+
+    for (int i = 0; i < Board::ROWS; ++i) {
+        for (int j = 0; j < Board::COLS; ++j) {
+            if (board[i * Board::COLS + j] == ' ') {
+                break;
+            }
+            if (j == Board::COLS - 1) {
+                for (auto block : gameBoard.blocks) {
+                    
+                }
+            }
+        }
+    }
+
+}
+
 
 Player::~Player() {
     delete blockFactory;

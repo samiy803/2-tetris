@@ -24,3 +24,16 @@ void Block::down() {
 void Block::up() {
     start.y--;
 }
+
+void Block::notify(int row) {
+    for (Position &pos : offsets) {
+        if (pos.y + start.y < row) {
+            pos.y++;
+        }
+        else if (pos.y + start.y == row) {
+            // Erase this offset
+            
+        }
+
+    }
+}
