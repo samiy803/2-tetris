@@ -20,3 +20,7 @@ void Block::right() {
 void Block::down() {
     start.y++;
 }
+
+void Block::up() {
+    start.y--;
+}

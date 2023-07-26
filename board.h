@@ -15,6 +15,11 @@ class Board {
     string toString(bool includeCurrentBlock); 
     void drop();
     bool validBoard();
+    void left();
+    void right();
+    void down();
+    void clockwise();
+    void counterClockwise();
     public:
     static const int COLS = 11;
     static const int ROWS = 15;

@@ -89,19 +89,19 @@ void Game::runMainLoop() {
         string command = parseCommand();
 
         if (command == "left") {
-            currentPlayer->gameBoard.currentBlock->left();
+            currentPlayer->gameBoard.left();
         }
         else if (command == "right") {
-            currentPlayer->gameBoard.currentBlock->right();
+            currentPlayer->gameBoard.right();
         }
         else if (command == "down") {
-            currentPlayer->gameBoard.currentBlock->down();
+            currentPlayer->gameBoard.down();
         }
         else if (command == "clockwise") {
-            currentPlayer->gameBoard.currentBlock->clockwise();
+            currentPlayer->gameBoard.clockwise();
         }
         else if (command == "counterclockwise") {
-            currentPlayer->gameBoard.currentBlock->counterClockwise();
+            currentPlayer->gameBoard.counterClockwise();
         }
         else if (command == "drop") {
             currentPlayer->gameBoard.drop(); // next block is now nullptr
