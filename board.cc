@@ -30,17 +30,23 @@ string Board::toString(bool includeCurrentBlock) {
 bool Board::validBoard() {
 
     // Check for overlap
-    map<Position, int> positions;
+    // map<Position, int> positions;
+
+    for (Position pos : currentBlock->getPositions()) {
+        if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
+            return false;
+        }
+    }
 
     for (Block* block : blocks) {
         for (Position pos : block->getPositions()) {
             if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
                 return false;
             }
-            if (positions.find(pos) != positions.end()) {
-                return false;
-            }
-            positions[pos] = 1;
+            // if (positions.find(pos) != positions.end()) {
+            //     return false;
+            // }
+            // positions[pos] = 1;
         }
     }
     return true;
