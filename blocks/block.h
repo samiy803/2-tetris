@@ -28,7 +28,8 @@ class Block {
     virtual void clockwise() = 0;
     vector<Position> getPositions();
     virtual void counterClockwise() = 0;
-    void notify(int row);
+    void deleteRow(int row);
+    void shiftDown(int row);
     char c;
     virtual ~Block() = default;
 };

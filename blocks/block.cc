@@ -25,16 +25,21 @@ void Block::up() {
     start.y--;
 }
 
-void Block::notify(int row) {
+void Block::deleteRow(int row) {
     for (auto it = offsets.begin(); it != offsets.end();) {
-        if (it->y + start.y < row) {
-            it->y++;
-        }
-        else if (it->y + start.y == row) {
+        if (it->y + start.y == row) {
             offsets.erase(it);
         }
         else {
             ++it;
+        }
+    }
+}
+
+void Block::shiftDown(int row) {
+    for (auto &offset : offsets) {
+        if (offset.y + start.y < row) {
+            offset.y++;
         }
     }
 }

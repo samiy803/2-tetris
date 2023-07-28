@@ -76,6 +76,8 @@ void Player::setLevel(int level) {
 void Player::clearRow() {
     string board = gameBoard.toString(false);
 
+    vector<int> rows;
+
     for (int i = 0; i < Board::ROWS; ++i) {
         for (int j = 0; j < Board::COLS; ++j) {
             if (board[i * Board::COLS + j] == ' ') {
@@ -83,11 +85,19 @@ void Player::clearRow() {
             }
             if (j == Board::COLS - 1) {
                 for (auto block : gameBoard.blocks) {
-                    block->notify(i);
+                    block->deleteRow(i);
+                    rows.push_back(i);
                 }
             }
         }
     }
+
+    for (int i : rows) {
+        for (auto block : gameBoard.blocks) {
+            block->shiftDown(i);
+        }
+    }
+
     gameBoard.gc();
 }
 
