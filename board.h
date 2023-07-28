@@ -20,6 +20,7 @@ class Board {
     void down();
     void clockwise();
     void counterClockwise();
+    void gc();
     public:
     static const int COLS = 11;
     static const int ROWS = 15;

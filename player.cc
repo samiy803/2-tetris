@@ -83,12 +83,12 @@ void Player::clearRow() {
             }
             if (j == Board::COLS - 1) {
                 for (auto block : gameBoard.blocks) {
-                    
+                    block->notify(i);
                 }
             }
         }
     }
-
+    gameBoard.gc();
 }
 
 

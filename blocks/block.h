@@ -30,5 +30,6 @@ class Block {
     virtual void counterClockwise() = 0;
     void notify(int row);
     char c;
+    virtual ~Block() = default;
 };
 #endif // !BLOCK_H

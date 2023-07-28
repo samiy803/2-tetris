@@ -26,14 +26,15 @@ void Block::up() {
 }
 
 void Block::notify(int row) {
-    for (Position &pos : offsets) {
-        if (pos.y + start.y < row) {
-            pos.y++;
+    for (auto it = offsets.begin(); it != offsets.end();) {
+        if (it->y + start.y < row) {
+            it->y++;
         }
-        else if (pos.y + start.y == row) {
-            // Erase this offset
-            
+        else if (it->y + start.y == row) {
+            offsets.erase(it);
         }
-
+        else {
+            ++it;
+        }
     }
 }

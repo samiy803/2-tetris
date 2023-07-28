@@ -98,3 +98,15 @@ void Board::drop() {
     currentBlock = nextBlock;
     nextBlock = nullptr;
 }
+
+void Board::gc() {
+    for (auto it = blocks.begin(); it != blocks.end();) {
+        if ((*it)->getPositions().size() == 0) {
+            delete *it;
+            it = blocks.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
+}

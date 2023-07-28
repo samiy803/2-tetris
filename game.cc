@@ -106,6 +106,7 @@ void Game::runMainLoop() {
         else if (command == "drop") {
             currentPlayer->gameBoard.drop(); // next block is now nullptr
             currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect); // no longer nullptr
+            currentPlayer->clearRow();
             currentPlayer = currentPlayer == player1 ? player2 : player1;
             turn_count++;
         }
