@@ -6,7 +6,6 @@ using namespace std;
 Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel) : isGraphics{isGraphics}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
     player1 = new Player(file1);
     player2 = new Player(file2);
-    // don't know if this is right
     this->seed = seed;
     this->startLevel = startLevel;
     currentPlayer = player1;
@@ -15,6 +14,7 @@ Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel
     q = new Queue();
 }
 
+// FIXME
 void Game::restart() {
     delete player1;
     delete player2;
@@ -49,7 +49,10 @@ void Game::startGame() {
     printGame();
     textThread = thread(&Game::textInput, this);
     mainThread = thread(&Game::runMainLoop, this);
-    mainThread.join();
+    if (isGraphics)
+        window->startDisplay();
+    else
+        mainThread.join();
 }
 
 void Game::printGame() {
@@ -81,6 +84,9 @@ void Game::textInput() {
     while (isRunning) {
         cin >> command;
         q->push(command);
+        if (command == "quit") {
+            break;
+        }
     }
 }
 
@@ -142,6 +148,7 @@ void Game::runMainLoop() {
             restart();
         }
         else if (command == "quit") {
+            endGame();
             break;
         }
         else if (command == "sequence") {
@@ -167,11 +174,25 @@ void Game::runMainLoop() {
     }
 }
 
-Game::~Game() {
+void Game::endGame() {
+    if (isGraphics)
+        window->quit = true;
     isRunning = false;
-    textThread.join();
+    try {
+        if (textThread.joinable())
+            textThread.join();
+        if (mainThread.joinable())
+            mainThread.join();
+    } catch(...) {
+        // Many things can go wrong here, especially if the mutex is still locked
+        // We don't care about any of them, the game is over and we just want to kill the threads
+    }
+}
+
+Game::~Game() {
     delete player1;
     delete player2;
-    delete window;
     delete q;
+    if (isGraphics)
+        delete window;
 }

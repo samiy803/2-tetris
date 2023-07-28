@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <thread>
+#include <atomic>
 #include "player.h"
 #include "window.h"
 #include "queue.h"
@@ -28,7 +29,7 @@ class Game {
     istringstream ss;
     thread textThread;
     thread mainThread;
-    bool isRunning;
+    std::atomic<bool> isRunning;
     public:
     Game(bool isGraphics, int seed, string file1, string file2, int startLevel);
     void runMainLoop();
@@ -38,6 +39,7 @@ class Game {
     void textInput();
     void renderGame();
     void printGame();
+    void endGame();
     ~Game();
 };
 

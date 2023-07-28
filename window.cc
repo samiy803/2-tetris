@@ -5,11 +5,20 @@
 */
 
 #include "window.h"
+#include "game.h"
 
 using namespace std;
 
-Window::Window(int width, int height) : width{width}, height{height} {
-    return;
+Window::Window(int width, int height) : width{width}, height{height}, quit{false} {}
+
+Window::~Window() {
+    quit = true;
+    SDL_GL_DeleteContext(glc);
+    SDL_DestroyWindow(w);
+    SDL_Quit();
+}
+
+void Window::startDisplay() {
     w = nullptr;
     unsigned int window_flags = SDL_WINDOW_OPENGL;
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -24,10 +33,23 @@ Window::Window(int width, int height) : width{width}, height{height} {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-    glc = SDL_GL_CreateContext(w);
-}
+    SDL_GL_SetSwapInterval(1);
 
-Window::~Window() {
-    SDL_DestroyWindow(w);
-    SDL_Quit();
+    glc = SDL_GL_CreateContext(w);
+
+    if (glc == nullptr) {
+        throw "OpenGL context could not be created! SDL_Error: " + string(SDL_GetError());
+    }
+
+    glClearColor(0, 0, 0, 1); // black background
+    glViewport(0, 0, width, height);
+
+    SDL_Event e;
+    while (!quit) {
+        while (SDL_PollEvent(&e) != 0) {
+            if (e.type == SDL_QUIT) {
+                quit = true;
+            }
+        }
+    }
 }
