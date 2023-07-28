@@ -11,14 +11,8 @@ Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel
     this->startLevel = startLevel;
     currentPlayer = player1;
     turn_count = 0;
-    window = isGraphics ? new XWindow() : nullptr;
-}
-
-string Game::parseCommand(){
-    // TODO: implement
-    string s;
-    cin >> s;
-    return s;
+    window = isGraphics ? new Window() : nullptr;
+    q = new Queue();
 }
 
 void Game::restart() {
@@ -30,7 +24,7 @@ void Game::restart() {
     currentPlayer = player1;
     turn_count = 0;
     if (isGraphics) {
-        window = new XWindow();
+        window = new Window();
     }
     else {
         window = nullptr;
@@ -40,7 +34,7 @@ void Game::restart() {
 void Game::renderGame() {
 }
 
-void Game::initGame() {
+void Game::startGame() {
     if (turn_count != 0) return;
     player1->setLevel(startLevel);
     player2->setLevel(startLevel);
@@ -50,6 +44,12 @@ void Game::initGame() {
     player2->gameBoard.currentBlock = player2->blockFactory->getNext(player2->effect);
     player1->gameBoard.nextBlock = player1->blockFactory->getNext(player1->effect);
     player2->gameBoard.nextBlock = player2->blockFactory->getNext(player2->effect);
+
+    isRunning = true;
+    printGame();
+    textThread = thread(&Game::textInput, this);
+    mainThread = thread(&Game::runMainLoop, this);
+    mainThread.join();
 }
 
 void Game::printGame() {
@@ -76,17 +76,18 @@ void Game::printGame() {
     }
 }
 
+void Game::textInput() {
+    string command;
+    while (isRunning) {
+        cin >> command;
+        q->push(command);
+    }
+}
+
 void Game::runMainLoop() {
 
-    while (true) {
-        if (isGraphics) {
-            renderGame();
-        }
-
-        printGame();
-
-        // Parse command
-        string command = parseCommand();
+    while (isRunning) {
+        string command = q->pop();
 
         if (command == "left") {
             currentPlayer->gameBoard.left();
@@ -157,5 +158,20 @@ void Game::runMainLoop() {
         else if (command == "hint") {
             cerr << "Hint not implemented yet" << endl;
         }
+
+        if (isGraphics) {
+            renderGame();
+        }
+
+        printGame();
     }
+}
+
+Game::~Game() {
+    isRunning = false;
+    textThread.join();
+    delete player1;
+    delete player2;
+    delete window;
+    delete q;
 }

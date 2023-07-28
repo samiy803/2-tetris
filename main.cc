@@ -1,4 +1,5 @@
 #include <iostream>
+#include <thread>
 #include "game.h"
 #include "constants.h"
 
@@ -45,8 +46,8 @@ int main(int argc, char* argv[]) {
     catch (...) {
         cerr << "Fatal error, could not create game. Contact DMK for more info" << endl;
     }
-    game->initGame();
-    game->runMainLoop();
+    game->startGame();
+
     delete game;
     return 0;
 }
