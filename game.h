@@ -7,6 +7,8 @@
 #include <iostream>
 #include <thread>
 #include <atomic>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 #include "player.h"
 #include "window.h"
 #include "queue.h"

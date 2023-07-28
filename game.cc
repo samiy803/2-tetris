@@ -1,5 +1,6 @@
 #include "game.h"
 #include <cassert>
+#include <string>
 
 using namespace std;
 
@@ -10,8 +11,8 @@ Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel
     this->startLevel = startLevel;
     currentPlayer = player1;
     turn_count = 0;
-    window = isGraphics ? new Window() : nullptr;
     q = new Queue();
+    window = isGraphics ? new Window(q) : nullptr;
 }
 
 // FIXME
@@ -32,6 +33,14 @@ void Game::restart() {
 }
 
 void Game::renderGame() {
+    Window::RenderData *d = new Window::RenderData{ player1->gameBoard.toString(true),
+                                                    player2->gameBoard.toString(true),
+                                                    player1->score, player2->score,
+                                                    player1->level, player2->level,
+                                                    string() + player1->gameBoard.nextBlock->c,
+                                                    string() + player2->gameBoard.nextBlock->c,
+                                                    player1->gameBoard.ROWS, player1->gameBoard.COLS};
+    window->renderGame(d);
 }
 
 void Game::startGame() {
@@ -47,6 +56,7 @@ void Game::startGame() {
 
     isRunning = true;
     printGame();
+    renderGame();
     textThread = thread(&Game::textInput, this);
     mainThread = thread(&Game::runMainLoop, this);
     if (isGraphics)
