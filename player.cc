@@ -81,7 +81,7 @@ void Player::clearRow() {
             if (board[i * Board::COLS + j] == ' ') {
                 break;
             }
-            if (j == Board::COLS - 1) {
+            else if (j == Board::COLS - 1) {
                 for (auto block : gameBoard.blocks) {
                     block->notify(i);
                 }
