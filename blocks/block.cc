@@ -11,21 +11,6 @@ vector<Position> Block::getPositions() {
     return positions;
 }
 
-// void Block::printBlock(){
-//     int maxX = 0;
-//     int maxY = 0;
-//     for (Position offset : offsets) {
-//         if(offset.x > maxX){
-//             maxX = offset.x;
-//         }
-//         if(offset.y > maxY){
-//             maxY = offset.y;
-//         }
-//     }
-//     char blockstr[maxX * maxY];
-
-// }
-
 void Block::left() {
     start.x--;
 }
@@ -61,4 +46,25 @@ void Block::shiftDown(int row) {
 
 vector<Position> Block::getOffsets() {
     return offsets;
+}
+
+void Block::printBlock(bool player1) {
+    int maxX = 4;
+    int maxY = 4;
+
+    std::vector<char> blockstr(maxX * maxY, ' ');
+
+    for (Position offset : getOffsets()) {
+        blockstr[(offset.y) * maxX + (offset.x)] = c;
+    }
+
+    for (int i = 0; i < maxY; i++) {
+        if (!player1) {
+            std::cout << "\t\t\t";
+        }
+        for (int j = 0; j < maxX; j++) {
+            std::cout << blockstr[i * maxX + j];
+        }
+        std::cout << std::endl;
+    }
 }

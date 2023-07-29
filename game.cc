@@ -83,10 +83,10 @@ void Game::printGame() {
     cout << "-----------\t\t-----------" << endl;
     cout << "Next:\t\t\tNext:" << endl;
     if(currentPlayer == player1){
-        cout << player1->gameBoard.nextBlock->c << endl;
+        player1->gameBoard.nextBlock->printBlock(true);
     } 
     else if(currentPlayer == player2){
-        cout << player1->gameBoard.nextBlock->c << endl;
+        player2->gameBoard.nextBlock->printBlock(false);
     }
 }
 

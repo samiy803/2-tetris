@@ -2,8 +2,11 @@
 #define BLOCK_H
 #include "position.h"
 #include <vector>
+#include <iostream>
+
 
 using std::vector;
+using std::iostream;
 
 
 /**
@@ -30,6 +33,7 @@ class Block {
     virtual void counterClockwise() = 0;
     void deleteRow(int row);
     void shiftDown(int row);
+    void printBlock(bool player1);
     char c;
     vector<Position> getOffsets();
     virtual ~Block() = default;
