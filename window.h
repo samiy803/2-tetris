@@ -56,6 +56,7 @@ class Window {
     RenderData* renderData;
     Queue *q;
     static vector<std::shared_ptr<AudioData>> audioData;
+    void drawGrid();
 };
 
 #endif // !XWINDOW_H

@@ -91,8 +91,6 @@ void Window::drawGame() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // renderData->p1Board is a string of length COLS * ROWS
-
     float blockWidth = 0.068359375;
     float blockHeight = 0.068359375*width/height;
     float boardWidth = blockWidth * renderData->COLS;
@@ -143,13 +141,15 @@ void Window::drawGame() {
         for (auto offset : renderData->p2Next->getOffsets()) {
             setColor(renderData->p2Next->c);
             glBegin(GL_QUADS);
-            glVertex2f(1 - borderX - (renderData->COLS - 1 + offset.x) * blockWidth, 1 - borderY - (3 + offset.y) * blockHeight - boardHeight);
-            glVertex2f(1 - borderX - (renderData->COLS - 2 + offset.x) * blockWidth, 1 - borderY - (3 + offset.y) * blockHeight - boardHeight);
-            glVertex2f(1 - borderX - (renderData->COLS - 2 + offset.x) * blockWidth, 1 - borderY - (2 + offset.y) * blockHeight - boardHeight);
-            glVertex2f(1 - borderX - (renderData->COLS - 1 + offset.x) * blockWidth, 1 - borderY - (2 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(borderX + (renderData->COLS - 1 + offset.x) * blockWidth, 1 - borderY - (3 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(borderX + (renderData->COLS - 2 + offset.x) * blockWidth, 1 - borderY - (3 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(borderX + (renderData->COLS - 2 + offset.x) * blockWidth, 1 - borderY - (2 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(borderX + (renderData->COLS - 1 + offset.x) * blockWidth, 1 - borderY - (2 + offset.y) * blockHeight - boardHeight);
             glEnd();
         }
     }
+
+    drawGrid();
 
     SDL_GL_SwapWindow(w);
 
@@ -257,4 +257,40 @@ void Window::playDrop() {
     // Reset the buffer
     audioData[0]->currentBuffer = audioData[0]->buffer;
     audioData[0]->remaining = audioData[0]->length;
+}
+
+void Window::drawGrid() {
+    float blockWidth = 0.068359375;
+    float blockHeight = 0.068359375*width/height;
+    float boardWidth = blockWidth * renderData->COLS;
+    float boardHeight = blockHeight * renderData->ROWS;
+    float borderX = (2 - 2*boardWidth - 0.2)/4.0;
+    float borderY = 0.05 * width/height;
+
+    // Draw grid for player 1
+    setColor('*');
+    glBegin(GL_LINES);
+    for (int i = 0; i <= renderData->COLS; i++) {
+        glVertex2f(-1 + borderX + i * blockWidth, 1 - borderY);
+        glVertex2f(-1 + borderX + i * blockWidth, 1 - borderY - boardHeight);
+    }
+    for (int i = 0; i <= renderData->ROWS; i++) {
+        glVertex2f(-1 + borderX, 1 - borderY - i * blockHeight);
+        glVertex2f(-1 + borderX + boardWidth, 1 - borderY - i * blockHeight);
+    }
+
+    // Draw grid for player 2
+    
+    for (int i = 0; i <= renderData->COLS; i++) {
+        glVertex2f(1 - borderX - i * blockWidth, 1 - borderY);
+        glVertex2f(1 - borderX - i * blockWidth, 1 - borderY - boardHeight);
+    }
+
+    for (int i = 0; i <= renderData->ROWS; i++) {
+        glVertex2f(1 - borderX, 1 - borderY - i * blockHeight);
+        glVertex2f(1 - borderX - boardWidth, 1 - borderY - i * blockHeight);
+    }
+
+
+    glEnd();
 }
