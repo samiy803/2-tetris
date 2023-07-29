@@ -9,10 +9,22 @@
 
 using namespace std;
 
-Window::Window(Queue *q, int width, int height) : quit{false}, width{width}, height{height}, renderData{nullptr}, q{q} {}
+vector<shared_ptr<Window::AudioData>> Window::audioData = {};
+
+Window::Window(Queue *q, bool audioEnabled, int width, int height) :
+    quit{false}, width{width}, height{height},
+    renderData{nullptr}, q{q}, audioEnabled{audioEnabled}
+{
+    if (audioEnabled) {
+        loadAudio();
+    }
+}
 
 Window::~Window() {
     quit = true;
+    for (auto &data : audioData) {
+        SDL_FreeWAV(data->buffer);
+    }
     SDL_GL_DeleteContext(glc);
     SDL_DestroyWindow(w);
     SDL_Quit();
@@ -21,7 +33,14 @@ Window::~Window() {
 void Window::startDisplay() {
     w = nullptr;
     unsigned int window_flags = SDL_WINDOW_OPENGL;
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+
+    unsigned long init_flags = SDL_INIT_VIDEO;
+
+    if (audioEnabled) {
+        init_flags |= SDL_INIT_AUDIO;
+    }
+
+    if (SDL_Init(init_flags) < 0) {
         throw "SDL could not initialize! SDL_Error: " + string(SDL_GetError());
     }
     w = SDL_CreateWindow("Biquadris", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, window_flags);
@@ -183,4 +202,52 @@ void Window::handleInput(SDL_Event &e) {
     else if (e.key.keysym.sym == SDLK_SPACE) {
         q->push("drop");
     }
+}
+
+void Window::loadAudio() {
+    shared_ptr<Window::AudioData> drop(new Window::AudioData());
+    if (SDL_LoadWAV("audio/drop.wav", &drop->spec, &drop->buffer, &drop->length) == NULL) {
+        std::cout << "Error loading drop.wav" << std::endl;
+        exit(1);
+    }
+
+    drop->spec.callback = Window::audioCallback;
+    drop->spec.userdata = drop.get();
+    drop->currentBuffer = drop->buffer;
+    drop->remaining = drop->length;
+
+    audioData.push_back(drop);
+}
+
+// Why so complicated?
+// https://wiki.libsdl.org/SDL2/SDL_AudioSpec#callback
+void Window::audioCallback(void *userdata, Uint8 *stream, int len) {
+    AudioData *audio = (AudioData *) userdata;
+    if (audio->remaining == 0) {
+        return;
+    }
+    // Don't copy more than we have left
+    len = (len > audio->remaining ? audio->remaining : len);
+    SDL_memcpy(stream, audio->currentBuffer, len);
+    audio->currentBuffer += len;
+    audio->remaining -= len;
+}
+
+void Window::playDrop() {
+    if (SDL_OpenAudio(&audioData[0]->spec, NULL) < 0) {
+        std::cout << "Error opening audio device" << std::endl;
+        exit(1);
+    }
+
+    SDL_PauseAudio(0);
+
+    while (audioData[0]->remaining > 0) {
+        SDL_Delay(10);
+    }
+
+    SDL_CloseAudio();
+
+    // Reset the buffer
+    audioData[0]->currentBuffer = audioData[0]->buffer;
+    audioData[0]->remaining = audioData[0]->length;
 }

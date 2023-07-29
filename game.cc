@@ -102,6 +102,8 @@ void Game::textInput() {
 
 void Game::runMainLoop() {
 
+    bool playDrop = false;
+
     while (isRunning) {
         string command = q->pop();
 
@@ -126,6 +128,7 @@ void Game::runMainLoop() {
             currentPlayer->clearRow();
             currentPlayer = currentPlayer == player1 ? player2 : player1;
             turn_count++;
+            playDrop = true;
         }
         else if (command == "levelup") {
             currentPlayer->setLevel(currentPlayer->level + 1);
@@ -181,6 +184,13 @@ void Game::runMainLoop() {
         }
 
         printGame();
+        
+        if (playDrop) {
+            playDrop = false;
+            if (isGraphics) {
+                window->playDrop();
+            }
+        }
     }
 }
 
