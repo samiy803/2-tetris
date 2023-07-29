@@ -12,7 +12,7 @@ Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel
     currentPlayer = player1;
     turn_count = 0;
     q = new Queue();
-    window = isGraphics ? new Window(q, bonusEnabled, bonusEnabled) : nullptr;
+    window = isGraphics ? new Window(q, bonusEnabled) : nullptr;
 }
 
 // FIXME

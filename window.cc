@@ -11,18 +11,18 @@ using namespace std;
 
 vector<shared_ptr<Window::AudioData>> Window::audioData = {};
 
-Window::Window(Queue *q, bool audioEnabled, bool keyboardEnabled,int width, int height) :
+Window::Window(Queue *q, bool bonusEnabled,int width, int height) :
     quit{false}, width{width}, height{height},
-    renderData{nullptr}, q{q}, audioEnabled{audioEnabled}, keyboardEnabled{keyboardEnabled}
+    renderData{nullptr}, q{q}, bonusEnabled{bonusEnabled}
 {
-    if (audioEnabled) {
+    if (bonusEnabled) {
         loadAudio();
     }
 }
 
 Window::~Window() {
     quit = true;
-    if (audioEnabled) {
+    if (bonusEnabled) {
         for (auto &data : audioData) {
             SDL_FreeWAV(data->buffer);
         }
@@ -38,7 +38,7 @@ void Window::startDisplay() {
 
     unsigned long init_flags = SDL_INIT_VIDEO;
 
-    if (audioEnabled) {
+    if (bonusEnabled) {
         init_flags |= SDL_INIT_AUDIO;
     }
 
@@ -72,7 +72,7 @@ void Window::startDisplay() {
                 quit = true;
             }
             else if (e.type == SDL_KEYDOWN) {
-                handleInput(e, keyboardEnabled);
+                handleInput(e, bonusEnabled);
             }
         }
         if (renderData) {
@@ -186,8 +186,8 @@ void Window::setColor(char curChar) {
     }
 }
 
-void Window::handleInput(SDL_Event &e, bool keyboardEnabled) {
-    if(keyboardEnabled){
+void Window::handleInput(SDL_Event &e, bool bonusEnabled) {
+    if(bonusEnabled){
         if (!q) return;
         if (e.type != SDL_KEYDOWN) return;
         if (e.key.keysym.sym == SDLK_DOWN) {
@@ -214,7 +214,7 @@ void Window::handleInput(SDL_Event &e, bool keyboardEnabled) {
 void Window::loadAudio() {
     shared_ptr<Window::AudioData> drop(new Window::AudioData());
     if (SDL_LoadWAV("audio/drop.wav", &drop->spec, &drop->buffer, &drop->length) == NULL) {
-        audioEnabled = false;
+        bonusEnabled = false;
         std::cout << "Error loading drop.wav" << std::endl;
     }
 
@@ -241,9 +241,9 @@ void Window::audioCallback(void *userdata, Uint8 *stream, int len) {
 }
 
 void Window::playDrop() {
-    if (!audioEnabled) return;
+    if (!bonusEnabled) return;
     if (SDL_OpenAudio(&audioData[0]->spec, NULL) < 0) {
-        audioEnabled = false;
+        bonusEnabled = false;
         std::cout << "Error opening audio device" << std::endl;
         return;
     }
