@@ -246,7 +246,7 @@ void Window::playDrop() {
     SDL_PauseAudio(0);
 
     while (audioData[0]->remaining > 0) {
-        SDL_Delay(1000);
+        SDL_Delay(10);
     }
 
     SDL_CloseAudio();
