@@ -37,8 +37,8 @@ void Game::renderGame() {
                                                     player2->gameBoard.toString(true),
                                                     player1->score, player2->score,
                                                     player1->level, player2->level,
-                                                    string() + player1->gameBoard.nextBlock->c,
-                                                    string() + player2->gameBoard.nextBlock->c,
+                                                    player1->gameBoard.nextBlock,
+                                                    player2->gameBoard.nextBlock,
                                                     player1->gameBoard.ROWS, player1->gameBoard.COLS};
     window->renderGame(d);
 }

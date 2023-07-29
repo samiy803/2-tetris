@@ -5,6 +5,8 @@
 #include <SDL2/SDL_opengl.h>
 #include <string>
 #include "queue.h"
+#include "position.h"
+#include "block.h"
 
 
 class Window {
@@ -16,13 +18,13 @@ class Window {
         int p2Score;
         int p1Level;
         int p2Level;
-        std::string p1Next;
-        std::string p2Next;
+        Block* p1Next;
+        Block* p2Next;
         int ROWS;
         int COLS;
     };
     bool quit;
-    Window(Queue *q = nullptr, int width=1024, int height=680);  // Constructor; displays the window.
+    Window(Queue *q = nullptr, int width=1024, int height=768);  // Constructor; displays the window.
     ~Window();                              // Destructor; destroys the window.
     Window(const Window&) = delete;        // Disallow copy ctor.
     Window &operator=(const Window&) = delete; // Disallow copy assign.
@@ -33,6 +35,8 @@ class Window {
     void drawGame();
     private:
     void handleInput(SDL_Event &e);
+    void setColor(char c);
+    std::vector<Position> getOffsets(char block);
     int width, height;
     SDL_Window *w;
     SDL_GLContext glc;
