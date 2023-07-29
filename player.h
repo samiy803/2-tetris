@@ -4,6 +4,7 @@
 #include "board.h"
 #include "blockFactory.h"
 #include "level0Factory.h"
+#include "level1Factory.h"
 
 /**
  * Prime factorization of effects:

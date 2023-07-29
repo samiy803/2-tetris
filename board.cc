@@ -21,18 +21,12 @@ string Board::toString(bool includeCurrentBlock) {
 }
 
 bool Board::validBoard() {
-
     // Check for overlap
     vector<Position> positions;
 
     for (Position pos : currentBlock->getPositions()) {
         if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
             return false;
-        }
-        for (Position p : positions) {
-            if (p == pos) {
-                return false;
-            }
         }
         positions.push_back(pos);
     }
@@ -101,7 +95,7 @@ void Board::drop() {
 
 void Board::gc() {
     for (auto it = blocks.begin(); it != blocks.end();) {
-        if ((*it)->getPositions().size() == 0) {
+        if ((*it)->getOffsets().size() == 0) {
             delete *it;
             it = blocks.erase(it);
         }

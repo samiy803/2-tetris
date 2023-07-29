@@ -48,7 +48,7 @@ void Game::startGame() {
     player1->setLevel(startLevel);
     player2->setLevel(startLevel);
     player1->blockFactory->setSeed(seed);
-    player2->blockFactory->setSeed(seed);
+    player2->blockFactory->setSeed(seed + 1);
     player1->gameBoard.currentBlock = player1->blockFactory->getNext(player1->effect);
     player2->gameBoard.currentBlock = player2->blockFactory->getNext(player2->effect);
     player1->gameBoard.nextBlock = player1->blockFactory->getNext(player1->effect);

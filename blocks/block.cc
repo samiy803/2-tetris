@@ -43,3 +43,7 @@ void Block::shiftDown(int row) {
         }
     }
 }
+
+vector<Position> Block::getOffsets() {
+    return offsets;
+}

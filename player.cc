@@ -67,6 +67,9 @@ void Player::setLevel(int level) {
         case 0:
             blockFactory = new Level0Factory(filename);
             break;
+        case 1:
+            blockFactory = new Level1Factory();
+            break;
         default:
             throw "Invalid level";
             break;
@@ -86,8 +89,8 @@ void Player::clearRow() {
             if (j == Board::COLS - 1) {
                 for (auto block : gameBoard.blocks) {
                     block->deleteRow(i);
-                    rows.push_back(i);
                 }
+                rows.push_back(i);
             }
         }
     }

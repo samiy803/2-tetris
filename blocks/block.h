@@ -31,6 +31,7 @@ class Block {
     void deleteRow(int row);
     void shiftDown(int row);
     char c;
+    vector<Position> getOffsets();
     virtual ~Block() = default;
 };
 #endif // !BLOCK_H
