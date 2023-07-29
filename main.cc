@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
     bool isGraphics = true;
-    bool audio = true;
+    bool bonusEnabled = false;
     int seed;
     int startLevel = 0;
     string file1 = SEQUENCE_1;
@@ -15,6 +15,9 @@ int main(int argc, char* argv[]) {
     for (int i = 1; i < argc; ++i) {
         if (TEXT_ARG == argv[i]) {
             isGraphics = false;
+        }
+        if(BONUS_ARG == argv[i]) {
+            bonusEnabled = true;
         }
         if (SEED_ARG == argv[i] && i + 1 < argc) {
             try {
@@ -38,14 +41,11 @@ int main(int argc, char* argv[]) {
                 cerr << "Fatal error, invalid start level: " << argv[i + 1] << endl;
             }
         }
-        if (NO_AUDIO == argv[i]) {
-            audio = false;
-        }
     }
 
     Game* game;
     try {
-        game = new Game(isGraphics, seed, file1, file2, startLevel, audio);
+        game = new Game(isGraphics, seed, file1, file2, startLevel, bonusEnabled);
     }
     catch (...) {
         cerr << "Fatal error, could not create game. Contact DMK for more info" << endl;

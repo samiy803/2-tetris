@@ -33,7 +33,7 @@ class Window {
         SDL_AudioSpec spec;
     };
     bool quit;
-    Window(Queue *q = nullptr, bool audioEnabled = true, int width=1024, int height=768);  // Constructor; displays the window.
+    Window(Queue *q = nullptr, bool audioEnabled = false, bool keyboardEnabled = false, int width=1024, int height=768);  // Constructor; displays the window.
     ~Window();                              // Destructor; destroys the window.
     Window(const Window&) = delete;        // Disallow copy ctor.
     Window &operator=(const Window&) = delete; // Disallow copy assign.
@@ -44,8 +44,9 @@ class Window {
     void drawGame();
     void playDrop();
     bool audioEnabled;
+    bool keyboardEnabled;
     private:
-    void handleInput(SDL_Event &e);
+    void handleInput(SDL_Event &e, bool keyboardEnabled);
     void setColor(char c);
     void loadAudio();
     static void audioCallback(void *userdata, Uint8 *stream, int len);

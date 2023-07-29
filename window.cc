@@ -11,9 +11,9 @@ using namespace std;
 
 vector<shared_ptr<Window::AudioData>> Window::audioData = {};
 
-Window::Window(Queue *q, bool audioEnabled, int width, int height) :
+Window::Window(Queue *q, bool audioEnabled, bool keyboardEnabled,int width, int height) :
     quit{false}, width{width}, height{height},
-    renderData{nullptr}, q{q}, audioEnabled{audioEnabled}
+    renderData{nullptr}, q{q}, audioEnabled{audioEnabled}, keyboardEnabled{keyboardEnabled}
 {
     if (audioEnabled) {
         loadAudio();
@@ -72,7 +72,7 @@ void Window::startDisplay() {
                 quit = true;
             }
             else if (e.type == SDL_KEYDOWN) {
-                handleInput(e);
+                handleInput(e, keyboardEnabled);
             }
         }
         if (renderData) {
@@ -186,26 +186,28 @@ void Window::setColor(char curChar) {
     }
 }
 
-void Window::handleInput(SDL_Event &e) {
-    if (!q) return;
-    if (e.type != SDL_KEYDOWN) return;
-    if (e.key.keysym.sym == SDLK_DOWN) {
-        q->push("down");
-    }
-    else if (e.key.keysym.sym == SDLK_RIGHT) {
-        q->push("right");
-    }
-    else if (e.key.keysym.sym == SDLK_LEFT) {
-        q->push("left");
-    }
-    else if(e.key.keysym.sym == SDLK_a) {
-        q->push("counterclockwise");
-    }
-    else if (e.key.keysym.sym == SDLK_d) {
-        q->push("clockwise");
-    }
-    else if (e.key.keysym.sym == SDLK_SPACE) {
-        q->push("drop");
+void Window::handleInput(SDL_Event &e, bool keyboardEnabled) {
+    if(keyboardEnabled){
+        if (!q) return;
+        if (e.type != SDL_KEYDOWN) return;
+        if (e.key.keysym.sym == SDLK_DOWN) {
+            q->push("down");
+        }
+        else if (e.key.keysym.sym == SDLK_RIGHT) {
+            q->push("right");
+        }
+        else if (e.key.keysym.sym == SDLK_LEFT) {
+            q->push("left");
+        }
+        else if(e.key.keysym.sym == SDLK_a) {
+            q->push("counterclockwise");
+        }
+        else if (e.key.keysym.sym == SDLK_d) {
+            q->push("clockwise");
+        }
+        else if (e.key.keysym.sym == SDLK_SPACE) {
+            q->push("drop");
+        }
     }
 }
 

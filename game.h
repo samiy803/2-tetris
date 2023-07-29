@@ -25,6 +25,7 @@ class Game {
     Queue* q;
     unsigned long turn_count;
     bool isGraphics;
+    bool bonusEnabled;
     int seed;
     string file1, file2;
     int startLevel;
@@ -33,7 +34,7 @@ class Game {
     thread mainThread;
     std::atomic<bool> isRunning;
     public:
-    Game(bool isGraphics, int seed, string file1, string file2, int startLevel, bool audio);
+    Game(bool isGraphics, int seed, string file1, string file2, int startLevel, bool bonusEnabled);
     void runMainLoop();
     void startGame();
     void restart();
