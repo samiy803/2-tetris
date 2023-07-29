@@ -22,8 +22,10 @@ Window::Window(Queue *q, bool audioEnabled, int width, int height) :
 
 Window::~Window() {
     quit = true;
-    for (auto &data : audioData) {
-        SDL_FreeWAV(data->buffer);
+    if (audioEnabled) {
+        for (auto &data : audioData) {
+            SDL_FreeWAV(data->buffer);
+        }
     }
     SDL_GL_DeleteContext(glc);
     SDL_DestroyWindow(w);
@@ -207,8 +209,8 @@ void Window::handleInput(SDL_Event &e) {
 void Window::loadAudio() {
     shared_ptr<Window::AudioData> drop(new Window::AudioData());
     if (SDL_LoadWAV("audio/drop.wav", &drop->spec, &drop->buffer, &drop->length) == NULL) {
+        audioEnabled = false;
         std::cout << "Error loading drop.wav" << std::endl;
-        exit(1);
     }
 
     drop->spec.callback = Window::audioCallback;
@@ -234,15 +236,17 @@ void Window::audioCallback(void *userdata, Uint8 *stream, int len) {
 }
 
 void Window::playDrop() {
+    if (!audioEnabled) return;
     if (SDL_OpenAudio(&audioData[0]->spec, NULL) < 0) {
+        audioEnabled = false;
         std::cout << "Error opening audio device" << std::endl;
-        exit(1);
+        return;
     }
 
     SDL_PauseAudio(0);
 
     while (audioData[0]->remaining > 0) {
-        SDL_Delay(10);
+        SDL_Delay(1000);
     }
 
     SDL_CloseAudio();

@@ -33,7 +33,7 @@ class Game {
     thread mainThread;
     std::atomic<bool> isRunning;
     public:
-    Game(bool isGraphics, int seed, string file1, string file2, int startLevel);
+    Game(bool isGraphics, int seed, string file1, string file2, int startLevel, bool audio);
     void runMainLoop();
     void startGame();
     void restart();

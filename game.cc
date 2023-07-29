@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel) : isGraphics{isGraphics}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
+Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel, bool audio) : isGraphics{isGraphics}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
     player1 = new Player(file1);
     player2 = new Player(file2);
     this->seed = seed;
@@ -12,7 +12,7 @@ Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel
     currentPlayer = player1;
     turn_count = 0;
     q = new Queue();
-    window = isGraphics ? new Window(q) : nullptr;
+    window = isGraphics ? new Window(q, audio) : nullptr;
 }
 
 // FIXME

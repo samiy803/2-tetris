@@ -5,3 +5,4 @@
 #define SCRIPT_1 (string) "-scriptfile1"
 #define SCRIPT_2 (string) "-scriptfile2"
 #define START_LEVEL (string) "-startlevel"
+#define NO_AUDIO (string) "-noaudio"
