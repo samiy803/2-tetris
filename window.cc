@@ -198,7 +198,10 @@ void Window::handleInput(SDL_Event &e) {
     else if (e.key.keysym.sym == SDLK_LEFT) {
         q->push("left");
     }
-    else if (e.key.keysym.sym == SDLK_UP) {
+    else if(e.key.keysym.sym == SDLK_a) {
+        q->push("counterclockwise");
+    }
+    else if (e.key.keysym.sym == SDLK_d) {
         q->push("clockwise");
     }
     else if (e.key.keysym.sym == SDLK_SPACE) {
