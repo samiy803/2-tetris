@@ -128,10 +128,10 @@ void Window::drawGame() {
         for (auto offset : renderData->p1Next->getOffsets()) {
             setColor(renderData->p1Next->c);
             glBegin(GL_QUADS);
-            glVertex2f(-1 + borderX + (1 + offset.x) * blockWidth, 1 - borderY - (3 + offset.y) * blockHeight - boardHeight);
-            glVertex2f(-1 + borderX + (2 + offset.x) * blockWidth, 1 - borderY - (3 + offset.y) * blockHeight - boardHeight);
-            glVertex2f(-1 + borderX + (2 + offset.x) * blockWidth, 1 - borderY - (2 + offset.y) * blockHeight - boardHeight);
-            glVertex2f(-1 + borderX + (1 + offset.x) * blockWidth, 1 - borderY - (2 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(-1 + borderX + (offset.x + renderData->COLS - 2.5) * blockWidth, 1 - borderY - (2.5 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(-1 + borderX + (offset.x + renderData->COLS - 1.5) * blockWidth, 1 - borderY - (2.5 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(-1 + borderX + (offset.x + renderData->COLS - 1.5) * blockWidth, 1 - borderY - (1.5 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(-1 + borderX + (offset.x + renderData->COLS - 2.5) * blockWidth, 1 - borderY - (1.5 + offset.y) * blockHeight - boardHeight);
             glEnd();
         }
     }
@@ -141,15 +141,15 @@ void Window::drawGame() {
         for (auto offset : renderData->p2Next->getOffsets()) {
             setColor(renderData->p2Next->c);
             glBegin(GL_QUADS);
-            glVertex2f(borderX + (renderData->COLS - 1 + offset.x) * blockWidth, 1 - borderY - (3 + offset.y) * blockHeight - boardHeight);
-            glVertex2f(borderX + (renderData->COLS - 2 + offset.x) * blockWidth, 1 - borderY - (3 + offset.y) * blockHeight - boardHeight);
-            glVertex2f(borderX + (renderData->COLS - 2 + offset.x) * blockWidth, 1 - borderY - (2 + offset.y) * blockHeight - boardHeight);
-            glVertex2f(borderX + (renderData->COLS - 1 + offset.x) * blockWidth, 1 - borderY - (2 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(borderX + (renderData->COLS - 1 + offset.x) * blockWidth, 1 - borderY - (2.5 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(borderX + (renderData->COLS - 2 + offset.x) * blockWidth, 1 - borderY - (2.5 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(borderX + (renderData->COLS - 2 + offset.x) * blockWidth, 1 - borderY - (1.5 + offset.y) * blockHeight - boardHeight);
+            glVertex2f(borderX + (renderData->COLS - 1 + offset.x) * blockWidth, 1 - borderY - (1.5 + offset.y) * blockHeight - boardHeight);
             glEnd();
         }
     }
 
-    drawGrid();
+    drawBG();
 
     SDL_GL_SwapWindow(w);
 
@@ -259,7 +259,7 @@ void Window::playDrop() {
     audioData[0]->remaining = audioData[0]->length;
 }
 
-void Window::drawGrid() {
+void Window::drawBG() {
     float blockWidth = 0.068359375;
     float blockHeight = 0.068359375*width/height;
     float boardWidth = blockWidth * renderData->COLS;
