@@ -34,6 +34,7 @@ class Block {
     void deleteRow(int row);
     void shiftDown(int row);
     void printBlock(bool player1);
+    int startingLevel;
     char c;
     vector<Position> getOffsets();
     virtual ~Block() = default;

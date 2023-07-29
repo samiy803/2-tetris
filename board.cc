@@ -1,5 +1,7 @@
 #include "board.h"
 #include <map>
+#include <cmath>
+#include <iostream>
 
 string Board::toString(bool includeCurrentBlock) {
     char board[ROWS * COLS];
@@ -93,10 +95,14 @@ void Board::drop() {
     nextBlock = nullptr;
 }
 
-void Board::gc() {
+int Board::gc() {
     for (auto it = blocks.begin(); it != blocks.end();) {
         if ((*it)->getOffsets().size() == 0) {
             delete *it;
+            int scoreAddition = pow(((*it)->startingLevel + 1), 2);
+            std::cout << "Block: " << scoreAddition << std::endl;
+            it = blocks.erase(it);
+            return scoreAddition;
             it = blocks.erase(it);
         }
         else {

@@ -5,9 +5,10 @@ const vector<Position> LBlock::rotation1 = {{0, 1}, {1, 1}, {2, 1}, {0, 2}};
 const vector<Position> LBlock::rotation2 = {{0, 0}, {1, 0}, {1, 1}, {1, 2}};
 const vector<Position> LBlock::rotation3 = {{0, 2}, {1, 2}, {2, 2}, {2, 1}};
 
-LBlock::LBlock(Position p, int effects, short rotation) {
+LBlock::LBlock(Position p, int effects, short rotation, int startingLevel) {
     this->effects = effects;
     this->rotation = rotation;
+    this->startingLevel = startingLevel;
     start = p;
     c = 'L';
     switch (rotation) {

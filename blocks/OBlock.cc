@@ -2,7 +2,7 @@
 
 const vector<Position> OBlock::rotation0 = {{0, 0}, {1, 0}, {0, 1}, {1, 1}};
 
-OBlock::OBlock(Position p, int effects, short rotation) {
+OBlock::OBlock(Position p, int effects, short rotation, int startingLevel) {
     this->effects = effects;
     this->rotation = rotation;
     start = p;

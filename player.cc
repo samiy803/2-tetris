@@ -1,4 +1,6 @@
 #include "player.h"
+#include <iostream>
+
 
 Player::Player(string filename, int score, int level, int effect) : score{score}, level{level}, effect{effect}, filename{filename} {
     switch (level) {
@@ -81,6 +83,7 @@ void Player::clearRow() {
 
     vector<int> rows;
 
+
     for (int i = 0; i < Board::ROWS; ++i) {
         for (int j = 0; j < Board::COLS; ++j) {
             if (board[i * Board::COLS + j] == ' ') {
@@ -94,6 +97,11 @@ void Player::clearRow() {
             }
         }
     }
+    int size = rows.size();
+    if(size > 0){
+        std::cout << "ROW: " <<  size * size + level << std::endl;
+        score += size * size + level;
+    }
 
     for (int i : rows) {
         for (auto block : gameBoard.blocks) {
@@ -101,7 +109,7 @@ void Player::clearRow() {
         }
     }
 
-    gameBoard.gc();
+    score += gameBoard.gc();
 }
 
 

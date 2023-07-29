@@ -8,7 +8,7 @@ class JBlock : public Block {
     static const std::vector<Position> rotation2;
     static const std::vector<Position> rotation3;
     public:
-    JBlock(Position p = Position{1, 0}, int effects = 1, short rotation = 0);
+    JBlock(Position p = Position{1, 0}, int effects = 1, short rotation = 0, int startingLevel = 0);
     void clockwise() override;
     void counterClockwise() override;
 };
