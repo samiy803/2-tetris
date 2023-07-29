@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#include <SDL2/SDL_ttf.h>
 #include <string>
 #include <vector>
 #include <memory>
@@ -53,6 +54,8 @@ class Window {
     int width, height;
     SDL_Window *w;
     SDL_GLContext glc;
+    SDL_Renderer *renderer;
+
     RenderData* renderData;
     Queue *q;
     static vector<std::shared_ptr<AudioData>> audioData;
