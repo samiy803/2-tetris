@@ -2,7 +2,7 @@ LIBS = -framework OpenGL -lSDL2
 CXX = g++
 CXXFLAGS = -std=c++20 -Wall -Werror=vla -MMD -I blocks -I factory -I /opt/homebrew/opt/SDL2/include -L /opt/homebrew/opt/SDL2/lib
 EXEC = biquadris
-OBJECTS = queue.o blocks/block.o blocks/LBlock.o blocks/JBlock.o blocks/SBlock.o blocks/ZBlock.o blocks/TBlock.o blocks/OBlock.o blocks/IBlock.o factory/level0Factory.o board.o player.o window.o game.o main.o 
+OBJECTS = queue.o blocks/block.o blocks/LBlock.o blocks/JBlock.o blocks/SBlock.o blocks/ZBlock.o blocks/TBlock.o blocks/OBlock.o blocks/IBlock.o factory/level0Factory.o factory/level1Factory.o board.o player.o window.o game.o main.o 
 DEPENDS = ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}
