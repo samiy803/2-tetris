@@ -21,9 +21,9 @@ Window::Window(Queue *q, bool bonusEnabled,int width, int height) :
     if (TTF_Init() < 0) {
         throw "TTF_Init failed to initialize";
     }
-    sans = TTF_OpenFont("Sans.ttf", 64);
-    TTF_SetFontStyle(sans, TTF_STYLE_NORMAL);
-    if (sans == nullptr) {
+    reg = TTF_OpenFont("Sans.ttf", 24);
+    TTF_SetFontStyle(reg, TTF_STYLE_NORMAL);
+    if (reg == nullptr) {
         throw "TTF_OpenFont failed to load Sans.ttf";
     }
 }
@@ -35,7 +35,7 @@ Window::~Window() {
             SDL_FreeWAV(data->buffer);
         }
     }
-    TTF_CloseFont(sans);
+    TTF_CloseFont(reg);
     SDL_GL_DeleteContext(glc);
     SDL_DestroyWindow(w);
     SDL_Quit();
@@ -61,7 +61,7 @@ void Window::startDisplay() {
     }
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
     SDL_GL_SetSwapInterval(1);
 
@@ -160,7 +160,9 @@ void Window::drawGame() {
 
     drawBG();
 
-    drawText("Player", 0, 0);
+    float temp = (width - boardWidth*width - borderX*width);
+    drawText(reg, "Player 1", borderX*width/2, (boardHeight + borderY)*height/2);
+    drawText(reg, "Player 2", (borderX + boardWidth)*width/2 + temp, (boardHeight + borderY)*height/2);
 
     SDL_GL_SwapWindow(w);
 
@@ -218,6 +220,9 @@ void Window::handleInput(SDL_Event &e, bool bonusEnabled) {
     }
     else if (e.key.keysym.sym == SDLK_SPACE) {
         q->push("drop");
+    }
+    else if (e.key.keysym.sym == SDLK_UP) {
+        q->push("clockwise");
     }
 }
 
@@ -306,58 +311,58 @@ void Window::drawBG() {
     glEnd();
 }
 
-void Window::drawText(std::string text, int x, int y) {
-    if (!sans) return;
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
+void Window::drawText(TTF_Font *reg, string text, int x, int y, bool center) {
+    if (!reg) return;
 
-    glOrtho(0, width, 0, height, -1, 1);
+    glPushAttrib(GL_ENABLE_BIT);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	glEnable(GL_TEXTURE_2D);
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
 
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glOrtho(0.0, (GLdouble)width, (GLdouble)height, 0.0, 0.0, 1.0);
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
 
     GLuint texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    SDL_Surface * sFont = TTF_RenderUTF8_Blended(sans, text.c_str(), {255, 0, 0, 0});
+    SDL_Surface *sFont = TTF_RenderText_Blended(reg, text.c_str(), {255, 255, 255, 0});
 
-    // Force the image to be power of 2
-    int w = 1;
-    while (w < sFont->w) w *= 2;
-    int h = 1;
-    while (h < sFont->h) h *= 2;
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, sFont->pitch / sFont->format->BytesPerPixel);
 
-    GLenum format = (sFont->format->BytesPerPixel==3)?GL_RGB:GL_RGBA;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sFont->w, sFont->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
 
     glBegin(GL_QUADS);
     {
-        glTexCoord2f(0,0); glVertex2f(x, y);
-        glTexCoord2f(1,0); glVertex2f(x + sFont->w, y);
-        glTexCoord2f(1,1); glVertex2f(x + sFont->w, y + sFont->h);
-        glTexCoord2f(0,1); glVertex2f(x, y + sFont->h);
+        glTexCoord2f(0,0); glVertex2f(x - center*sFont->w/2, y - center*sFont->h/2);
+        glTexCoord2f(1,0); glVertex2f(x + sFont->w - center*sFont->w/2, y - center*sFont->h/2);
+        glTexCoord2f(1,1); glVertex2f(x + sFont->w - center*sFont->w/2, y + sFont->h - center*sFont->h/2);
+        glTexCoord2f(0,1); glVertex2f(x - center*sFont->w/2, y + sFont->h - center*sFont->h/2);
     }
     glEnd();
 
     glDisable(GL_BLEND);
     glDisable(GL_TEXTURE_2D);
 
-    glMatrixMode(GL_PROJECTION);
+    glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 
+    glPopAttrib();
     
 
     glDeleteTextures(1, &texture);

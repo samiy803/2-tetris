@@ -54,12 +54,12 @@ class Window {
     int width, height;
     SDL_Window *w;
     SDL_GLContext glc;
-    TTF_Font *sans;
+    TTF_Font *reg;
     RenderData* renderData;
     Queue *q;
     static vector<std::shared_ptr<AudioData>> audioData;
     void drawBG();
-    void drawText(std::string text, int x, int y);
+    void drawText(TTF_Font *font, std::string text, int x, int y, bool center = false);
 };
 
 #endif // !XWINDOW_H
