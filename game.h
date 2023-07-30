@@ -20,6 +20,7 @@ using std::thread;
 class Game {
     Player* player1;
     Player* player2;
+    int highScore = 0;
     Player* currentPlayer;
     Window* window;
     Queue* q;
