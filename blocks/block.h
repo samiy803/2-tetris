@@ -3,6 +3,7 @@
 #include "position.h"
 #include <vector>
 #include <iostream>
+#include <memory>
 
 
 using std::vector;
@@ -38,5 +39,6 @@ class Block {
     char c;
     vector<Position> getOffsets();
     virtual ~Block() = default;
+    Block *clone();
 };
 #endif // !BLOCK_H

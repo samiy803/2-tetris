@@ -1,4 +1,5 @@
 #include "block.h"
+#include "level0Factory.h"
 #include "../board.h"
 
 vector<Position> Block::getPositions() {
@@ -72,4 +73,38 @@ void Block::printBlock(bool player1) {
         }
         std::cout << std::endl;
     }
+}
+
+Block* Block::clone() {
+    Block *b = nullptr;
+    switch (c) {
+        case 'I':
+            b = new IBlock();
+            break;
+        case 'J':
+            b = new JBlock();
+            break;
+        case 'L':
+            b = new LBlock();
+            break;
+        case 'O':
+            b = new OBlock();
+            break;
+        case 'S':
+            b = new SBlock();
+            break;
+        case 'Z':
+            b = new ZBlock();
+            break;
+        case 'T':
+            b = new TBlock();
+            break;
+    }
+    b->start = start;
+    b->offsets = offsets;
+    b->effects = effects;
+    b->rotation = rotation;
+    b->startingLevel = startingLevel;
+    b->c = c;
+    return b;
 }

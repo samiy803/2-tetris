@@ -2,11 +2,33 @@
 #include <map>
 #include <cmath>
 #include <iostream>
+#include <memory>
+#include "level0Factory.h"
 
-string Board::toString(bool includeCurrentBlock) {
+string Board::toString(bool includeCurrentBlock, bool ghost) {
     char board[ROWS * COLS];
     for (int i = 0; i < ROWS * COLS; i++) {
         board[i] = ' ';
+    }
+    if (ghost) {
+        // Make a copy of the current block and store it in a unique_ptr
+        Block* ghostBlock = currentBlock->clone();
+
+        blocks.push_back(ghostBlock);
+
+        // Move the ghost block down until it hits something
+        while (validBoard(false)) {
+            ghostBlock->down();
+        }
+        ghostBlock->up();
+
+        blocks.pop_back();
+
+        // Draw the ghost block in lowercase
+        for (Position pos : ghostBlock->getPositions()) {
+            board[pos.y * COLS + pos.x] = tolower(ghostBlock->c);
+        }
+
     }
     for (Block* block : blocks) {
         for (Position pos : block->getPositions()) {
@@ -22,15 +44,17 @@ string Board::toString(bool includeCurrentBlock) {
     return s;
 }
 
-bool Board::validBoard() {
+bool Board::validBoard(bool includeCurrentBlock) {
     // Check for overlap
     vector<Position> positions;
 
-    for (Position pos : currentBlock->getPositions()) {
-        if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
-            return false;
+    if (includeCurrentBlock) {
+            for (Position pos : currentBlock->getPositions()) {
+            if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
+                return false;
+            }
+            positions.push_back(pos);
         }
-        positions.push_back(pos);
     }
 
     for (Block* block : blocks) {

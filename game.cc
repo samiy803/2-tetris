@@ -33,8 +33,8 @@ void Game::restart() {
 }
 
 void Game::renderGame() {
-    Window::RenderData *d = new Window::RenderData{ player1->gameBoard.toString(true),
-                                                    player2->gameBoard.toString(true),
+    Window::RenderData *d = new Window::RenderData{ player1->gameBoard.toString(true, true),
+                                                    player2->gameBoard.toString(true, true),
                                                     player1->score, player2->score,
                                                     player1->level, player2->level,
                                                     player1->gameBoard.nextBlock,

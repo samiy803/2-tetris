@@ -200,6 +200,27 @@ void Window::setColor(char curChar) {
     else if (curChar == '*') {
         glColor3f(1, 1, 1);
     }
+    else if (curChar == 'i') {
+        glColor3f(0, 0.5, 0.5);
+    }
+    else if (curChar == 'j') {
+        glColor3f(0, 0, 0.5);
+    }
+    else if (curChar == 'l') {
+        glColor3f(0.5, 0.25, 0);
+    }
+    else if (curChar == 'o') {
+        glColor3f(0.5, 0.5, 0);
+    }
+    else if (curChar == 's') {
+        glColor3f(0, 0.5, 0);
+    }
+    else if (curChar == 'z') {
+        glColor3f(0.5, 0, 0);
+    }
+    else if (curChar == 't') {
+        glColor3f(0.25, 0, 0.5);
+    }
     else {
         glColor3f(0,0,0);
     }
@@ -360,7 +381,6 @@ void Window::drawText(TTF_Font *reg, string text, int x, int y, bool center) {
     }
     glEnd();
 
-    glDisable(GL_BLEND);
     glDisable(GL_TEXTURE_2D);
 
     glMatrixMode(GL_MODELVIEW);
