@@ -2,8 +2,9 @@
 #include <thread>
 #include "game.h"
 #include "constants.h"
-
-using namespace std;
+#include <memory>
+using std::string;
+using std::unique_ptr;
 
 int main(int argc, char* argv[]) {
     bool isGraphics = true;
@@ -43,16 +44,15 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    Game* game;
+    std::unique_ptr<Game> game;
     try {
-        game = new Game(isGraphics, seed, file1, file2, startLevel, bonusEnabled);
+        game = std::make_unique<Game>(isGraphics, seed, file1, file2, startLevel, bonusEnabled);
     }
     catch (...) {
         cerr << "Fatal error, could not create game. Contact DMK for more info" << endl;
         return 1;
     }
     game->startGame();
-
-    delete game;
+    
     return 0;
 }
