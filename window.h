@@ -55,6 +55,7 @@ class Window {
     SDL_Window *w;
     SDL_GLContext glc;
     TTF_Font *reg;
+    TTF_Font *smaller;
     RenderData* renderData;
     Queue *q;
     static vector<std::shared_ptr<AudioData>> audioData;

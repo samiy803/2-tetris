@@ -21,9 +21,10 @@ Window::Window(Queue *q, bool bonusEnabled,int width, int height) :
     if (TTF_Init() < 0) {
         throw "TTF_Init failed to initialize";
     }
-    reg = TTF_OpenFont("Sans.ttf", 24);
+    reg = TTF_OpenFont("Tetris.ttf", 28);
     TTF_SetFontStyle(reg, TTF_STYLE_NORMAL);
-    if (reg == nullptr) {
+    smaller = TTF_OpenFont("Tetris.ttf", 22);
+    if (reg == nullptr || smaller == nullptr) {
         throw "TTF_OpenFont failed to load Sans.ttf";
     }
 }
@@ -161,8 +162,13 @@ void Window::drawGame() {
     drawBG();
 
     float temp = (width - boardWidth*width - borderX*width);
-    drawText(reg, "Player 1", borderX*width/2, (boardHeight + borderY)*height/2);
-    drawText(reg, "Player 2", (borderX + boardWidth)*width/2 + temp, (boardHeight + borderY)*height/2);
+    drawText(reg, "Player 1", borderX*width/2, (boardHeight + 2*borderY)*height/2);
+    drawText(smaller, "Level   " + to_string(renderData->p1Level), borderX*width/2, (boardHeight + 3.5*borderY)*height/2);
+    drawText(smaller, "Score  " + to_string(renderData->p1Score), borderX*width/2, (boardHeight + 4.5*borderY)*height/2);
+
+    drawText(reg, "Player 2", (borderX + boardWidth)*width/2 + temp, (boardHeight + 2*borderY)*height/2);
+    drawText(smaller, "Level   " + to_string(renderData->p2Level), (borderX + boardWidth)*width/2 + temp, (boardHeight + 3.5*borderY)*height/2);
+    drawText(smaller, "Score  " + to_string(renderData->p2Score), (borderX + boardWidth)*width/2 + temp, (boardHeight + 4.5*borderY)*height/2);
 
     SDL_GL_SwapWindow(w);
 
