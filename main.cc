@@ -3,8 +3,8 @@
 #include "game.h"
 #include "constants.h"
 #include <memory>
-using std::string;
-using std::unique_ptr;
+
+using namespace std;
 
 int main(int argc, char* argv[]) {
     bool isGraphics = true;
