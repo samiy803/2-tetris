@@ -1,5 +1,6 @@
 #include "player.h"
 #include <iostream>
+#include <cmath>
 
 
 Player::Player(string filename, int score, int level, int effect) : score{score}, level{level}, effect{effect}, filename{filename} {
@@ -11,6 +12,7 @@ Player::Player(string filename, int score, int level, int effect) : score{score}
             throw "Invalid level";
             break;
     }
+    score = 0;
 }
 
 void Player::setBlind(bool blind) {
@@ -99,8 +101,7 @@ void Player::clearRow() {
     }
     int size = rows.size();
     if(size > 0){
-        std::cout << "ROW: " <<  size * size + level << std::endl;
-        score += size * size + level;
+        score += pow(size + level, 2);
     }
 
     for (int i : rows) {

@@ -100,7 +100,6 @@ int Board::gc() {
         if ((*it)->getOffsets().size() == 0) {
             delete *it;
             int scoreAddition = pow(((*it)->startingLevel + 1), 2);
-            std::cout << "Block: " << scoreAddition << std::endl;
             it = blocks.erase(it);
             return scoreAddition;
             it = blocks.erase(it);
@@ -109,4 +108,5 @@ int Board::gc() {
             ++it;
         }
     }
+    return 0;
 }

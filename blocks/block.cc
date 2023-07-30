@@ -49,8 +49,13 @@ vector<Position> Block::getOffsets() {
 }
 
 void Block::printBlock(bool player1) {
-    int maxX = 4;
-    int maxY = 4;
+    int maxX = 0;
+    int maxY = 0;
+
+    for (Position offset : getOffsets()) {
+        maxX = std::max(maxX, offset.x + 1);
+        maxY = std::max(maxY, offset.y + 1);
+    }
 
     std::vector<char> blockstr(maxX * maxY, ' ');
 
