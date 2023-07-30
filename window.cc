@@ -18,6 +18,14 @@ Window::Window(Queue *q, bool bonusEnabled,int width, int height) :
     if (bonusEnabled) {
         loadAudio();
     }
+    if (TTF_Init() < 0) {
+        throw "TTF_Init failed to initialize";
+    }
+    sans = TTF_OpenFont("Sans.ttf", 64);
+    TTF_SetFontStyle(sans, TTF_STYLE_NORMAL);
+    if (sans == nullptr) {
+        throw "TTF_OpenFont failed to load Sans.ttf";
+    }
 }
 
 Window::~Window() {
@@ -27,6 +35,7 @@ Window::~Window() {
             SDL_FreeWAV(data->buffer);
         }
     }
+    TTF_CloseFont(sans);
     SDL_GL_DeleteContext(glc);
     SDL_DestroyWindow(w);
     SDL_Quit();
@@ -151,6 +160,8 @@ void Window::drawGame() {
 
     drawBG();
 
+    drawText("Player", 0, 0);
+
     SDL_GL_SwapWindow(w);
 
 }
@@ -187,27 +198,26 @@ void Window::setColor(char curChar) {
 }
 
 void Window::handleInput(SDL_Event &e, bool bonusEnabled) {
-    if(bonusEnabled){
-        if (!q) return;
-        if (e.type != SDL_KEYDOWN) return;
-        if (e.key.keysym.sym == SDLK_DOWN) {
-            q->push("down");
-        }
-        else if (e.key.keysym.sym == SDLK_RIGHT) {
-            q->push("right");
-        }
-        else if (e.key.keysym.sym == SDLK_LEFT) {
-            q->push("left");
-        }
-        else if(e.key.keysym.sym == SDLK_a) {
-            q->push("counterclockwise");
-        }
-        else if (e.key.keysym.sym == SDLK_d) {
-            q->push("clockwise");
-        }
-        else if (e.key.keysym.sym == SDLK_SPACE) {
-            q->push("drop");
-        }
+    if (!bonusEnabled) return;
+    if (!q) return;
+    if (e.type != SDL_KEYDOWN) return;
+    if (e.key.keysym.sym == SDLK_DOWN) {
+        q->push("down");
+    }
+    else if (e.key.keysym.sym == SDLK_RIGHT) {
+        q->push("right");
+    }
+    else if (e.key.keysym.sym == SDLK_LEFT) {
+        q->push("left");
+    }
+    else if(e.key.keysym.sym == SDLK_a) {
+        q->push("counterclockwise");
+    }
+    else if (e.key.keysym.sym == SDLK_d) {
+        q->push("clockwise");
+    }
+    else if (e.key.keysym.sym == SDLK_SPACE) {
+        q->push("drop");
     }
 }
 
@@ -293,6 +303,64 @@ void Window::drawBG() {
         glVertex2f(1 - borderX - boardWidth, 1 - borderY - i * blockHeight);
     }
 
-
     glEnd();
+}
+
+void Window::drawText(std::string text, int x, int y) {
+    if (!sans) return;
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    glOrtho(0, width, 0, height, -1, 1);
+
+
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    GLuint texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    SDL_Surface * sFont = TTF_RenderUTF8_Blended(sans, text.c_str(), {255, 0, 0, 0});
+
+    // Force the image to be power of 2
+    int w = 1;
+    while (w < sFont->w) w *= 2;
+    int h = 1;
+    while (h < sFont->h) h *= 2;
+
+    GLenum format = (sFont->format->BytesPerPixel==3)?GL_RGB:GL_RGBA;
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_BGRA, GL_UNSIGNED_BYTE, sFont->pixels);
+
+    glBegin(GL_QUADS);
+    {
+        glTexCoord2f(0,0); glVertex2f(x, y);
+        glTexCoord2f(1,0); glVertex2f(x + sFont->w, y);
+        glTexCoord2f(1,1); glVertex2f(x + sFont->w, y + sFont->h);
+        glTexCoord2f(0,1); glVertex2f(x, y + sFont->h);
+    }
+    glEnd();
+
+    glDisable(GL_BLEND);
+    glDisable(GL_TEXTURE_2D);
+
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+
+    
+
+    glDeleteTextures(1, &texture);
+    SDL_FreeSurface(sFont);
+
 }
