@@ -74,6 +74,15 @@ void Player::setLevel(int level) {
         case 1:
             blockFactory = new Level1Factory();
             break;
+        case 2:
+            blockFactory = new Level2Factory();
+            break;
+        case 3:
+            blockFactory = new Level3Factory();
+            break;
+        case 4:
+            blockFactory = new Level4Factory();
+            break;
         default:
             throw "Invalid level";
             break;

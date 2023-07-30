@@ -3,7 +3,7 @@
 const vector<Position> IBlock::rotation0 = {{0, 0}, {0, 1}, {0, 2}, {0, 3}};
 const vector<Position> IBlock::rotation1 = {{0, 3}, {1, 3}, {2, 3}, {3, 3}};
 
-IBlock::IBlock(Position p, int effects, short rotation, int startingLevel) {
+IBlock::IBlock(Position p, int effects, short rotation, int startingLevel){
     this->effects = effects;
     this->rotation = rotation;
     this->startingLevel = startingLevel;

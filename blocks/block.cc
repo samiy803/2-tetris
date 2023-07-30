@@ -14,16 +14,40 @@ vector<Position> Block::getPositions() {
 
 void Block::left() {
     start.x--;
+    if(effects % 2 == 0){
+        start.y++;
+    }
+    if(effects % 3 == 0){
+        start.y++;
+    }
 }
 void Block::right() {
     start.x++;
+    if(effects % 2 == 0){
+        start.y++;
+    }
+    if(effects % 3 == 0){
+        start.y++;
+    }
 }
 void Block::down() {
     start.y++;
+    if(effects % 2 == 0){
+        start.y++;
+    }
+    if(effects % 3 == 0){
+        start.y++;
+    }
 }
 
 void Block::up() {
     start.y--;
+    if(effects % 2 == 0){
+        start.y++;
+    }
+    if(effects % 3 == 0){
+        start.y++;
+    }
 }
 
 void Block::deleteRow(int row) {
