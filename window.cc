@@ -34,6 +34,7 @@ Window::Window(bool bonusEnabled,int width, int height) :
     if (reg == nullptr || smaller == nullptr) {
         throw "TTF_OpenFont failed to load Sans.ttf";
     }
+    current_theme = "dracula";
 }
 
 /**
@@ -87,8 +88,10 @@ void Window::startDisplay() {
         throw "OpenGL context could not be created! SDL_Error: " + string(SDL_GetError());
     }
 
+    const ColorArray *colors = getColorArray();
+
     // Grey background
-    glClearColor(0.1, 0.1, 0.1, 1);
+    glClearColor((*colors)[DARK_GREY][0], (*colors)[DARK_GREY][1], (*colors)[DARK_GREY][2], 1.0f);
 
     // Window size, duh
     glViewport(0, 0, width, height);
@@ -190,53 +193,58 @@ void Window::drawStats() {
  * Sets the color for OpenGL to draw the blocks. This function is called by drawGame.
 */
 void Window::setColor(char curChar) {
+
+    const Window::ColorArray* colors = getColorArray();
+
+    float alpha = (current_theme == "light") ? -0.75 : 0.5;
+
     if (curChar == 'I') {
-        glColor3f(0, 1, 1);
+        glColor3fv((*colors)[CYAN]);
     }
     else if (curChar == 'J') {
-        glColor3f(0, 0, 1);
+        glColor3fv((*colors)[BLUE]);
     }
     else if (curChar == 'L') {
-        glColor3f(1, 0.5, 0);
+        glColor3fv((*colors)[MAGENTA]);
     }
     else if (curChar == 'O') {
-        glColor3f(1, 1, 0);
+        glColor3fv((*colors)[YELLOW]);
     }
     else if (curChar == 'S') {
-        glColor3f(0, 1, 0);
+        glColor3fv((*colors)[GREEN]);
     }
     else if (curChar == 'Z') {
-        glColor3f(1, 0, 0);
+        glColor3fv((*colors)[RED]);
     }
     else if (curChar == 'T') {
-        glColor3f(0.5, 0, 1);
+        glColor3fv((*colors)[PURPLE]);
     }
     else if (curChar == '*') {
-        glColor3f(1, 1, 1);
+        glColor3fv((*colors)[WHITE]);
     }
     else if (curChar == 'i') {
-        glColor3f(0, 0.5, 0.5);
+        glColor3f((*colors)[CYAN][0] - alpha, (*colors)[CYAN][1] - alpha, (*colors)[CYAN][2] - alpha);
     }
     else if (curChar == 'j') {
-        glColor3f(0, 0, 0.5);
+        glColor3f((*colors)[BLUE][0] - alpha, (*colors)[BLUE][1] - alpha, (*colors)[BLUE][2] - alpha);
     }
     else if (curChar == 'l') {
-        glColor3f(0.5, 0.25, 0);
+        glColor3f((*colors)[MAGENTA][0] - alpha, (*colors)[MAGENTA][1] - alpha, (*colors)[MAGENTA][2] - alpha);
     }
     else if (curChar == 'o') {
-        glColor3f(0.5, 0.5, 0);
+        glColor3f((*colors)[YELLOW][0] - alpha, (*colors)[YELLOW][1] - alpha, (*colors)[YELLOW][2] - alpha);
     }
     else if (curChar == 's') {
-        glColor3f(0, 0.5, 0);
+        glColor3f((*colors)[GREEN][0] - alpha, (*colors)[GREEN][1] - alpha, (*colors)[GREEN][2] - alpha);
     }
     else if (curChar == 'z') {
-        glColor3f(0.5, 0, 0);
+        glColor3f((*colors)[RED][0] - alpha, (*colors)[RED][1] - alpha, (*colors)[RED][2] - alpha);
     }
     else if (curChar == 't') {
-        glColor3f(0.25, 0, 0.5);
+        glColor3f((*colors)[PURPLE][0] - alpha, (*colors)[PURPLE][1] - alpha, (*colors)[PURPLE][2] - alpha);
     }
     else {
-        glColor3f(0,0,0);
+        glColor3fv((*colors)[BLACK]);
     }
 }
 
@@ -270,15 +278,34 @@ void Window::handleInput(SDL_Event &e) {
             q->push("clockwise");
         }
     } else if (e.type == SDL_MOUSEBUTTONDOWN) {
-        // x1 = 435, y1 = 175, x2 = 590, y2 = 213
         int x, y;
         SDL_GetMouseState(&x, &y);
-        cout << x << " " << y << endl;
-        if (x >= 435 && x <= 590 && y >= 175 && y <= 213) {
-            q->push("restart");
+        for (auto &button : buttons) {
+            // Convert normalized coordinates to pixel coordinates
+            int x1 = (button.x + 1) * width / 2;
+            int y1 = (button.y + 1) * height / 2;
+            int x2 = (button.x + 1) * width / 2 + button.w * width;
+            int y2 = (button.y + 1) * height / 2 + button.h * height;
+            if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
+                if (button.text[0] == "lvl up") {
+                    q->push("levelup");
+                } else if (button.text[0] == "level dwn") {
+                    q->push("leveldown");
+                } else if (button.text[0] == "restart") {
+                    q->push("restart");
+                } else if (button.text[0] == "quit" && button.state) {
+                    q->push("quit");
+                } else if (button.text[0] == "light") {
+                    current_theme = button.text.at(button.state);
+
+                    const ColorArray *colors = getColorArray();
+                    glClearColor((*colors)[DARK_GREY][0], (*colors)[DARK_GREY][1], (*colors)[DARK_GREY][2], 1.0f);
+                }
+                q->push("tick");
+                button.state = (button.state + 1) % button.text.size();
+            }
         }
     }
-    cout << e.type << endl;
 }
 
 /**
@@ -521,7 +548,21 @@ void Window::drawMenu() {
 void Window::addButtons() {
     buttons.push_back({-0.1, -0.8, 0.2, 0.1, {"lvl up"}});
     buttons.push_back({-0.1, -0.65, 0.2, 0.1, {"lvl dwn"}});
-    buttons.push_back({-0.1, -0.5, 0.2, 0.1, {"Restart", "Restart"}});
-    buttons.push_back({-0.1, -0.5, 0.2, 0.1, {"LIGHT", "DARK", "ZEN"}});
-    buttons.push_back({-0.1, 0.2, 0.2, 0.1, {"Quit", "Quit?"}});
+    buttons.push_back({-0.1, -0.5, 0.2, 0.1, {"restart"}});
+    buttons.push_back({-0.1, -0.2, 0.2, 0.1, {"light", "dark", "dracula"}});
+    buttons.push_back({-0.1, 0.2, 0.2, 0.1, {"quit", "quit?"}});
+}
+
+const Window::ColorArray* Window::getColorArray() {
+    const ColorArray *colors;
+    if (current_theme == "dark") {
+        colors = &DARKMODE_COLORS;
+    }
+    else if (current_theme == "dracula") {
+        colors = &DRACULA_COLORS;
+    }
+    else {
+        colors = &NORMAL_COLORS;
+    }
+    return colors;
 }

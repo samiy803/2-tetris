@@ -46,8 +46,6 @@ class Window {
     ~Window();                                                          // Destructor; destroys the window.
     Window(const Window&) = delete;                                     // Disallow copy ctor.
     Window &operator=(const Window&) = delete;                          // Disallow copy assign.
-    void darkMode(); // TODO figure this out
-    void lightMode(); // TODO figure this out
     void startDisplay();
     void renderGame(std::shared_ptr<RenderData> renderData);
     void drawGame();
@@ -70,6 +68,62 @@ class Window {
     Queue *q;
     static vector<std::shared_ptr<AudioData>> audioData;
     vector<Button> buttons;
+    std::string current_theme;
+
+    // Colors!!
+    const enum Color {
+        BLACK = 0,
+        WHITE,
+        RED,
+        GREEN,
+        BLUE,
+        YELLOW,
+        MAGENTA,
+        CYAN,
+        PURPLE,
+        DARK_GREY,
+        NUM_COLORS
+    };
+    const float NORMAL_COLORS[NUM_COLORS][3] = {
+        0xef/255.0, 0xef/255.0, 0xf4/255.0, // WHITE
+        0.0, 0.0, 0.0, // BLACK
+        1.0, 0.0, 0.0, // RED
+        0.0, 1.0, 0.0, // GREEN
+        0.0, 0.0, 1.0, // BLUE
+        1.0, 1.0, 0.0, // YELLOW
+        1.0, 0.0, 1.0, // MAGENTA
+        0.0, 1.0, 1.0, // CYAN
+        0.5, 0.0, 0.5,  // PURPLE
+        210/255.0, 211/255.0, 219/255.0 // DARK_GREY
+    };
+
+    const float DARKMODE_COLORS[NUM_COLORS][3] = {
+        0.0, 0.0, 0.0, // BLACK
+        1.0, 1.0, 1.0, // WHITE
+        1.0, 0.0, 0.0, // RED
+        0.0, 1.0, 0.0, // GREEN
+        0.0, 0.0, 1.0, // BLUE
+        1.0, 1.0, 0.0, // YELLOW
+        1.0, 0.0, 1.0, // MAGENTA
+        0.0, 1.0, 1.0, // CYAN
+        0.5, 0.0, 0.5,  // PURPLE
+        0.1, 0.1, 0.1  // DARK_GREY
+    };
+
+    const float DRACULA_COLORS[NUM_COLORS][3] = {
+        0x21/255.0, 0x22/255.0, 0x2c/255.0,         // BLACK
+        248.0/255.0, 248.0/255.0, 242.0/255.0,      // WHITE
+        1.0, 85.0/255.0, 85.0/255.0,                // RED
+        80.0/255.0, 250.0/255.0, 123.0/255.0,       // GREEN
+        1.0, 184.0/255.0, 108.0/255.0,              // BLUE, but actually orange because I like it better
+        241.0/255.0, 250.0/255.0, 140.0/255.0,      // YELLOW
+        255.0/255.0, 121.0/255.0, 198.0/255.0,      // MAGENTA
+        139.0/255.0, 233.0/255.0, 253.0/255.0,      // CYAN
+        189.0/255.0, 147.0/255.0, 249.0/255.0,      // PURPLE
+        40./255.0, 42.0/255.0, 54.0/255.0           // DARK_GREY, but not really
+    };
+
+    typedef float ColorArray[NUM_COLORS][3];
 
     // Drawing functions
     void drawBG();
@@ -86,6 +140,7 @@ class Window {
     static void audioCallback(void *userdata, Uint8 *stream, int len);
     void addButtons();
     std::vector<Position> getOffsets(char block);
+    const ColorArray *getColorArray();
 };
 
 #endif // !XWINDOW_H
