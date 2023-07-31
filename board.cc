@@ -75,21 +75,39 @@ bool Board::validBoard(bool includeCurrentBlock) {
 
 void Board::left() {
     currentBlock->left();
+    if(level == 3 || level == 4){
+        currentBlock->down();
+    }
     if (!validBoard()) {
+        if(level == 4 || level == 3){
+            currentBlock->up();
+        }
         currentBlock->right();
     }
 }
 
 void Board::right() {
     currentBlock->right();
+    if(level == 3 || level == 4){
+        currentBlock->down();
+    }
     if (!validBoard()) {
+        if(level == 4 || level == 3){
+            currentBlock->up();
+        }
         currentBlock->left();
     }
 }
 
 void Board::down() {
     currentBlock->down();
+    if(level == 3 || level == 4){
+        currentBlock->down();
+    }
     if (!validBoard()) {
+        if(level == 4 || level == 3){
+            currentBlock->up();
+        }
         currentBlock->up();
     }
 }

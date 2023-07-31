@@ -21,6 +21,7 @@ class Board {
     void clockwise();
     void counterClockwise();
     int gc();
+    int level = 0;
     public:
     static const int COLS = 11;
     static const int ROWS = 15;

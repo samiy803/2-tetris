@@ -68,6 +68,7 @@ void Player::setForce(string block) {
 
 void Player::setLevel(int level) {
     this->level = level;
+    gameBoard.level = level;
     delete blockFactory;
     switch (level) {
         case 0:
