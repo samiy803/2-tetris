@@ -313,7 +313,7 @@ void Window::handleInput(SDL_Event &e) {
                 }
                 q->push("tick");
                 button.state = (button.state + 1) % button.text.size();
-                playClick();
+                playSound(1);
             }
         }
     }
@@ -353,12 +353,12 @@ void Window::drawBoards() {
  * Loads the audio files. This function is called by the constructor.
 */
 void Window::loadAudio() {
-    vector<string> audioPaths = {"audio/drop.wav", "audio/click.wav"};
+    vector<string> audioPaths = {"audio/drop.wav", "audio/click.wav", "audio/clear.wav"};
     for (auto audioPath : audioPaths) {
         shared_ptr<Window::AudioData> aud(new Window::AudioData());
         if (SDL_LoadWAV(audioPath.c_str(), &aud->spec, &aud->buffer, &aud->length) == NULL) {
             bonusEnabled = false;
-            std::cout << "Error loading drop.wav" << std::endl;
+            std::cout << "Error loading " << audioPath << std::endl;
             return;
         }
 
@@ -395,25 +395,15 @@ void Window::audioCallback(void *userdata, Uint8 *stream, int len) {
 }
 
 /**
- * Plays the drop sound.
+ * Plays a sound. 
+ * @param i The index of the sound to play
+ * 0 -> drop
+ * 1 -> click
+ * 2 -> clear
 */
-void Window::playDrop() {
+void Window::playSound(int i) {
     if (!bonusEnabled) return;
-    if (SDL_OpenAudio(&audioData[0]->spec, NULL) < 0) {
-        bonusEnabled = false;
-        std::cout << "Error opening audio device" << std::endl;
-        return;
-    }
-
-    SDL_PauseAudio(0);
-}
-
-/**
- * Plays the click sound.
-*/
-void Window::playClick() {
-    if (!bonusEnabled) return;
-    if (SDL_OpenAudio(&audioData[1]->spec, NULL) < 0) {
+    if (SDL_OpenAudio(&audioData[i]->spec, NULL) < 0) {
         bonusEnabled = false;
         std::cout << "Error opening audio device" << std::endl;
         return;

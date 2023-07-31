@@ -34,7 +34,7 @@ class Player {
     void setHeavy(bool heavy);
     void setForce(string block);
     void setLevel(int level);
-    void clearRow();
+    bool clearRow();
     ~Player();
 };
 

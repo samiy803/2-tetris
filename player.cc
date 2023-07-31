@@ -97,7 +97,7 @@ void Player::setLevel(int level) {
     }
 }
 
-void Player::clearRow() {
+bool Player::clearRow() {
     string board = gameBoard.toString(false);
 
     vector<int> rows;
@@ -128,6 +128,8 @@ void Player::clearRow() {
     }
 
     score += gameBoard.gc();
+
+    return size > 0;
 }
 
 

@@ -151,8 +151,6 @@ void Game::textInput() {
 
 void Game::runMainLoop() {
 
-    bool playDrop = false;
-
     while (isRunning) {
 
         // Check if game is over
@@ -188,12 +186,14 @@ void Game::runMainLoop() {
         else if (command == "drop") {
             currentPlayer->gameBoard.drop(); // next block is now nullptr
             currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect); // no longer nullptr
-            currentPlayer->clearRow();
+            if (currentPlayer->clearRow() && isGraphics)
+                window->playSound(2);
             highScore = currentPlayer->score > highScore ? currentPlayer->score : highScore;
             currentPlayer = currentPlayer == player1 ? player2 : player1;
             window->setQueue(currentPlayer->q);
             turn_count++;
-            playDrop = true;
+            if (isGraphics)
+                window->playSound(0);
         }
         else if (command == "levelup") {
             currentPlayer->setLevel(currentPlayer->level + 1);
@@ -250,13 +250,6 @@ void Game::runMainLoop() {
         }
 
         printGame();
-        
-        if (playDrop) {
-            playDrop = false;
-            if (isGraphics) {
-                window->playDrop();
-            }
-        }
     }
 }
 

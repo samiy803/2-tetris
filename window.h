@@ -49,10 +49,7 @@ class Window {
     void startDisplay();
     void renderGame(std::shared_ptr<RenderData> renderData);
     void drawGame();
-    void playDrop();
-    void playClick();
-    void playClear();
-    void playMove();
+    void playSound(int i);
     void setQueue(Queue *q);
     private:
     const float blockWidth = 0.06180339887; // (1 - golden ratio)/10 because golden ratio is cool af
