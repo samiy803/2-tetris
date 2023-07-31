@@ -15,20 +15,27 @@ Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel
     window = isGraphics ? new Window(q, bonusEnabled) : nullptr;
 }
 
-// FIXME
 void Game::restart() {
     delete player1;
     delete player2;
-    delete window;
-    player1 = new Player();
-    player2 = new Player();
+    delete q;
+    player1 = new Player(file1);
+    player2 = new Player(file2);
+    player1->setLevel(startLevel);
+    player2->setLevel(startLevel);
+    player1->blockFactory->setSeed(seed);
+    player2->blockFactory->setSeed(seed + 1);
+    player1->gameBoard.currentBlock = player1->blockFactory->getNext(player1->effect);
+    player2->gameBoard.currentBlock = player2->blockFactory->getNext(player2->effect);
+    player1->gameBoard.nextBlock = player1->blockFactory->getNext(player1->effect);
+    player2->gameBoard.nextBlock = player2->blockFactory->getNext(player2->effect);
+    this->seed = seed;
+    this->startLevel = startLevel;
     currentPlayer = player1;
     turn_count = 0;
+    q = new Queue();
     if (isGraphics) {
-        window = new Window();
-    }
-    else {
-        window = nullptr;
+        window->setQueue(q);
     }
 }
 

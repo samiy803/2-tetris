@@ -45,6 +45,7 @@ class Window {
     void drawGame();
     void playDrop();
     bool bonusEnabled;
+    void setQueue(Queue *q);
     private:
     void handleInput(SDL_Event &e, bool bonusEnabled);
     void setColor(char c);

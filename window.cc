@@ -395,3 +395,7 @@ void Window::drawText(TTF_Font *reg, string text, int x, int y, bool center) {
     SDL_FreeSurface(sFont);
 
 }
+
+void Window::setQueue(Queue *q) {
+    this->q = q;
+}
