@@ -23,6 +23,10 @@ class Block {
     Position start;
     vector<Position> offsets;
     int effects;
+    // heavy is 2
+    // very heavy is 3
+    // blind is 5
+    // force is 7
     short rotation;
     public:
     void left();

@@ -46,7 +46,8 @@ void Game::renderGame() {
                                                     player1->level, player2->level,
                                                     player1->gameBoard.nextBlock,
                                                     player2->gameBoard.nextBlock,
-                                                    player1->gameBoard.ROWS, player1->gameBoard.COLS};
+                                                    player1->gameBoard.ROWS, player1->gameBoard.COLS,
+                                                    highScore };
     window->renderGame(d);
 }
 
@@ -81,6 +82,8 @@ void Game::printGame() {
     string player1Board = player1->gameBoard.toString(true);
     string player2Board = player2->gameBoard.toString(true);
     assert(player1Board.length() == player2Board.length());
+    cout << "\t  " << "Highscore: " << highScore << endl;
+    cout << "-----------------------------------" << endl;
     cout << "Level:\t" << player1->level << "\t\t" << "Level:\t" << player2->level << endl;
     cout << "Score:\t" << player1->score << "\t\t" << "Score:\t" << player2->score << endl;
     cout << "-----------\t\t-----------" << endl;
@@ -134,6 +137,7 @@ void Game::runMainLoop() {
             currentPlayer->gameBoard.drop(); // next block is now nullptr
             currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect); // no longer nullptr
             currentPlayer->clearRow();
+            highScore = currentPlayer->score > highScore ? currentPlayer->score : highScore;
             currentPlayer = currentPlayer == player1 ? player2 : player1;
             turn_count++;
             playDrop = true;

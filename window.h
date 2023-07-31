@@ -25,6 +25,7 @@ class Window {
         Block* p2Next;
         int ROWS;
         int COLS;
+        int highScore;
     };
     struct AudioData {
         Uint32 length;

@@ -5,6 +5,9 @@
 #include "blockFactory.h"
 #include "level0Factory.h"
 #include "level1Factory.h"
+#include "level2Factory.h"
+#include "level3Factory.h"
+#include "level4Factory.h"
 
 /**
  * Prime factorization of effects:

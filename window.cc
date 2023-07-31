@@ -169,7 +169,7 @@ void Window::drawGame() {
     drawText(reg, "Player 2", (borderX + boardWidth)*width/2 + temp, (boardHeight + 2*borderY)*height/2);
     drawText(smaller, "Level   " + to_string(renderData->p2Level), (borderX + boardWidth)*width/2 + temp, (boardHeight + 3.5*borderY)*height/2);
     drawText(smaller, "Score  " + to_string(renderData->p2Score), (borderX + boardWidth)*width/2 + temp, (boardHeight + 4.5*borderY)*height/2);
-
+    drawText(reg, "Highscore  " + to_string(renderData->highScore), (borderX + boardWidth)*width/2, (borderY+boardHeight)/2);
     SDL_GL_SwapWindow(w);
 
 }
