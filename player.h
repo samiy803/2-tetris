@@ -13,8 +13,8 @@
 /**
  * Prime factorization of effects:
  * 1: none
- * 2: blind
- * 3: heavy
+ * 2: heavy
+ * 3: blind
  * 5,7,11,13,17,19,23: force I, J, L, O, S, T, Z respectively
 */
 

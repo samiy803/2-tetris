@@ -24,9 +24,8 @@ class Block {
     vector<Position> offsets;
     int effects;
     // heavy is 2
-    // very heavy is 3
-    // blind is 5
-    // force is 7
+    // blind is 3
+    // force is 3
     short rotation;
     public:
     void left();
