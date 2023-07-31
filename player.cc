@@ -90,6 +90,7 @@ void Player::setLevel(int level) {
             break;
         case 4:
             blockFactory = new Level4Factory();
+            score5turnsago = score;
             break;
         default:
             throw "Invalid level";

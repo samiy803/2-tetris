@@ -4,6 +4,7 @@
 #include <vector>
 #include "block.h"
 #include <string>
+#include "STARBlock.h"
 
 using std::string;
 
@@ -14,6 +15,7 @@ class Board {
     Block* currentBlock;
     Block* nextBlock;
     void drop();
+    void dropStar();
     bool validBoard(bool includeCurrentBlock = true);
     void left();
     void right();
@@ -21,6 +23,7 @@ class Board {
     void clockwise();
     void counterClockwise();
     int gc();
+    int turn_count;
     int level = 0;
     public:
     static const int COLS = 11;
