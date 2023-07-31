@@ -88,10 +88,13 @@ void Window::startDisplay() {
     }
 
     // Grey background
-    glClearColor(0.2, 0.2, 0.2, 1);
+    glClearColor(0.1, 0.1, 0.1, 1);
 
     // Window size, duh
     glViewport(0, 0, width, height);
+
+    // add the menu buttons
+    addButtons();
 
     // SDL event loop
     SDL_Event e;
@@ -426,6 +429,8 @@ void Window::drawText(TTF_Font *font, string text, int x, int y, bool center) {
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
+    // I swear normalized device coordinates are the worst thing ever. Possibly worse than
+    // the imperial system. No, nevermind, nothing is worse than the imperial system.
 
 
     // Blend the alpha channel of the text into the background
@@ -499,16 +504,24 @@ void Window::drawMenu() {
         // Draw the buttons
         glBegin(GL_QUADS);
         {
-            glVertex2f(button.x, button.y);
-            glVertex2f(button.x + button.w, button.y);
-            glVertex2f(button.x + button.w, button.y + button.h);
-            glVertex2f(button.x, button.y + button.h);
+            glVertex2f(button.x, -button.y);
+            glVertex2f(button.x + button.w, -button.y);
+            glVertex2f(button.x + button.w, -button.y - button.h);
+            glVertex2f(button.x, -button.y - button.h);
         }
         glEnd();
 
         setColor('*');
 
-        drawText(smaller, button.text, width/2, (button.y + button.h/2)*height/2, true);
+        drawText(smaller, button.text.at(button.state), ((button.x + button.w/2)/2 + 0.5)*width, ((button.y + button.h/2)/2 + 0.5)*height, true);
     }
 
+}
+
+void Window::addButtons() {
+    buttons.push_back({-0.1, -0.8, 0.2, 0.1, {"lvl up"}});
+    buttons.push_back({-0.1, -0.65, 0.2, 0.1, {"lvl dwn"}});
+    buttons.push_back({-0.1, -0.5, 0.2, 0.1, {"Restart", "Restart"}});
+    buttons.push_back({-0.1, -0.5, 0.2, 0.1, {"LIGHT", "DARK", "ZEN"}});
+    buttons.push_back({-0.1, 0.2, 0.2, 0.1, {"Quit", "Quit?"}});
 }

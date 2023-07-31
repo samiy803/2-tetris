@@ -35,9 +35,10 @@ class Window {
         SDL_AudioSpec spec;
     };
     struct Button {
-        int x,y,w,h,state;
-        std::string text;
-        Button(int x, int y, int w, int h, std::string text) : x(x), y(y), w(w), h(h), state(0), text(text) {}
+        double x,y,w,h;
+        int state;
+        std::vector<std::string> text;
+        Button( double x, double y, double w, double h, std::vector<std::string> text, int state = 0 ) : x{x}, y{y}, w{w}, h{h}, state{state}, text{text} {}
     };
     bool quit;
     bool bonusEnabled;
@@ -53,7 +54,7 @@ class Window {
     void playDrop();
     void setQueue(Queue *q);
     private:
-    const float blockWidth = 0.068359375;
+    const float blockWidth = 0.06180339887; // (1 - golden ratio)/10 because golden ratio is cool af
     // These need to be defined here because they rely on COLS and ROWS
     #define blockHeight (blockWidth * width / height)
     #define boardWidth (blockWidth * renderData->COLS)
@@ -83,6 +84,7 @@ class Window {
     void setColor(char c);
     void loadAudio();
     static void audioCallback(void *userdata, Uint8 *stream, int len);
+    void addButtons();
     std::vector<Position> getOffsets(char block);
 };
 
