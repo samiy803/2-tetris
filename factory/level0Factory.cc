@@ -10,10 +10,11 @@ Level0Factory::Level0Factory(string filename) {
         assert('A' <= c && c <= 'Z');
         seq.push_back(c);
     }
+    index = 0;
 }
 
 Block* Level0Factory::getNext(int effects) {
-    if (index == seq.size()) {
+    if (index >= seq.size()) {
         index = 0;
     }
     switch (seq[index++]) {

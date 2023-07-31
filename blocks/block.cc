@@ -1,4 +1,5 @@
 #include "block.h"
+#include "level0Factory.h"
 #include "../board.h"
 
 vector<Position> Block::getPositions() {
@@ -25,15 +26,85 @@ void Block::up() {
     start.y--;
 }
 
-void Block::notify(int row) {
-    for (Position &pos : offsets) {
-        if (pos.y + start.y < row) {
-            pos.y++;
+void Block::deleteRow(int row) {
+    for (auto it = offsets.begin(); it != offsets.end();) {
+        if (it->y + start.y == row) {
+            offsets.erase(it);
         }
-        else if (pos.y + start.y == row) {
-            // Erase this offset
-            
+        else {
+            ++it;
         }
-
     }
+}
+
+void Block::shiftDown(int row) {
+    for (auto &offset : offsets) {
+        if (offset.y + start.y < row) {
+            offset.y++;
+        }
+    }
+}
+
+vector<Position> Block::getOffsets() {
+    return offsets;
+}
+
+void Block::printBlock(bool player1) {
+    int maxX = 0;
+    int maxY = 0;
+
+    for (Position offset : getOffsets()) {
+        maxX = std::max(maxX, offset.x + 1);
+        maxY = std::max(maxY, offset.y + 1);
+    }
+
+    std::vector<char> blockstr(maxX * maxY, ' ');
+
+    for (Position offset : getOffsets()) {
+        blockstr[(offset.y) * maxX + (offset.x)] = c;
+    }
+
+    for (int i = 0; i < maxY; i++) {
+        if (!player1) {
+            std::cout << "\t\t\t";
+        }
+        for (int j = 0; j < maxX; j++) {
+            std::cout << blockstr[i * maxX + j];
+        }
+        std::cout << std::endl;
+    }
+}
+
+Block* Block::clone() {
+    Block *b = nullptr;
+    switch (c) {
+        case 'I':
+            b = new IBlock();
+            break;
+        case 'J':
+            b = new JBlock();
+            break;
+        case 'L':
+            b = new LBlock();
+            break;
+        case 'O':
+            b = new OBlock();
+            break;
+        case 'S':
+            b = new SBlock();
+            break;
+        case 'Z':
+            b = new ZBlock();
+            break;
+        case 'T':
+            b = new TBlock();
+            break;
+    }
+    b->start = start;
+    b->offsets = offsets;
+    b->effects = effects;
+    b->rotation = rotation;
+    b->startingLevel = startingLevel;
+    b->c = c;
+    return b;
 }

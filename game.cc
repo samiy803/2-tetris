@@ -1,55 +1,78 @@
 #include "game.h"
 #include <cassert>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
-Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel) : isGraphics{isGraphics}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
+Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel, bool bonusEnabled) 
+    : isGraphics{isGraphics}, bonusEnabled{bonusEnabled}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
     player1 = new Player(file1);
     player2 = new Player(file2);
-    // don't know if this is right
     this->seed = seed;
     this->startLevel = startLevel;
     currentPlayer = player1;
     turn_count = 0;
-    window = isGraphics ? new XWindow() : nullptr;
-}
-
-string Game::parseCommand(){
-    // TODO: implement
-    string s;
-    cin >> s;
-    return s;
+    if (isGraphics) {
+        window = new Window(bonusEnabled);
+        window->setQueue(player1->q);
+    }
 }
 
 void Game::restart() {
     delete player1;
     delete player2;
-    delete window;
-    player1 = new Player();
-    player2 = new Player();
-    currentPlayer = player1;
-    turn_count = 0;
-    if (isGraphics) {
-        window = new XWindow();
-    }
-    else {
-        window = nullptr;
-    }
-}
-
-void Game::renderGame() {
-}
-
-void Game::initGame() {
-    if (turn_count != 0) return;
+    player1 = new Player(file1);
+    player2 = new Player(file2);
     player1->setLevel(startLevel);
     player2->setLevel(startLevel);
     player1->blockFactory->setSeed(seed);
-    player2->blockFactory->setSeed(seed);
+    player2->blockFactory->setSeed(seed + 1);
     player1->gameBoard.currentBlock = player1->blockFactory->getNext(player1->effect);
     player2->gameBoard.currentBlock = player2->blockFactory->getNext(player2->effect);
     player1->gameBoard.nextBlock = player1->blockFactory->getNext(player1->effect);
     player2->gameBoard.nextBlock = player2->blockFactory->getNext(player2->effect);
+    currentPlayer = player1;
+    turn_count = 0;
+    printGame();
+    if (isGraphics) {
+        renderGame();
+        window->setQueue(player1->q);
+    }
+}
+
+void Game::renderGame() {
+    shared_ptr<Window::RenderData> d(new Window::RenderData{ player1->gameBoard.toString(true, bonusEnabled),
+                                                    player2->gameBoard.toString(true, bonusEnabled),
+                                                    player1->score, player2->score,
+                                                    player1->level, player2->level,
+                                                    currentPlayer == player1 ? player1->gameBoard.nextBlock : nullptr,
+                                                    currentPlayer == player2 ? player2->gameBoard.nextBlock : nullptr,
+                                                    player1->gameBoard.ROWS, player1->gameBoard.COLS,
+                                                    highScore });
+    window->renderGame(d);
+}
+
+void Game::startGame() {
+    if (turn_count != 0) return;
+    player1->setLevel(startLevel);
+    player2->setLevel(startLevel);
+    player1->blockFactory->setSeed(seed);
+    player2->blockFactory->setSeed(seed + 1);
+    player1->gameBoard.currentBlock = player1->blockFactory->getNext(player1->effect);
+    player2->gameBoard.currentBlock = player2->blockFactory->getNext(player2->effect);
+    player1->gameBoard.nextBlock = player1->blockFactory->getNext(player1->effect);
+    player2->gameBoard.nextBlock = player2->blockFactory->getNext(player2->effect);
+
+    isRunning = true;
+    printGame();
+    renderGame();
+    textThread = thread(&Game::textInput, this);
+    mainThread = thread(&Game::runMainLoop, this);
+    if (isGraphics) 
+        window->startDisplay();
+    else
+        mainThread.join();
 }
 
 void Game::printGame() {
@@ -61,6 +84,8 @@ void Game::printGame() {
     string player1Board = player1->gameBoard.toString(true);
     string player2Board = player2->gameBoard.toString(true);
     assert(player1Board.length() == player2Board.length());
+    cout << "\t  " << "Highscore: " << highScore << endl;
+    cout << "-----------------------------------" << endl;
     cout << "Level:\t" << player1->level << "\t\t" << "Level:\t" << player2->level << endl;
     cout << "Score:\t" << player1->score << "\t\t" << "Score:\t" << player2->score << endl;
     cout << "-----------\t\t-----------" << endl;
@@ -68,25 +93,80 @@ void Game::printGame() {
         cout << player1Board.substr(i * player1->gameBoard.COLS, player1->gameBoard.COLS) << "\t\t" << player2Board.substr(i * player2->gameBoard.COLS, player2->gameBoard.COLS) << endl;
     }
     cout << "-----------\t\t-----------" << endl;
+    cout << "Next:\t\t\tNext:" << endl;
     if(currentPlayer == player1){
-        cout << "Next:\t" << player1->gameBoard.nextBlock->c << endl;
+        player1->gameBoard.nextBlock->printBlock(true);
     } 
     else if(currentPlayer == player2){
-        cout << " \t\t\tNext:\t" << player1->gameBoard.nextBlock->c << endl;
+        player2->gameBoard.nextBlock->printBlock(false);
+    }
+}
+
+void Game::textInput() {
+    string command;
+    while (isRunning) {
+        cin >> command;
+        std::istringstream ss{command};
+        int multiplier;
+
+        if (ss >> multiplier) {
+            if (multiplier < 0) {
+                multiplier = 1;
+            }
+        }
+        else {
+            multiplier = 1;
+        }
+
+        ss >> command;
+
+        int count = 0;
+        string match;
+        for (auto &c : COMMANDS) {
+            if (c.substr(0, command.length()) == command) {
+                count++;
+                match = c;
+            }
+        }
+        if (count == 1) {
+            command = match;
+        }
+
+        for (auto &c : PROHIB) {
+            if (c == command) {
+                (currentPlayer == player1 ? player1->q : player2->q)->push(c);
+                return;
+            }
+        }
+        
+        for (int i = 0; i < multiplier; ++i) {
+            (currentPlayer == player1 ? player1->q : player2->q)->push(command);
+        }
+
+        if (command == "quit") {
+            break;
+        }
     }
 }
 
 void Game::runMainLoop() {
 
-    while (true) {
-        if (isGraphics) {
-            renderGame();
+    while (isRunning) {
+
+        // Check if game is over
+        if (!player1->gameBoard.validBoard()) {
+            cout << "Player 2 wins!" << endl;
+            restart();
+            continue;
+        }
+        else if (!player2->gameBoard.validBoard()) {
+            cout << "Player 1 wins!" << endl;
+            restart();
+            continue;
         }
 
-        printGame();
-
-        // Parse command
-        string command = parseCommand();
+        cout << (player1 == currentPlayer ? "Player 1" : "Player 2") << "'s turn" << endl;
+        string command = (player1 == currentPlayer ? player1->q : player2->q)->pop();
 
         if (command == "left") {
             currentPlayer->gameBoard.left();
@@ -106,8 +186,24 @@ void Game::runMainLoop() {
         else if (command == "drop") {
             currentPlayer->gameBoard.drop(); // next block is now nullptr
             currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect); // no longer nullptr
+            if (currentPlayer->clearRow() && isGraphics)
+                window->playSound(2);
+            else if (isGraphics)
+                window->playSound(0);
+            highScore = currentPlayer->score > highScore ? currentPlayer->score : highScore;
             currentPlayer = currentPlayer == player1 ? player2 : player1;
+            window->setQueue(currentPlayer->q);
             turn_count++;
+            if (currentPlayer->level == 4){
+                currentPlayer->gameBoard.turn_count++;
+            }
+            if (currentPlayer->level == 4 && currentPlayer->gameBoard.turn_count % 5 == 0){
+                if (currentPlayer->score == currentPlayer->score5turnsago) {
+                    currentPlayer->gameBoard.dropStar();
+                } else{
+                    currentPlayer->score5turnsago = currentPlayer->score;
+                }
+            }
         }
         else if (command == "levelup") {
             currentPlayer->setLevel(currentPlayer->level + 1);
@@ -138,8 +234,10 @@ void Game::runMainLoop() {
         }
         else if (command == "restart") {
             restart();
+            continue;
         }
         else if (command == "quit") {
+            endGame();
             break;
         }
         else if (command == "sequence") {
@@ -156,5 +254,33 @@ void Game::runMainLoop() {
         else if (command == "hint") {
             cerr << "Hint not implemented yet" << endl;
         }
+
+        if (isGraphics) {
+            renderGame();
+        }
+
+        printGame();
     }
+}
+
+void Game::endGame() {
+    if (isGraphics)
+        window->quit = true;
+    isRunning = false;
+    try {
+        if (textThread.joinable())
+            textThread.join();
+        if (mainThread.joinable())
+            mainThread.join();
+    } catch(...) {
+        // Many things can go wrong here, especially if the mutex is still locked
+        // We don't care about any of them, the game is over and we just want to kill the threads
+    }
+}
+
+Game::~Game() {
+    delete player1;
+    delete player2;
+    if (isGraphics)
+        delete window;
 }

@@ -3,7 +3,7 @@
 const vector<Position> SBlock::rotation0 = {{0, 1}, {1, 1}, {1, 0}, {2, 0}};
 const vector<Position> SBlock::rotation1 = {{0, -1}, {0, 0}, {1, 0}, {1, 1}};
 
-SBlock::SBlock(Position p, int effects, short rotation) {
+SBlock::SBlock(Position p, int effects, short rotation, int startingLevel) {
     this->effects = effects;
     this->rotation = rotation;
     start = p;

@@ -2,8 +2,12 @@
 #define BLOCK_H
 #include "position.h"
 #include <vector>
+#include <iostream>
+#include <memory>
+
 
 using std::vector;
+using std::iostream;
 
 
 /**
@@ -19,6 +23,9 @@ class Block {
     Position start;
     vector<Position> offsets;
     int effects;
+    // heavy is 2
+    // blind is 3
+    // force is 3
     short rotation;
     public:
     void left();
@@ -28,7 +35,13 @@ class Block {
     virtual void clockwise() = 0;
     vector<Position> getPositions();
     virtual void counterClockwise() = 0;
-    void notify(int row);
+    void deleteRow(int row);
+    void shiftDown(int row);
+    void printBlock(bool player1);
+    int startingLevel;
     char c;
+    vector<Position> getOffsets();
+    virtual ~Block() = default;
+    Block *clone();
 };
 #endif // !BLOCK_H

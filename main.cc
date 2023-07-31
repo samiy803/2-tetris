@@ -1,11 +1,14 @@
 #include <iostream>
+#include <thread>
 #include "game.h"
 #include "constants.h"
+#include <memory>
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
     bool isGraphics = true;
+    bool bonusEnabled = false;
     int seed;
     int startLevel = 0;
     string file1 = SEQUENCE_1;
@@ -13,6 +16,9 @@ int main(int argc, char* argv[]) {
     for (int i = 1; i < argc; ++i) {
         if (TEXT_ARG == argv[i]) {
             isGraphics = false;
+        }
+        if(BONUS_ARG == argv[i]) {
+            bonusEnabled = true;
         }
         if (SEED_ARG == argv[i] && i + 1 < argc) {
             try {
@@ -38,15 +44,15 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    Game* game;
+    std::unique_ptr<Game> game;
     try {
-        game = new Game(isGraphics, seed, file1, file2, startLevel);
+        game = std::make_unique<Game>(isGraphics, seed, file1, file2, startLevel, bonusEnabled);
     }
     catch (...) {
         cerr << "Fatal error, could not create game. Contact DMK for more info" << endl;
+        return 1;
     }
-    game->initGame();
-    game->runMainLoop();
-    delete game;
+    game->startGame();
+    
     return 0;
 }

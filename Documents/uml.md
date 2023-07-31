@@ -64,11 +64,11 @@ classDiagram
         - player1: Player
         - player2: Player
         - isPlayer1Turn: Boolean
-        - windows: XWindow
+        - windows: Window
         + printGame()
         + runEventLoop()
     }
-    class XWindow {
+    class Window {
         - display: Display
         - window: Drawable
         - gc: GC 
@@ -118,10 +118,10 @@ classDiagram
     Block <|-- TBlock
     Board o-- Block
     BlockFactory ..> Block
-    Game --o XWindow
+    Game --o Window
     Game --* Player
     Player --o Board
-    XWindow ..> Xlib
+    Window ..> Xlib
     Level0Factory --|> BlockFactory
     Level1Factory --|> BlockFactory
     Level2Factory --|> BlockFactory
