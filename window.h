@@ -35,7 +35,7 @@ class Window {
         SDL_AudioSpec spec;
     };
     bool quit;
-    Window(Queue *q = nullptr, bool bonusEnabled = false, int width=1024, int height=768);  // Constructor; displays the window.
+    Window(bool bonusEnabled = false, int width=1024, int height=768);  // Constructor; displays the window.
     ~Window();                              // Destructor; destroys the window.
     Window(const Window&) = delete;        // Disallow copy ctor.
     Window &operator=(const Window&) = delete; // Disallow copy assign.
@@ -48,7 +48,7 @@ class Window {
     bool bonusEnabled;
     void setQueue(Queue *q);
     private:
-    void handleInput(SDL_Event &e, bool bonusEnabled);
+    void handleInput(SDL_Event &e);
     void setColor(char c);
     void loadAudio();
     static void audioCallback(void *userdata, Uint8 *stream, int len);

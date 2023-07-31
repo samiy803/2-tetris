@@ -18,12 +18,12 @@ using std::istringstream;
 using std::thread;
 
 class Game {
+    const vector<string> COMMANDS = {"left", "right", "down", "clockwise", "counterclockwise", "drop", "levelup", "leveldown", "norandom", "random", "sequence", "I", "J", "L", "O", "S", "Z", "T", "restart", "hint", "rename", "bonus", "force"};
     Player* player1;
     Player* player2;
     int highScore = 0;
     Player* currentPlayer;
     Window* window;
-    Queue* q;
     unsigned long turn_count;
     bool isGraphics;
     bool bonusEnabled;

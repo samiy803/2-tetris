@@ -1,6 +1,7 @@
 #include "player.h"
 #include <iostream>
 #include <cmath>
+#include "queue.h"
 
 
 Player::Player(string filename, int score, int level, int effect) : score{score}, level{level}, effect{effect}, filename{filename} {
@@ -13,6 +14,7 @@ Player::Player(string filename, int score, int level, int effect) : score{score}
             break;
     }
     score = 0;
+    q = new Queue();
 }
 
 void Player::setBlind(bool blind) {

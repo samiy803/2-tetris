@@ -11,9 +11,8 @@ using namespace std;
 
 vector<shared_ptr<Window::AudioData>> Window::audioData = {};
 
-Window::Window(Queue *q, bool bonusEnabled,int width, int height) :
-    quit{false}, width{width}, height{height},
-    renderData{nullptr}, q{q}, bonusEnabled{bonusEnabled}
+Window::Window(bool bonusEnabled,int width, int height) :
+    quit{false}, bonusEnabled{bonusEnabled}, width{width}, height{height}, renderData{nullptr}
 {
     if (bonusEnabled) {
         loadAudio();
@@ -82,7 +81,7 @@ void Window::startDisplay() {
                 quit = true;
             }
             else if (e.type == SDL_KEYDOWN) {
-                handleInput(e, bonusEnabled);
+                handleInput(e);
             }
         }
         if (renderData) {
@@ -226,7 +225,7 @@ void Window::setColor(char curChar) {
     }
 }
 
-void Window::handleInput(SDL_Event &e, bool bonusEnabled) {
+void Window::handleInput(SDL_Event &e) {
     if (!bonusEnabled) return;
     if (!q) return;
     if (e.type != SDL_KEYDOWN) return;

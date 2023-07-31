@@ -8,6 +8,7 @@
 #include "level2Factory.h"
 #include "level3Factory.h"
 #include "level4Factory.h"
+#include "queue.h"
 
 /**
  * Prime factorization of effects:
@@ -26,6 +27,7 @@ class Player {
     int effect;
     int seed;
     string filename;
+    Queue* q;
     public:
     Player(string filename = "", int score = 0, int level = 0, int effect = 1);
     void setBlind(bool blind);

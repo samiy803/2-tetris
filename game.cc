@@ -1,24 +1,27 @@
 #include "game.h"
 #include <cassert>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
-Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel, bool bonusEnabled) : isGraphics{isGraphics}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel}, bonusEnabled{bonusEnabled}{
+Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel, bool bonusEnabled) 
+    : isGraphics{isGraphics}, bonusEnabled{bonusEnabled}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
     player1 = new Player(file1);
     player2 = new Player(file2);
     this->seed = seed;
     this->startLevel = startLevel;
     currentPlayer = player1;
     turn_count = 0;
-    q = new Queue();
-    window = isGraphics ? new Window(q, bonusEnabled) : nullptr;
+    if (isGraphics) {
+        window = new Window(bonusEnabled);
+        window->setQueue(player1->q);
+    }
 }
 
 void Game::restart() {
     delete player1;
     delete player2;
-    delete q;
     player1 = new Player(file1);
     player2 = new Player(file2);
     player1->setLevel(startLevel);
@@ -29,15 +32,12 @@ void Game::restart() {
     player2->gameBoard.currentBlock = player2->blockFactory->getNext(player2->effect);
     player1->gameBoard.nextBlock = player1->blockFactory->getNext(player1->effect);
     player2->gameBoard.nextBlock = player2->blockFactory->getNext(player2->effect);
-    this->seed = seed;
-    this->startLevel = startLevel;
     currentPlayer = player1;
     turn_count = 0;
-    q = new Queue();
     printGame();
     if (isGraphics) {
-        window->setQueue(q);
         renderGame();
+        window->setQueue(player1->q);
     }
 }
 
@@ -69,7 +69,7 @@ void Game::startGame() {
     renderGame();
     textThread = thread(&Game::textInput, this);
     mainThread = thread(&Game::runMainLoop, this);
-    if (isGraphics)
+    if (isGraphics) 
         window->startDisplay();
     else
         mainThread.join();
@@ -106,7 +106,40 @@ void Game::textInput() {
     string command;
     while (isRunning) {
         cin >> command;
-        q->push(command);
+        std::istringstream ss{command};
+        int multiplier;
+
+        // Extract multiplier
+        if (ss >> multiplier) {
+            if (multiplier < 0) {
+                multiplier = 1;
+            }
+        }
+        else {
+            multiplier = 1;
+        }
+
+        // Extract command
+        ss >> command;
+
+        // Auto complete the command if it's unique
+        int count = 0;
+        string match;
+        for (auto &c : COMMANDS) {
+            if (c.substr(0, command.length()) == command) {
+                count++;
+                match = c;
+            }
+        }
+        if (count == 1) {
+            command = match;
+        }
+
+        // Push command to queue
+        for (int i = 0; i < multiplier; ++i) {
+            (currentPlayer == player1 ? player1->q : player2->q)->push(command);
+        }
+
         if (command == "quit") {
             break;
         }
@@ -131,7 +164,8 @@ void Game::runMainLoop() {
             continue;
         }
 
-        string command = q->pop();
+        cout << (player1 == currentPlayer ? "Player 1" : "Player 2") << "'s turn" << endl;
+        string command = (player1 == currentPlayer ? player1->q : player2->q)->pop();
 
         if (command == "left") {
             currentPlayer->gameBoard.left();
@@ -154,6 +188,7 @@ void Game::runMainLoop() {
             currentPlayer->clearRow();
             highScore = currentPlayer->score > highScore ? currentPlayer->score : highScore;
             currentPlayer = currentPlayer == player1 ? player2 : player1;
+            window->setQueue(currentPlayer->q);
             turn_count++;
             playDrop = true;
         }
@@ -240,7 +275,6 @@ void Game::endGame() {
 Game::~Game() {
     delete player1;
     delete player2;
-    delete q;
     if (isGraphics)
         delete window;
 }
