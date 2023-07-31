@@ -403,6 +403,10 @@ void Window::audioCallback(void *userdata, Uint8 *stream, int len) {
 */
 void Window::playSound(int i) {
     if (!bonusEnabled) return;
+
+    // Ensure the audio device is closed before opening a new one
+    SDL_CloseAudio();
+
     if (SDL_OpenAudio(&audioData[i]->spec, NULL) < 0) {
         bonusEnabled = false;
         std::cout << "Error opening audio device" << std::endl;

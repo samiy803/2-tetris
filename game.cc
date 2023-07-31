@@ -188,12 +188,12 @@ void Game::runMainLoop() {
             currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect); // no longer nullptr
             if (currentPlayer->clearRow() && isGraphics)
                 window->playSound(2);
+            else if (isGraphics)
+                window->playSound(0);
             highScore = currentPlayer->score > highScore ? currentPlayer->score : highScore;
             currentPlayer = currentPlayer == player1 ? player2 : player1;
             window->setQueue(currentPlayer->q);
             turn_count++;
-            if (isGraphics)
-                window->playSound(0);
         }
         else if (command == "levelup") {
             currentPlayer->setLevel(currentPlayer->level + 1);
