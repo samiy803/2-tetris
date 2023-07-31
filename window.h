@@ -71,7 +71,7 @@ class Window {
     std::string current_theme;
 
     // Colors!!
-    const enum Color {
+    enum Color {
         BLACK = 0,
         WHITE,
         RED,
