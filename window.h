@@ -106,7 +106,7 @@ class Window {
         1.0, 1.0, 0.0, // YELLOW
         1.0, 0.0, 1.0, // MAGENTA
         0.0, 1.0, 1.0, // CYAN
-        0.5, 0.0, 0.5,  // PURPLE
+        1, 0.75, 0.4,  // PURPLE
         0.1, 0.1, 0.1  // DARK_GREY
     };
 
