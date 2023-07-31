@@ -1,4 +1,4 @@
-#include "Level4Factory.h"
+#include "level4Factory.h"
 
 Block* Level4Factory::getNext(int effects) {
     short blockType = rng() % 9;
