@@ -340,7 +340,6 @@ void Window::drawBG() {
 void Window::drawText(TTF_Font *reg, string text, int x, int y, bool center) {
     if (!reg) return;
 
-    glPushAttrib(GL_ENABLE_BIT);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
@@ -386,8 +385,9 @@ void Window::drawText(TTF_Font *reg, string text, int x, int y, bool center) {
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
-
     glPopAttrib();
+
+    glDisable(GL_BLEND);
     
 
     glDeleteTextures(1, &texture);
