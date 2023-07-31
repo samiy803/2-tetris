@@ -194,6 +194,16 @@ void Game::runMainLoop() {
             currentPlayer = currentPlayer == player1 ? player2 : player1;
             window->setQueue(currentPlayer->q);
             turn_count++;
+            if (currentPlayer->level == 4){
+                currentPlayer->gameBoard.turn_count++;
+            }
+            if (currentPlayer->level == 4 && currentPlayer->gameBoard.turn_count % 5 == 0){
+                if (currentPlayer->score == currentPlayer->score5turnsago) {
+                    currentPlayer->gameBoard.dropStar();
+                } else{
+                    currentPlayer->score5turnsago = currentPlayer->score;
+                }
+            }
         }
         else if (command == "levelup") {
             currentPlayer->setLevel(currentPlayer->level + 1);
