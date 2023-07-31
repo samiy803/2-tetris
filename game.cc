@@ -42,14 +42,14 @@ void Game::restart() {
 }
 
 void Game::renderGame() {
-    Window::RenderData *d = new Window::RenderData{ player1->gameBoard.toString(true, bonusEnabled),
+    shared_ptr<Window::RenderData> d(new Window::RenderData{ player1->gameBoard.toString(true, bonusEnabled),
                                                     player2->gameBoard.toString(true, bonusEnabled),
                                                     player1->score, player2->score,
                                                     player1->level, player2->level,
                                                     player1->gameBoard.nextBlock,
                                                     player2->gameBoard.nextBlock,
                                                     player1->gameBoard.ROWS, player1->gameBoard.COLS,
-                                                    highScore };
+                                                    highScore });
     window->renderGame(d);
 }
 

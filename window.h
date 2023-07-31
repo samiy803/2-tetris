@@ -34,35 +34,56 @@ class Window {
         Uint8 *currentBuffer;
         SDL_AudioSpec spec;
     };
+    struct Button {
+        int x,y,w,h,state;
+        std::string text;
+        Button(int x, int y, int w, int h, std::string text) : x(x), y(y), w(w), h(h), state(0), text(text) {}
+    };
     bool quit;
+    bool bonusEnabled;
     Window(bool bonusEnabled = false, int width=1024, int height=768);  // Constructor; displays the window.
-    ~Window();                              // Destructor; destroys the window.
-    Window(const Window&) = delete;        // Disallow copy ctor.
-    Window &operator=(const Window&) = delete; // Disallow copy assign.
+    ~Window();                                                          // Destructor; destroys the window.
+    Window(const Window&) = delete;                                     // Disallow copy ctor.
+    Window &operator=(const Window&) = delete;                          // Disallow copy assign.
     void darkMode(); // TODO figure this out
     void lightMode(); // TODO figure this out
     void startDisplay();
-    void renderGame(RenderData *data);
+    void renderGame(std::shared_ptr<RenderData> renderData);
     void drawGame();
     void playDrop();
-    bool bonusEnabled;
     void setQueue(Queue *q);
     private:
-    void handleInput(SDL_Event &e);
-    void setColor(char c);
-    void loadAudio();
-    static void audioCallback(void *userdata, Uint8 *stream, int len);
-    std::vector<Position> getOffsets(char block);
+    const float blockWidth = 0.068359375;
+    // These need to be defined here because they rely on COLS and ROWS
+    #define blockHeight (blockWidth * width / height)
+    #define boardWidth (blockWidth * renderData->COLS)
+    #define boardHeight (blockHeight * renderData->ROWS)
+    #define borderX ((2 - 2*boardWidth - 0.2)/4.0)
+    #define borderY (0.05 * width / height)
     int width, height;
     SDL_Window *w;
     SDL_GLContext glc;
     TTF_Font *reg;
     TTF_Font *smaller;
-    RenderData* renderData;
+    std::shared_ptr<RenderData> renderData;
     Queue *q;
     static vector<std::shared_ptr<AudioData>> audioData;
+    vector<Button> buttons;
+
+    // Drawing functions
     void drawBG();
     void drawText(TTF_Font *font, std::string text, int x, int y, bool center = false);
+    void drawMenu();
+    void drawNext();
+    void drawStats();
+    void drawBoards();
+
+    // Helper functions
+    void handleInput(SDL_Event &e);
+    void setColor(char c);
+    void loadAudio();
+    static void audioCallback(void *userdata, Uint8 *stream, int len);
+    std::vector<Position> getOffsets(char block);
 };
 
 #endif // !XWINDOW_H
