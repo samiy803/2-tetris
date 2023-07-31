@@ -46,8 +46,8 @@ void Game::renderGame() {
                                                     player2->gameBoard.toString(true, bonusEnabled),
                                                     player1->score, player2->score,
                                                     player1->level, player2->level,
-                                                    player1->gameBoard.nextBlock,
-                                                    player2->gameBoard.nextBlock,
+                                                    currentPlayer == player1 ? player1->gameBoard.nextBlock : nullptr,
+                                                    currentPlayer == player2 ? player2->gameBoard.nextBlock : nullptr,
                                                     player1->gameBoard.ROWS, player1->gameBoard.COLS,
                                                     highScore });
     window->renderGame(d);
