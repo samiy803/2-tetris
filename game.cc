@@ -109,7 +109,6 @@ void Game::textInput() {
         std::istringstream ss{command};
         int multiplier;
 
-        // Extract multiplier
         if (ss >> multiplier) {
             if (multiplier < 0) {
                 multiplier = 1;
@@ -119,10 +118,8 @@ void Game::textInput() {
             multiplier = 1;
         }
 
-        // Extract command
         ss >> command;
 
-        // Auto complete the command if it's unique
         int count = 0;
         string match;
         for (auto &c : COMMANDS) {
@@ -135,7 +132,13 @@ void Game::textInput() {
             command = match;
         }
 
-        // Push command to queue
+        for (auto &c : PROHIB) {
+            if (c == command) {
+                (currentPlayer == player1 ? player1->q : player2->q)->push(c);
+                return;
+            }
+        }
+        
         for (int i = 0; i < multiplier; ++i) {
             (currentPlayer == player1 ? player1->q : player2->q)->push(command);
         }

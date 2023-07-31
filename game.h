@@ -19,6 +19,7 @@ using std::thread;
 
 class Game {
     const vector<string> COMMANDS = {"left", "right", "down", "clockwise", "counterclockwise", "drop", "levelup", "leveldown", "norandom", "random", "sequence", "I", "J", "L", "O", "S", "Z", "T", "restart", "hint", "rename", "bonus", "force"};
+    const vector<string> PROHIB = {"restart", "hint", "norandom", "random"};
     Player* player1;
     Player* player2;
     int highScore = 0;
