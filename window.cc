@@ -115,6 +115,15 @@ void Window::startDisplay() {
             drawGame();
             renderData.reset();
         }
+        for (auto audio : audioData) {
+            if (audio->remaining <= 0) {
+            SDL_CloseAudio();
+
+            // Reset the buffer
+            audio->currentBuffer = audio->buffer;
+            audio->remaining = audio->length;
+        }
+        }
     }
 }
 
@@ -285,12 +294,12 @@ void Window::handleInput(SDL_Event &e) {
             // Convert normalized coordinates to pixel coordinates
             int x1 = (button.x + 1) * width / 2;
             int y1 = (button.y + 1) * height / 2;
-            int x2 = (button.x + 1) * width / 2 + button.w * width;
-            int y2 = (button.y + 1) * height / 2 + button.h * height;
+            int x2 = (button.x + 1) * width / 2 + button.w * width/2;
+            int y2 = (button.y + 1) * height / 2 + button.h * height/2;
             if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
                 if (button.text[0] == "lvl up") {
                     q->push("levelup");
-                } else if (button.text[0] == "level dwn") {
+                } else if (button.text[0] == "lvl dwn") {
                     q->push("leveldown");
                 } else if (button.text[0] == "restart") {
                     q->push("restart");
@@ -304,6 +313,7 @@ void Window::handleInput(SDL_Event &e) {
                 }
                 q->push("tick");
                 button.state = (button.state + 1) % button.text.size();
+                playClick();
             }
         }
     }
@@ -343,19 +353,22 @@ void Window::drawBoards() {
  * Loads the audio files. This function is called by the constructor.
 */
 void Window::loadAudio() {
-    shared_ptr<Window::AudioData> drop(new Window::AudioData());
-    if (SDL_LoadWAV("audio/drop.wav", &drop->spec, &drop->buffer, &drop->length) == NULL) {
-        bonusEnabled = false;
-        std::cout << "Error loading drop.wav" << std::endl;
-        return;
+    vector<string> audioPaths = {"audio/drop.wav", "audio/click.wav"};
+    for (auto audioPath : audioPaths) {
+        shared_ptr<Window::AudioData> aud(new Window::AudioData());
+        if (SDL_LoadWAV(audioPath.c_str(), &aud->spec, &aud->buffer, &aud->length) == NULL) {
+            bonusEnabled = false;
+            std::cout << "Error loading drop.wav" << std::endl;
+            return;
+        }
+
+        aud->spec.callback = Window::audioCallback;
+        aud->spec.userdata = aud.get();
+        aud->currentBuffer = aud->buffer;
+        aud->remaining = aud->length;
+
+        audioData.push_back(aud);
     }
-
-    drop->spec.callback = Window::audioCallback;
-    drop->spec.userdata = drop.get();
-    drop->currentBuffer = drop->buffer;
-    drop->remaining = drop->length;
-
-    audioData.push_back(drop);
 }
 
 /**
@@ -393,16 +406,20 @@ void Window::playDrop() {
     }
 
     SDL_PauseAudio(0);
+}
 
-    while (audioData[0]->remaining > 0) {
-        SDL_Delay(10);
+/**
+ * Plays the click sound.
+*/
+void Window::playClick() {
+    if (!bonusEnabled) return;
+    if (SDL_OpenAudio(&audioData[1]->spec, NULL) < 0) {
+        bonusEnabled = false;
+        std::cout << "Error opening audio device" << std::endl;
+        return;
     }
 
-    SDL_CloseAudio();
-
-    // Reset the buffer
-    audioData[0]->currentBuffer = audioData[0]->buffer;
-    audioData[0]->remaining = audioData[0]->length;
+    SDL_PauseAudio(0);
 }
 
 /**

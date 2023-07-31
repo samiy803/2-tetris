@@ -3,6 +3,8 @@
 #include <cmath>
 #include "queue.h"
 
+using namespace std;
+
 
 Player::Player(string filename, int score, int level, int effect) : score{score}, level{level}, effect{effect}, filename{filename} {
     switch (level) {
@@ -67,6 +69,9 @@ void Player::setForce(string block) {
 
 
 void Player::setLevel(int level) {
+    cout << level << endl;
+    if (level < 0 || level > 4)
+        return;
     this->level = level;
     gameBoard.level = level;
     delete blockFactory;
