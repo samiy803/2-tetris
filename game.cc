@@ -1,12 +1,18 @@
 #include "game.h"
 #include <cassert>
-#include <string>
 #include <sstream>
+#include <string>
 
 using namespace std;
 
-Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel, bool bonusEnabled) 
-    : isGraphics{isGraphics}, bonusEnabled{bonusEnabled}, seed{seed}, file1{file1}, file2{file2}, startLevel{startLevel} {
+Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel, bool bonusEnabled)
+    : isGraphics { isGraphics }
+    , bonusEnabled { bonusEnabled }
+    , seed { seed }
+    , file1 { file1 }
+    , file2 { file2 }
+    , startLevel { startLevel }
+{
     player1 = new Player(file1);
     player2 = new Player(file2);
     this->seed = seed;
@@ -19,7 +25,8 @@ Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel
     }
 }
 
-void Game::restart() {
+void Game::restart()
+{
     delete player1;
     delete player2;
     player1 = new Player(file1);
@@ -41,20 +48,23 @@ void Game::restart() {
     }
 }
 
-void Game::renderGame() {
-    shared_ptr<Window::RenderData> d(new Window::RenderData{ player1->gameBoard.toString(true, bonusEnabled),
-                                                    player2->gameBoard.toString(true, bonusEnabled),
-                                                    player1->score, player2->score,
-                                                    player1->level, player2->level,
-                                                    currentPlayer == player1 ? player1->gameBoard.nextBlock : nullptr,
-                                                    currentPlayer == player2 ? player2->gameBoard.nextBlock : nullptr,
-                                                    player1->gameBoard.ROWS, player1->gameBoard.COLS,
-                                                    highScore });
+void Game::renderGame()
+{
+    shared_ptr<Window::RenderData> d(new Window::RenderData { player1->gameBoard.toString(true, bonusEnabled),
+        player2->gameBoard.toString(true, bonusEnabled),
+        player1->score, player2->score,
+        player1->level, player2->level,
+        currentPlayer == player1 ? player1->gameBoard.nextBlock : nullptr,
+        currentPlayer == player2 ? player2->gameBoard.nextBlock : nullptr,
+        player1->gameBoard.ROWS, player1->gameBoard.COLS,
+        highScore });
     window->renderGame(d);
 }
 
-void Game::startGame() {
-    if (turn_count != 0) return;
+void Game::startGame()
+{
+    if (turn_count != 0)
+        return;
     player1->setLevel(startLevel);
     player2->setLevel(startLevel);
     player1->blockFactory->setSeed(seed);
@@ -69,13 +79,14 @@ void Game::startGame() {
     renderGame();
     textThread = thread(&Game::textInput, this);
     mainThread = thread(&Game::runMainLoop, this);
-    if (isGraphics) 
+    if (isGraphics)
         window->startDisplay();
     else
         mainThread.join();
 }
 
-void Game::printGame() {
+void Game::printGame()
+{
     assert(player1 != nullptr);
     assert(player2 != nullptr);
     assert(currentPlayer != nullptr);
@@ -84,37 +95,39 @@ void Game::printGame() {
     string player1Board = player1->gameBoard.toString(true);
     string player2Board = player2->gameBoard.toString(true);
     assert(player1Board.length() == player2Board.length());
-    cout << "\t  " << "Highscore: " << highScore << endl;
+    cout << "\t  "
+         << "Highscore: " << highScore << endl;
     cout << "-----------------------------------" << endl;
-    cout << "Level:\t" << player1->level << "\t\t" << "Level:\t" << player2->level << endl;
-    cout << "Score:\t" << player1->score << "\t\t" << "Score:\t" << player2->score << endl;
+    cout << "Level:\t" << player1->level << "\t\t"
+         << "Level:\t" << player2->level << endl;
+    cout << "Score:\t" << player1->score << "\t\t"
+         << "Score:\t" << player2->score << endl;
     cout << "-----------\t\t-----------" << endl;
     for (int i = 0; i < player1->gameBoard.ROWS; ++i) {
         cout << player1Board.substr(i * player1->gameBoard.COLS, player1->gameBoard.COLS) << "\t\t" << player2Board.substr(i * player2->gameBoard.COLS, player2->gameBoard.COLS) << endl;
     }
     cout << "-----------\t\t-----------" << endl;
     cout << "Next:\t\t\tNext:" << endl;
-    if(currentPlayer == player1){
+    if (currentPlayer == player1) {
         player1->gameBoard.nextBlock->printBlock(true);
-    } 
-    else if(currentPlayer == player2){
+    } else if (currentPlayer == player2) {
         player2->gameBoard.nextBlock->printBlock(false);
     }
 }
 
-void Game::textInput() {
+void Game::textInput()
+{
     string command;
     while (isRunning) {
         cin >> command;
-        std::istringstream ss{command};
+        std::istringstream ss { command };
         int multiplier;
 
         if (ss >> multiplier) {
             if (multiplier < 0) {
                 multiplier = 1;
             }
-        }
-        else {
+        } else {
             multiplier = 1;
         }
 
@@ -122,7 +135,7 @@ void Game::textInput() {
 
         int count = 0;
         string match;
-        for (auto &c : COMMANDS) {
+        for (auto& c : COMMANDS) {
             if (c.substr(0, command.length()) == command) {
                 count++;
                 match = c;
@@ -132,13 +145,13 @@ void Game::textInput() {
             command = match;
         }
 
-        for (auto &c : PROHIB) {
+        for (auto& c : PROHIB) {
             if (c == command) {
                 (currentPlayer == player1 ? player1->q : player2->q)->push(c);
                 return;
             }
         }
-        
+
         for (int i = 0; i < multiplier; ++i) {
             (currentPlayer == player1 ? player1->q : player2->q)->push(command);
         }
@@ -149,7 +162,8 @@ void Game::textInput() {
     }
 }
 
-void Game::runMainLoop() {
+void Game::runMainLoop()
+{
 
     while (isRunning) {
 
@@ -158,8 +172,7 @@ void Game::runMainLoop() {
             cout << "Player 2 wins!" << endl;
             restart();
             continue;
-        }
-        else if (!player2->gameBoard.validBoard()) {
+        } else if (!player2->gameBoard.validBoard()) {
             cout << "Player 1 wins!" << endl;
             restart();
             continue;
@@ -170,20 +183,15 @@ void Game::runMainLoop() {
 
         if (command == "left") {
             currentPlayer->gameBoard.left();
-        }
-        else if (command == "right") {
+        } else if (command == "right") {
             currentPlayer->gameBoard.right();
-        }
-        else if (command == "down") {
+        } else if (command == "down") {
             currentPlayer->gameBoard.down();
-        }
-        else if (command == "clockwise") {
+        } else if (command == "clockwise") {
             currentPlayer->gameBoard.clockwise();
-        }
-        else if (command == "counterclockwise") {
+        } else if (command == "counterclockwise") {
             currentPlayer->gameBoard.counterClockwise();
-        }
-        else if (command == "drop") {
+        } else if (command == "drop") {
             currentPlayer->gameBoard.drop(); // next block is now nullptr
             currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect); // no longer nullptr
             if (currentPlayer->clearRow() && isGraphics)
@@ -194,54 +202,39 @@ void Game::runMainLoop() {
             currentPlayer = currentPlayer == player1 ? player2 : player1;
             window->setQueue(currentPlayer->q);
             turn_count++;
-        }
-        else if (command == "levelup") {
+        } else if (command == "levelup") {
             currentPlayer->setLevel(currentPlayer->level + 1);
-        }
-        else if (command == "leveldown") {
+        } else if (command == "leveldown") {
             currentPlayer->setLevel(currentPlayer->level - 1);
-        }
-        else if (command == "I") {
+        } else if (command == "I") {
             currentPlayer->setForce("I");
-        }
-        else if (command == "J") {
+        } else if (command == "J") {
             currentPlayer->setForce("J");
-        }
-        else if (command == "L") {
+        } else if (command == "L") {
             currentPlayer->setForce("L");
-        }
-        else if (command == "O") {
+        } else if (command == "O") {
             currentPlayer->setForce("O");
-        }
-        else if (command == "S") {
+        } else if (command == "S") {
             currentPlayer->setForce("S");
-        }
-        else if (command == "T") {
+        } else if (command == "T") {
             currentPlayer->setForce("T");
-        }
-        else if (command == "Z") {
+        } else if (command == "Z") {
             currentPlayer->setForce("Z");
-        }
-        else if (command == "restart") {
+        } else if (command == "restart") {
             restart();
             continue;
-        }
-        else if (command == "quit") {
+        } else if (command == "quit") {
             endGame();
             break;
-        }
-        else if (command == "sequence") {
+        } else if (command == "sequence") {
             cerr << "Sequence not implemented yet" << endl;
-        }
-        else if (command == "random") {
+        } else if (command == "random") {
             cerr << "Random not implemented yet" << endl;
-        }
-        else if (command == "norandom") {
+        } else if (command == "norandom") {
             string filename;
             cin >> filename;
             cerr << "Norandom not implemented yet" << endl;
-        }
-        else if (command == "hint") {
+        } else if (command == "hint") {
             cerr << "Hint not implemented yet" << endl;
         }
 
@@ -253,7 +246,8 @@ void Game::runMainLoop() {
     }
 }
 
-void Game::endGame() {
+void Game::endGame()
+{
     if (isGraphics)
         window->quit = true;
     isRunning = false;
@@ -262,13 +256,14 @@ void Game::endGame() {
             textThread.join();
         if (mainThread.joinable())
             mainThread.join();
-    } catch(...) {
+    } catch (...) {
         // Many things can go wrong here, especially if the mutex is still locked
         // We don't care about any of them, the game is over and we just want to kill the threads
     }
 }
 
-Game::~Game() {
+Game::~Game()
+{
     delete player1;
     delete player2;
     if (isGraphics)

@@ -1,8 +1,9 @@
 #include "block.h"
-#include "level0Factory.h"
 #include "../board.h"
+#include "level0Factory.h"
 
-vector<Position> Block::getPositions() {
+vector<Position> Block::getPositions()
+{
     vector<Position> positions;
     for (Position offset : offsets) {
         offset.x += start.x;
@@ -12,44 +13,51 @@ vector<Position> Block::getPositions() {
     return positions;
 }
 
-void Block::left() {
+void Block::left()
+{
     start.x--;
 }
-void Block::right() {
+void Block::right()
+{
     start.x++;
 }
-void Block::down() {
+void Block::down()
+{
     start.y++;
 }
 
-void Block::up() {
+void Block::up()
+{
     start.y--;
 }
 
-void Block::deleteRow(int row) {
+void Block::deleteRow(int row)
+{
     for (auto it = offsets.begin(); it != offsets.end();) {
         if (it->y + start.y == row) {
             offsets.erase(it);
-        }
-        else {
+        } else {
             ++it;
         }
     }
 }
 
-void Block::shiftDown(int row) {
-    for (auto &offset : offsets) {
+void Block::shiftDown(int row)
+{
+    for (auto& offset : offsets) {
         if (offset.y + start.y < row) {
             offset.y++;
         }
     }
 }
 
-vector<Position> Block::getOffsets() {
+vector<Position> Block::getOffsets()
+{
     return offsets;
 }
 
-void Block::printBlock(bool player1) {
+void Block::printBlock(bool player1)
+{
     int maxX = 0;
     int maxY = 0;
 
@@ -75,30 +83,31 @@ void Block::printBlock(bool player1) {
     }
 }
 
-Block* Block::clone() {
-    Block *b = nullptr;
+Block* Block::clone()
+{
+    Block* b = nullptr;
     switch (c) {
-        case 'I':
-            b = new IBlock();
-            break;
-        case 'J':
-            b = new JBlock();
-            break;
-        case 'L':
-            b = new LBlock();
-            break;
-        case 'O':
-            b = new OBlock();
-            break;
-        case 'S':
-            b = new SBlock();
-            break;
-        case 'Z':
-            b = new ZBlock();
-            break;
-        case 'T':
-            b = new TBlock();
-            break;
+    case 'I':
+        b = new IBlock();
+        break;
+    case 'J':
+        b = new JBlock();
+        break;
+    case 'L':
+        b = new LBlock();
+        break;
+    case 'O':
+        b = new OBlock();
+        break;
+    case 'S':
+        b = new SBlock();
+        break;
+    case 'Z':
+        b = new ZBlock();
+        break;
+    case 'T':
+        b = new TBlock();
+        break;
     }
     b->start = start;
     b->offsets = offsets;

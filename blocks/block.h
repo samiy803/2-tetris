@@ -1,14 +1,12 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 #include "position.h"
-#include <vector>
 #include <iostream>
 #include <memory>
+#include <vector>
 
-
-using std::vector;
 using std::iostream;
-
+using std::vector;
 
 /**
  * Block is an abstract class that represents a block in the game.
@@ -17,9 +15,9 @@ using std::iostream;
  * The vector of offsets is a vector of positions that represent the offsets
  * of the other blocks in the block relative to the start position.
  * The effects integer is an integer that represents the effects using prime factorization.
-*/
+ */
 class Block {
-    protected:
+protected:
     Position start;
     vector<Position> offsets;
     int effects;
@@ -27,7 +25,8 @@ class Block {
     // blind is 3
     // force is 3
     short rotation;
-    public:
+
+public:
     void left();
     void right();
     void down();
@@ -42,6 +41,6 @@ class Block {
     char c;
     vector<Position> getOffsets();
     virtual ~Block() = default;
-    Block *clone();
+    Block* clone();
 };
 #endif // !BLOCK_H

@@ -1,8 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "board.h"
 #include "blockFactory.h"
+#include "board.h"
 #include "level0Factory.h"
 #include "level1Factory.h"
 #include "level2Factory.h"
@@ -16,7 +16,7 @@
  * 2: heavy
  * 3: blind
  * 5,7,11,13,17,19,23: force I, J, L, O, S, T, Z respectively
-*/
+ */
 
 class Player {
     friend class Game; // Game should have to access to Player's privates
@@ -29,7 +29,8 @@ class Player {
     int seed;
     string filename;
     Queue* q;
-    public:
+
+public:
     Player(string filename = "", int score = 0, int level = 0, int effect = 1);
     void setBlind(bool blind);
     void setHeavy(bool heavy);

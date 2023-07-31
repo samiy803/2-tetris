@@ -1,25 +1,24 @@
 #ifndef GAME_H
 #define GAME_H
 
-
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <thread>
-#include <atomic>
+#include "player.h"
+#include "queue.h"
+#include "window.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
-#include "player.h"
-#include "window.h"
-#include "queue.h"
+#include <atomic>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <thread>
 
-using std::string;
 using std::istringstream;
+using std::string;
 using std::thread;
 
 class Game {
-    const vector<string> COMMANDS = {"left", "right", "down", "clockwise", "counterclockwise", "drop", "levelup", "leveldown", "norandom", "random", "sequence", "I", "J", "L", "O", "S", "Z", "T", "restart", "hint", "rename", "bonus", "force"};
-    const vector<string> PROHIB = {"restart", "hint", "norandom", "random"};
+    const vector<string> COMMANDS = { "left", "right", "down", "clockwise", "counterclockwise", "drop", "levelup", "leveldown", "norandom", "random", "sequence", "I", "J", "L", "O", "S", "Z", "T", "restart", "hint", "rename", "bonus", "force" };
+    const vector<string> PROHIB = { "restart", "hint", "norandom", "random" };
     Player* player1;
     Player* player2;
     int highScore = 0;
@@ -35,7 +34,8 @@ class Game {
     thread textThread;
     thread mainThread;
     std::atomic<bool> isRunning;
-    public:
+
+public:
     Game(bool isGraphics, int seed, string file1, string file2, int startLevel, bool bonusEnabled);
     void runMainLoop();
     void startGame();
@@ -47,6 +47,5 @@ class Game {
     void endGame();
     ~Game();
 };
-
 
 #endif // !GAME_H

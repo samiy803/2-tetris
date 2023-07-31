@@ -1,10 +1,10 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <vector>
+#include "STARBlock.h"
 #include "block.h"
 #include <string>
-#include "STARBlock.h"
+#include <vector>
 
 using std::string;
 
@@ -25,7 +25,8 @@ class Board {
     int gc();
     int turn_count;
     int level = 0;
-    public:
+
+public:
     static const int COLS = 11;
     static const int ROWS = 15;
     string toString(bool includeCurrentBlock, bool ghost = false);

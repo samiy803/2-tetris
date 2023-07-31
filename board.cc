@@ -1,11 +1,12 @@
 #include "board.h"
-#include <map>
+#include "level0Factory.h"
 #include <cmath>
 #include <iostream>
+#include <map>
 #include <memory>
-#include "level0Factory.h"
 
-string Board::toString(bool includeCurrentBlock, bool ghost) {
+string Board::toString(bool includeCurrentBlock, bool ghost)
+{
     char board[ROWS * COLS];
     for (int i = 0; i < ROWS * COLS; i++) {
         board[i] = ' ';
@@ -28,7 +29,6 @@ string Board::toString(bool includeCurrentBlock, bool ghost) {
         for (Position pos : ghostBlock->getPositions()) {
             board[pos.y * COLS + pos.x] = tolower(ghostBlock->c);
         }
-
     }
     for (Block* block : blocks) {
         for (Position pos : block->getPositions()) {
@@ -44,12 +44,13 @@ string Board::toString(bool includeCurrentBlock, bool ghost) {
     return s;
 }
 
-bool Board::validBoard(bool includeCurrentBlock) {
+bool Board::validBoard(bool includeCurrentBlock)
+{
     // Check for overlap
     vector<Position> positions;
 
     if (includeCurrentBlock) {
-            for (Position pos : currentBlock->getPositions()) {
+        for (Position pos : currentBlock->getPositions()) {
             if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
                 return false;
             }
@@ -73,61 +74,67 @@ bool Board::validBoard(bool includeCurrentBlock) {
     return true;
 }
 
-void Board::left() {
+void Board::left()
+{
     currentBlock->left();
-    if(level == 3 || level == 4){
+    if (level == 3 || level == 4) {
         currentBlock->down();
     }
     if (!validBoard()) {
-        if(level == 4 || level == 3){
+        if (level == 4 || level == 3) {
             currentBlock->up();
         }
         currentBlock->right();
     }
 }
 
-void Board::right() {
+void Board::right()
+{
     currentBlock->right();
-    if(level == 3 || level == 4){
+    if (level == 3 || level == 4) {
         currentBlock->down();
     }
     if (!validBoard()) {
-        if(level == 4 || level == 3){
+        if (level == 4 || level == 3) {
             currentBlock->up();
         }
         currentBlock->left();
     }
 }
 
-void Board::down() {
+void Board::down()
+{
     currentBlock->down();
-    if(level == 3 || level == 4){
+    if (level == 3 || level == 4) {
         currentBlock->down();
     }
     if (!validBoard()) {
-        if(level == 4 || level == 3){
+        if (level == 4 || level == 3) {
             currentBlock->up();
         }
         currentBlock->up();
     }
 }
 
-void Board::clockwise() {
+void Board::clockwise()
+{
     currentBlock->clockwise();
     if (!validBoard()) {
         currentBlock->counterClockwise();
     }
 }
 
-void Board::counterClockwise() {
+void Board::counterClockwise()
+{
     currentBlock->counterClockwise();
     if (!validBoard()) {
         currentBlock->clockwise();
     }
 }
 
-void Board::drop() {
-    while(validBoard()){
+void Board::drop()
+{
+    while (validBoard()) {
         currentBlock->down();
     }
     currentBlock->up();
@@ -137,11 +144,12 @@ void Board::drop() {
     nextBlock = nullptr;
 }
 
-void Board::dropStar(){
-    STARBlock* starblock = new STARBlock(Position{5, 0}, 0, 0, 4);
+void Board::dropStar()
+{
+    STARBlock* starblock = new STARBlock(Position { 5, 0 }, 0, 0, 4);
     Block* temp = currentBlock;
     currentBlock = starblock;
-    while(validBoard()){
+    while (validBoard()) {
         currentBlock->down();
     }
     currentBlock->up();
@@ -149,7 +157,8 @@ void Board::dropStar(){
     currentBlock = temp;
 }
 
-int Board::gc() {
+int Board::gc()
+{
     for (auto it = blocks.begin(); it != blocks.end();) {
         if ((*it)->getOffsets().size() == 0) {
             delete *it;
@@ -157,8 +166,7 @@ int Board::gc() {
             it = blocks.erase(it);
             return scoreAddition;
             it = blocks.erase(it);
-        }
-        else {
+        } else {
             ++it;
         }
     }
