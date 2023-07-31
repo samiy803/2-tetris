@@ -34,8 +34,10 @@ void Game::restart() {
     currentPlayer = player1;
     turn_count = 0;
     q = new Queue();
+    printGame();
     if (isGraphics) {
         window->setQueue(q);
+        renderGame();
     }
 }
 
@@ -116,6 +118,19 @@ void Game::runMainLoop() {
     bool playDrop = false;
 
     while (isRunning) {
+
+        // Check if game is over
+        if (!player1->gameBoard.validBoard()) {
+            cout << "Player 2 wins!" << endl;
+            restart();
+            continue;
+        }
+        else if (!player2->gameBoard.validBoard()) {
+            cout << "Player 1 wins!" << endl;
+            restart();
+            continue;
+        }
+
         string command = q->pop();
 
         if (command == "left") {
@@ -171,6 +186,7 @@ void Game::runMainLoop() {
         }
         else if (command == "restart") {
             restart();
+            continue;
         }
         else if (command == "quit") {
             endGame();
