@@ -97,7 +97,8 @@ void Window::startDisplay() {
     glViewport(0, 0, width, height);
 
     // add the menu buttons
-    addButtons();
+    if (bonusEnabled)
+        addButtons();
 
     // SDL event loop
     SDL_Event e;
