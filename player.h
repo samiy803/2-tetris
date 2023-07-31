@@ -23,6 +23,7 @@ class Player {
     Board gameBoard;
     BlockFactory* blockFactory;
     int score;
+    int score5turnsago;
     int level;
     int effect;
     int seed;

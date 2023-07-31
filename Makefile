@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++20 -Wall -Werror=vla -MMD -I blocks -I factory -Wno-unused-command-line-argument
 EXEC = biquadris
-OBJECTS = queue.o blocks/block.o blocks/LBlock.o blocks/JBlock.o blocks/SBlock.o blocks/ZBlock.o blocks/TBlock.o blocks/OBlock.o blocks/IBlock.o factory/level0Factory.o factory/level1Factory.o factory/level2Factory.o factory/level3Factory.o factory/level4Factory.o board.o player.o window.o game.o main.o 
+OBJECTS = queue.o blocks/block.o blocks/LBlock.o blocks/JBlock.o blocks/SBlock.o blocks/ZBlock.o blocks/TBlock.o blocks/OBlock.o blocks/IBlock.o blocks/STARBlock.o factory/level0Factory.o factory/level1Factory.o factory/level2Factory.o factory/level3Factory.o factory/level4Factory.o board.o player.o window.o game.o main.o 
 DEPENDS = ${OBJECTS:.o=.d}
 
 # Platform specific libraries and flags

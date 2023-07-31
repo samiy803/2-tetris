@@ -5,9 +5,9 @@
 class STARBlock : public Block {
     static const std::vector<Position> rotation0;
     public:
-    STARBlock(Position p = Position{0, 5}, int effects = 1, short rotation = 0, int startingLevel = 0);
+    STARBlock(Position p = Position{5, 0}, int effects = 0, short rotation = 0, int startingLevel = 4);
     void clockwise() override;
     void counterClockwise() override;
 };
 
-#endif // !SBLOCK_H
+#endif // !STARBLOCK_H
