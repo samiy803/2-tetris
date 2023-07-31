@@ -7,7 +7,7 @@ DEPENDS = ${OBJECTS:.o=.d}
 # Platform specific libraries and flags
 MACOS_LIBS = -framework OpenGL -lSDL2 -lSDL2_ttf
 MACOS_FLAGS = -I /opt/homebrew/opt/SDL2/include -L /opt/homebrew/opt/SDL2/lib -I /opt/homebrew/opt/sdl2_ttf/include -L /opt/homebrew/opt/sdl2_ttf/lib -I /opt/homebrew/opt/SDL2/include/SDL2
-LINUX_LIBS = -lSDL2 -lGL
+LINUX_LIBS = -lSDL2 -lSDL2_ttf -lGL
 ENDLIBS :=
 ifeq ($(shell uname), Darwin)
 	ENDLIBS += ${MACOS_LIBS}
