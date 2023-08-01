@@ -13,24 +13,22 @@ Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel
     , file2 { file2 }
     , startLevel { startLevel }
 {
-    player1 = new Player(file1);
-    player2 = new Player(file2);
+    player1 = make_unique<Player>(file1);
+    player2 = make_unique<Player>(file2);
     this->seed = seed;
     this->startLevel = startLevel;
-    currentPlayer = player1;
+    currentPlayer = player1.get();
     turn_count = 0;
     if (isGraphics) {
         window = new Window(bonusEnabled);
-        window->setQueue(player1->q);
+        window->setQueue(player1->q.get());
     }
 }
 
 void Game::restart()
 {
-    delete player1;
-    delete player2;
-    player1 = new Player(file1);
-    player2 = new Player(file2);
+    player1 = make_unique<Player>(file1);
+    player2 = make_unique<Player>(file2);
     player1->setLevel(startLevel);
     player2->setLevel(startLevel);
     player1->blockFactory->setSeed(seed);
@@ -39,12 +37,12 @@ void Game::restart()
     player2->gameBoard.currentBlock = player2->blockFactory->getNext(player2->effect);
     player1->gameBoard.nextBlock = player1->blockFactory->getNext(player1->effect);
     player2->gameBoard.nextBlock = player2->blockFactory->getNext(player2->effect);
-    currentPlayer = player1;
+    currentPlayer = player1.get();
     turn_count = 0;
     printGame();
     if (isGraphics) {
         renderGame();
-        window->setQueue(player1->q);
+        window->setQueue(player1->q.get());
     }
 }
 
@@ -56,8 +54,8 @@ void Game::renderGame()
         player2->gameBoard.toString(true, bonusEnabled),
         player1->score, player2->score,
         player1->level, player2->level,
-        (currentPlayer == player1) ? player1->gameBoard.nextBlock.get() : nullptr,
-        (currentPlayer == player2) ? player2->gameBoard.nextBlock.get() : nullptr,
+        (currentPlayer == player1.get()) ? player1->gameBoard.nextBlock.get() : nullptr,
+        (currentPlayer == player2.get()) ? player2->gameBoard.nextBlock.get() : nullptr,
         player1->gameBoard.ROWS, player1->gameBoard.COLS,
         highScore });
     window->renderGame(std::move(d));
@@ -112,9 +110,9 @@ void Game::printGame()
     }
     cout << "-----------\t\t-----------" << endl;
     cout << "Next:\t\t\tNext:" << endl;
-    if (currentPlayer == player1) {
+    if (currentPlayer == player1.get()) {
         player1->gameBoard.nextBlock->printBlock(true);
-    } else if (currentPlayer == player2) {
+    } else if (currentPlayer == player2.get()) {
         player2->gameBoard.nextBlock->printBlock(false);
     }
 }
@@ -150,19 +148,19 @@ void Game::textInput()
         }
 
         if (command == "quit") {
-            (currentPlayer == player1 ? player1->q : player2->q)->push("quit");
+            (currentPlayer == player1.get() ? player1->q : player2->q)->push("quit");
             break;
         }
 
         for (auto& c : PROHIB) {
             if (c == command) {
-                (currentPlayer == player1 ? player1->q : player2->q)->push(c);
+                (currentPlayer == player1.get() ? player1->q : player2->q)->push(c);
                 return;
             }
         }
 
         for (int i = 0; i < multiplier; ++i) {
-            (currentPlayer == player1 ? player1->q : player2->q)->push(command);
+            (currentPlayer == player1.get() ? player1->q : player2->q)->push(command);
         }
     }
 }
@@ -183,8 +181,8 @@ void Game::runMainLoop()
             continue;
         }
 
-        cout << (player1 == currentPlayer ? "Player 1" : "Player 2") << "'s turn" << endl;
-        string command = (player1 == currentPlayer ? player1->q : player2->q)->pop();
+        cout << (player1.get() == currentPlayer ? "Player 1" : "Player 2") << "'s turn" << endl;
+        string command = (player1.get() == currentPlayer ? player1->q : player2->q)->pop();
 
         if (command == "left") {
             currentPlayer->gameBoard.left();
@@ -204,8 +202,8 @@ void Game::runMainLoop()
             else if (isGraphics)
                 window->playSound(0);
             highScore = currentPlayer->score > highScore ? currentPlayer->score : highScore;
-            currentPlayer = currentPlayer == player1 ? player2 : player1;
-            window->setQueue(currentPlayer->q);
+            currentPlayer = currentPlayer == player1.get() ? player2.get() : player1.get();
+            window->setQueue(currentPlayer->q.get());
             turn_count++;
         } else if (command == "levelup") {
             currentPlayer->setLevel(currentPlayer->level + 1);
@@ -270,8 +268,6 @@ void Game::endGame()
 Game::~Game()
 {
     endGame();
-    delete player1;
-    delete player2;
     if (isGraphics)
         delete window;
 }

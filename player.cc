@@ -11,28 +11,30 @@ Player::Player(string filename, int score, int level, int effect)
     , effect { effect }
     , filename { filename }
 {
+    BlockFactory* bf;
     switch (level) {
     case 0:
-        blockFactory = new Level0Factory(filename);
+        bf = new Level0Factory(filename);
         break;
     case 1:
-        blockFactory = new Level1Factory();
+        bf = new Level1Factory();
         break;
     case 2:
-        blockFactory = new Level2Factory();
+        bf = new Level2Factory();
         break;
     case 3:
-        blockFactory = new Level3Factory();
+        bf = new Level3Factory();
         break;
     case 4:
-        blockFactory = new Level4Factory();
+        bf = new Level4Factory();
         break;
     default:
         throw "Invalid level";
         break;
     }
     score = 0;
-    q = new Queue();
+    blockFactory = unique_ptr<BlockFactory>(bf);
+    q = make_unique<Queue>();
 }
 
 void Player::setBlind(bool blind)
@@ -93,28 +95,29 @@ void Player::setLevel(int level)
         return;
     this->level = level;
     gameBoard.level = level;
-    delete blockFactory;
+    BlockFactory *bf;
     switch (level) {
     case 0:
-        blockFactory = new Level0Factory(filename);
+        bf = new Level0Factory(filename);
         break;
     case 1:
-        blockFactory = new Level1Factory();
+        bf = new Level1Factory();
         break;
     case 2:
-        blockFactory = new Level2Factory();
+        bf = new Level2Factory();
         break;
     case 3:
-        blockFactory = new Level3Factory();
+        bf = new Level3Factory();
         break;
     case 4:
-        blockFactory = new Level4Factory();
+        bf = new Level4Factory();
         score5turnsago = score;
         break;
     default:
         throw "Invalid level";
         break;
     }
+    blockFactory = unique_ptr<BlockFactory>(bf);
 }
 
 bool Player::clearRow()
@@ -154,6 +157,4 @@ bool Player::clearRow()
 
 Player::~Player()
 {
-    delete blockFactory;
-    delete q;
 }

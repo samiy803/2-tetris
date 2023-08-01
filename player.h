@@ -21,14 +21,14 @@
 class Player {
     friend class Game; // Game should have to access to Player's privates
     Board gameBoard;
-    BlockFactory* blockFactory;
+    std::unique_ptr<BlockFactory> blockFactory;
     int score;
     int score5turnsago;
     int level;
     int effect;
     int seed;
     std::string filename;
-    Queue* q;
+    std::unique_ptr<Queue> q;
 
 public:
     Player(std::string filename = "", int score = 0, int level = 0, int effect = 1);

@@ -295,6 +295,7 @@ void Window::handleInput(SDL_Event& e)
                     q->push("restart");
                 } else if (button.text[0] == "quit" && button.state) {
                     q->push("quit");
+                    break;
                 } else if (button.text[0] == "light") {
                     current_theme = button.text.at(button.state);
 
