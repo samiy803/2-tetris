@@ -16,7 +16,7 @@ Level0Factory::Level0Factory(string filename)
 
 Block* Level0Factory::getNext(int effects)
 {
-    if (index >= seq.size()) {
+    if ((long unsigned int) index >= seq.size()) {
         index = 0;
     }
     switch (seq[index++]) {

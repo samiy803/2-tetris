@@ -378,7 +378,7 @@ void Window::audioCallback(void* userdata, Uint8* stream, int len)
         return; // No more samples
     }
     // Don't copy more than we have left
-    len = (len > audio->remaining ? audio->remaining : len);
+    len = (len > (int) audio->remaining ? audio->remaining : len);
 
     // SDL_memcpy is the same as normal memcpy, but
     // adds some SDL ~sauce~ to make it platform independent
