@@ -146,15 +146,13 @@ void Board::drop()
 
 void Board::dropStar()
 {
-    STARBlock* starblock = new STARBlock(Position { 5, 0 }, 0, 0, 4);
-    Block* temp = currentBlock;
-    currentBlock = starblock;
+    STARBlock* starBlock = new STARBlock(Position { 5, 0 }, 0, 0, 4);
+    currentBlock = starBlock;
     while (validBoard()) {
         currentBlock->down();
     }
     currentBlock->up();
     blocks.push_back(currentBlock);
-    currentBlock = temp;
 }
 
 int Board::gc()

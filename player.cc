@@ -143,4 +143,5 @@ bool Player::clearRow()
 Player::~Player()
 {
     delete blockFactory;
+    delete q;
 }
