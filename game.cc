@@ -81,10 +81,12 @@ void Game::startGame()
     renderGame();
     textThread = thread(&Game::textInput, this);
     mainThread = thread(&Game::runMainLoop, this);
-    if (isGraphics)
+    if (isGraphics) {
         window->startDisplay();
-    else
+    }
+    else {
         mainThread.join();
+    }
 }
 
 void Game::printGame()
@@ -255,7 +257,6 @@ void Game::endGame()
     isRunning = false;
     try {
         if (textThread.joinable())
-            textThread.join();
         if (mainThread.joinable())
             mainThread.join();
     } catch (...) {

@@ -14,6 +14,7 @@ public:
     void push(std::string s);
     std::string pop();
     Queue() = default;
+    ~Queue() = default;
 };
 
 #endif // !QUEUE_H
