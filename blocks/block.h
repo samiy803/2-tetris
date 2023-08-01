@@ -41,6 +41,6 @@ public:
     char c;
     vector<Position> getOffsets();
     virtual ~Block() = default;
-    Block* clone();
+    std::unique_ptr<Block> clone();
 };
 #endif // !BLOCK_H

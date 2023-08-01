@@ -129,7 +129,7 @@ bool Player::clearRow()
                 break;
             }
             if (j == Board::COLS - 1) {
-                for (auto block : gameBoard.blocks) {
+                for (auto &block : gameBoard.blocks) {
                     block->deleteRow(i);
                 }
                 rows.push_back(i);
@@ -142,7 +142,7 @@ bool Player::clearRow()
     }
 
     for (int i : rows) {
-        for (auto block : gameBoard.blocks) {
+        for (auto &block : gameBoard.blocks) {
             block->shiftDown(i);
         }
     }

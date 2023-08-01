@@ -6,10 +6,11 @@
 #include "LBlock.h"
 #include "OBlock.h"
 #include "SBlock.h"
-#include "STARBlock.h"
+#include "StarBlock.h"
 #include "TBlock.h"
 #include "ZBlock.h"
 #include "block.h"
+#include <memory>
 
 class BlockFactory {
 protected:
@@ -17,7 +18,7 @@ protected:
 
 public:
     virtual void setSeed(int seed) = 0;
-    virtual Block* getNext(int effects) = 0;
+    virtual std::unique_ptr<Block> getNext(int effects) = 0;
     virtual ~BlockFactory() { } // hmmm
 };
 

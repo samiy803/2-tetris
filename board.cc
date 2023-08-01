@@ -5,17 +5,19 @@
 #include <map>
 #include <memory>
 
+using namespace std;
+
 string Board::toString(bool includeCurrentBlock, bool ghost)
 {
-    char board[ROWS * COLS];
+    char board[ROWS * COLS + 1];
     for (int i = 0; i < ROWS * COLS; i++) {
         board[i] = ' ';
     }
     if (ghost) {
         // Make a copy of the current block and store it in a unique_ptr
-        Block* ghostBlock = currentBlock->clone();
+        unique_ptr<Block> ghostBlock = currentBlock->clone();
 
-        blocks.push_back(ghostBlock);
+        blocks.push_back(unique_ptr<Block>(ghostBlock.get())); // Copy the ghost block into the blocks vector
 
         // Move the ghost block down until it hits something
         while (validBoard(false)) {
@@ -23,14 +25,15 @@ string Board::toString(bool includeCurrentBlock, bool ghost)
         }
         ghostBlock->up();
 
-        blocks.pop_back();
-
         // Draw the ghost block in lowercase
         for (Position pos : ghostBlock->getPositions()) {
             board[pos.y * COLS + pos.x] = tolower(ghostBlock->c);
         }
+
+        blocks.pop_back();
+        ghostBlock.release(); // Release the ghost block from the unique_ptr since it already got freed when it was popped
     }
-    for (Block* block : blocks) {
+    for (auto &block : blocks) {
         for (Position pos : block->getPositions()) {
             board[pos.y * COLS + pos.x] = block->c;
         }
@@ -40,6 +43,7 @@ string Board::toString(bool includeCurrentBlock, bool ghost)
             board[pos.y * COLS + pos.x] = currentBlock->c;
         }
     }
+    board[ROWS * COLS] = '\0';
     string s = board;
     return s;
 }
@@ -58,7 +62,7 @@ bool Board::validBoard(bool includeCurrentBlock)
         }
     }
 
-    for (Block* block : blocks) {
+    for (auto &block : blocks) {
         for (Position pos : block->getPositions()) {
             if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
                 return false;
@@ -139,31 +143,27 @@ void Board::drop()
     }
     currentBlock->up();
 
-    blocks.push_back(currentBlock);
-    currentBlock = nextBlock;
-    nextBlock = nullptr;
+    blocks.push_back(std::move(currentBlock));
+    currentBlock = std::move(nextBlock);
 }
 
 void Board::dropStar()
 {
-    STARBlock* starBlock = new STARBlock(Position { 5, 0 }, 0, 0, 4);
-    currentBlock = starBlock;
+    currentBlock = make_unique<StarBlock>(Position { 5, 0 }, 0, 0, 4);
     while (validBoard()) {
         currentBlock->down();
     }
     currentBlock->up();
-    blocks.push_back(currentBlock);
+    blocks.push_back(std::move(currentBlock));
 }
 
 int Board::gc()
 {
     for (auto it = blocks.begin(); it != blocks.end();) {
         if ((*it)->getOffsets().size() == 0) {
-            delete *it;
             int scoreAddition = pow(((*it)->startingLevel + 1), 2);
             it = blocks.erase(it);
             return scoreAddition;
-            it = blocks.erase(it);
         } else {
             ++it;
         }
@@ -171,9 +171,4 @@ int Board::gc()
     return 0;
 }
 
-Board::Board() {
-    currentBlock = nullptr;
-    nextBlock = nullptr;
-    turn_count = 0;
-    level = 0;
-}
+Board::Board() : turn_count(0), level(0) {}

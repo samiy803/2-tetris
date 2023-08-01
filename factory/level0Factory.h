@@ -5,17 +5,16 @@
 #include <cassert>
 #include <fstream>
 #include <vector>
-
-using std::ifstream;
-using std::string;
+#include <string>
+#include <memory>
 
 class Level0Factory : public BlockFactory {
     vector<char> seq;
     int index;
 
 public:
-    Level0Factory(string filename);
-    Block* getNext(int effects) override;
+    Level0Factory(std::string filename);
+    std::unique_ptr<Block> getNext(int effects) override;
     void setSeed(int seed) override;
     ~Level0Factory();
 };

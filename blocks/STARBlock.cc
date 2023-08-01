@@ -1,8 +1,8 @@
-#include "STARBlock.h"
+#include "StarBlock.h"
 
-const vector<Position> STARBlock::rotation0 = { { 0, 0 } };
+const vector<Position> StarBlock::rotation0 = { { 0, 0 } };
 
-STARBlock::STARBlock(Position p, int effects, short rotation, int startingLevel)
+StarBlock::StarBlock(Position p, int effects, short rotation, int startingLevel)
 {
     this->effects = effects;
     this->rotation = rotation;
@@ -15,12 +15,12 @@ STARBlock::STARBlock(Position p, int effects, short rotation, int startingLevel)
     }
 }
 
-void STARBlock::clockwise()
+void StarBlock::clockwise()
 {
     return;
 }
 
-void STARBlock::counterClockwise()
+void StarBlock::counterClockwise()
 {
     return;
 }

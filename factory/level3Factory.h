@@ -6,12 +6,13 @@
 #include <fstream>
 #include <random>
 #include <vector>
+#include <memory>
 
 class Level3Factory : public BlockFactory {
     std::mt19937 rng;
 
 public:
-    Block* getNext(int effects) override;
+    std::unique_ptr<Block> getNext(int effects) override;
     void setSeed(int seed) override;
     ~Level3Factory();
 };

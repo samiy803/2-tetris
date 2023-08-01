@@ -1,19 +1,18 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "STARBlock.h"
+#include "StarBlock.h"
 #include "block.h"
 #include <string>
 #include <vector>
-
-using std::string;
+#include <memory>
 
 class Board {
     friend class Game; // Game and Player should have access to Board's privates
     friend class Player;
-    vector<Block*> blocks;
-    Block* currentBlock;
-    Block* nextBlock;
+    std::vector<std::unique_ptr<Block>> blocks;
+    std::unique_ptr<Block> currentBlock;
+    std::unique_ptr<Block> nextBlock;
     void drop();
     void dropStar();
     bool validBoard(bool includeCurrentBlock = true);
@@ -29,7 +28,7 @@ class Board {
 public:
     static const int COLS = 11;
     static const int ROWS = 15;
-    string toString(bool includeCurrentBlock, bool ghost = false);
+    std::string toString(bool includeCurrentBlock, bool ghost = false);
     Board();
 };
 

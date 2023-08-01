@@ -83,7 +83,7 @@ void Block::printBlock(bool player1)
     }
 }
 
-Block* Block::clone()
+std::unique_ptr<Block> Block::clone()
 {
     Block* b = nullptr;
     switch (c) {
@@ -115,5 +115,5 @@ Block* Block::clone()
     b->rotation = rotation;
     b->startingLevel = startingLevel;
     b->c = c;
-    return b;
+    return std::unique_ptr<Block>(b);
 }

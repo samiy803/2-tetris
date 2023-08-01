@@ -1,25 +1,26 @@
 #include "level2Factory.h"
 
-Block* Level2Factory::getNext(int effects)
+std::unique_ptr<Block> Level2Factory::getNext(int effects)
 {
     short blockType = rng() % 7;
+    Block *block;
     switch (blockType) {
-    case 0:
-        return new SBlock(Position { 0, 0 }, effects, 0);
-    case 1:
-        return new ZBlock(Position { 0, 0 }, effects, 0);
-    case 2:
-        return new IBlock(Position { 0, 0 }, effects, 0);
-    case 3:
-        return new JBlock(Position { 0, 0 }, effects, 0);
-    case 4:
-        return new LBlock(Position { 0, 0 }, effects, 0);
-    case 5:
-        return new OBlock(Position { 0, 0 }, effects, 0);
-    case 6:
-        return new TBlock(Position { 0, 0 }, effects, 0);
-    }
-    return nullptr; // Just to make the compiler happy
+        case 0:
+            block = new SBlock(Position { 0, 0 }, effects, 0);
+        case 1:
+            block = new ZBlock(Position { 0, 0 }, effects, 0);
+        case 2:
+            block = new IBlock(Position { 0, 0 }, effects, 0);
+        case 3:
+            block = new JBlock(Position { 0, 0 }, effects, 0);
+        case 4:
+            block = new LBlock(Position { 0, 0 }, effects, 0);
+        case 5:
+            block = new OBlock(Position { 0, 0 }, effects, 0);
+        case 6:
+            block = new TBlock(Position { 0, 0 }, effects, 0);
+        }
+    return std::unique_ptr<Block> { block };
 }
 
 Level2Factory::~Level2Factory() { }

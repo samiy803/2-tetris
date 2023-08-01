@@ -27,14 +27,14 @@ class Player {
     int level;
     int effect;
     int seed;
-    string filename;
+    std::string filename;
     Queue* q;
 
 public:
-    Player(string filename = "", int score = 0, int level = 0, int effect = 1);
+    Player(std::string filename = "", int score = 0, int level = 0, int effect = 1);
     void setBlind(bool blind);
     void setHeavy(bool heavy);
-    void setForce(string block);
+    void setForce(std::string block);
     void setLevel(int level);
     bool clearRow();
     ~Player();
