@@ -1,8 +1,8 @@
 #include "SBlock.h"
 
 // storing rotations for SBlock as vectors
-const vector<Position> SBlock::rotation0 = { { 0, 1 }, { 1, 1 }, { 1, 0 }, { 2, 0 } };
-const vector<Position> SBlock::rotation1 = { { 0, -1 }, { 0, 0 }, { 1, 0 }, { 1, 1 } };
+const std::vector<Position> SBlock::rotation0 = { { 0, 1 }, { 1, 1 }, { 1, 0 }, { 2, 0 } };
+const std::vector<Position> SBlock::rotation1 = { { 0, -1 }, { 0, 0 }, { 1, 0 }, { 1, 1 } };
 
 // constructor for SBlock
 SBlock::SBlock(Position p, int effects, short rotation, int startingLevel)

@@ -2,10 +2,10 @@
 #include "../board.h"
 #include "level0Factory.h"
 
-vector<Position> Block::getPositions()
+std::vector<Position> Block::getPositions()
 {
     //vector of Positions (coordinates) for that specific block
-    vector<Position> positions;
+    std::vector<Position> positions;
     for (Position offset : offsets) {
         // adding start Position (x and y coordinate to offsets)
         offset.x += start.x;
@@ -59,7 +59,7 @@ void Block::shiftDown(int row)
 }
 
 // getter for offsets
-vector<Position> Block::getOffsets()
+std::vector<Position> Block::getOffsets()
 {
     return offsets;
 }

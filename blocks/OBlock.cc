@@ -1,7 +1,7 @@
 #include "OBlock.h"
 
 // storing rotations for OBlock as vector
-const vector<Position> OBlock::rotation0 = { { 0, 0 }, { 1, 0 }, { 0, 1 }, { 1, 1 } };
+const std::vector<Position> OBlock::rotation0 = { { 0, 0 }, { 1, 0 }, { 0, 1 }, { 1, 1 } };
 
 OBlock::OBlock(Position p, int effects, short rotation, int startingLevel)
 {

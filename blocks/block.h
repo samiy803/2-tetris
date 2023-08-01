@@ -32,7 +32,7 @@ public:
     virtual void clockwise() = 0;
     virtual void counterClockwise() = 0;
     // getter to get block positions
-    vector<Position> getPositions();
+    std::vector<Position> getPositions();
     // functions to handle row deletion in game
     void deleteRow(int row);
     void shiftDown(int row);
@@ -41,7 +41,7 @@ public:
     int startingLevel;
     char c;
     // getter to get block offsets
-    vector<Position> getOffsets();
+    std::vector<Position> getOffsets();
     //virtual destructor Block
     virtual ~Block() {}
     // clone of block function

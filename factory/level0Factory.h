@@ -8,15 +8,21 @@
 #include <string>
 #include <memory>
 
+// public inhertiance of abstract class BlockFactory
 class Level0Factory : public BlockFactory {
-    vector<char> seq;
+    std::vector<char> seq;
     int index;
 
 public:
+    // constructor for Level0Factory
     Level0Factory(std::string filename);
+    // overriding default function to get  next Block for the specific Level0Factory
     std::unique_ptr<Block> getNext(int effects) override; 
+    // overriding setSeed function
     void setSeed(int seed) override;
+    // overriding setRandom function
     void setRandom(bool random, std::string file = "") override {}
+    // destructor for Level0Factory
     ~Level0Factory() = default;
 };
 

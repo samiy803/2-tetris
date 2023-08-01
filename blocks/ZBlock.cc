@@ -1,8 +1,8 @@
 #include "ZBlock.h"
 
 // storing rotations for ZBlock as vectors
-const vector<Position> ZBlock::rotation0 = { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 2, 1 } };
-const vector<Position> ZBlock::rotation1 = { { 0, 1 }, { 0, 0 }, { 1, 0 }, { 1, -1 } };
+const std::vector<Position> ZBlock::rotation0 = { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 2, 1 } };
+const std::vector<Position> ZBlock::rotation1 = { { 0, 1 }, { 0, 0 }, { 1, 0 }, { 1, -1 } };
 
 // constructor for ZBlock
 ZBlock::ZBlock(Position p, int effects, short rotation, int startingLevel)

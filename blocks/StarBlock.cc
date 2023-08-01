@@ -1,7 +1,7 @@
 #include "StarBlock.h"
 
 // positions of StarBlock
-const vector<Position> StarBlock::rotation0 = { { 0, 0 } };
+const std::vector<Position> StarBlock::rotation0 = { { 0, 0 } };
 
 StarBlock::StarBlock(Position p, int effects, short rotation, int startingLevel)
 {

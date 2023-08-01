@@ -1,10 +1,10 @@
 #include "JBlock.h"
 
 // storing rotations for JBlock as vectors
-const vector<Position> JBlock::rotation0 = { { 1, 0 }, { 1, 1 }, { 1, 2 }, { 0, 2 } };
-const vector<Position> JBlock::rotation1 = { { 0, 1 }, { 0, 2 }, { 1, 2 }, { 2, 2 } };
-const vector<Position> JBlock::rotation2 = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 0 } };
-const vector<Position> JBlock::rotation3 = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 2, 2 } };
+const std::vector<Position> JBlock::rotation0 = { { 1, 0 }, { 1, 1 }, { 1, 2 }, { 0, 2 } };
+const std::vector<Position> JBlock::rotation1 = { { 0, 1 }, { 0, 2 }, { 1, 2 }, { 2, 2 } };
+const std::vector<Position> JBlock::rotation2 = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 0 } };
+const std::vector<Position> JBlock::rotation3 = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 2, 2 } };
 
 JBlock::JBlock(Position p, int effects, short rotation, int startingLevel)
 {

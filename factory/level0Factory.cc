@@ -2,8 +2,10 @@
 
 using namespace std;
 
+// constructor for Level0Factory
 Level0Factory::Level0Factory(string filename)
 {
+    // reading file appropriately to see each specific command
     ifstream file { filename };
     char c;
     while (file >> c) {
@@ -24,6 +26,7 @@ unique_ptr<Block> Level0Factory::getNext(int effects)
 
     Block* block;
     switch (seq[index++]) {
+        // generating specific Block for each case of Block type
         case 'I':
             block = new IBlock { Position { 0, 0 }, effects };
             break;
@@ -50,7 +53,7 @@ unique_ptr<Block> Level0Factory::getNext(int effects)
     }
     return unique_ptr<Block> { block };
 }
-
+// setting seed function
 void Level0Factory::setSeed(int seed)
 {
 

@@ -2,8 +2,10 @@
 
 std::unique_ptr<Block> Level2Factory::getNext(int effects)
 {
+   // equal probability for each block as desired for Level 2
     short blockType = rng() % 7;
     Block *block;
+    // picking Block to construct for specific Block type
     switch (blockType) {
         case 0:
             block = new SBlock(Position { 0, 0 }, effects, 2);
@@ -23,6 +25,7 @@ std::unique_ptr<Block> Level2Factory::getNext(int effects)
     return std::unique_ptr<Block> { block };
 }
 
+// setting seed for Level2Factory (also need to set seed for rng)
 void Level2Factory::setSeed(int seed)
 {
     this->seed = seed;

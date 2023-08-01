@@ -82,8 +82,8 @@ private:
     TTF_Font* smaller;
     std::shared_ptr<RenderData> renderData;
     Queue* q;
-    static vector<std::unique_ptr<AudioData>> audioData;
-    vector<Button> buttons;
+    static std::vector<std::unique_ptr<AudioData>> audioData;
+    std::vector<Button> buttons;
     std::string current_theme;
 
     // Colors!!

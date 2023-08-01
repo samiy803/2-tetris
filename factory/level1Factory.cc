@@ -2,8 +2,13 @@
 
 std::unique_ptr<Block> Level1Factory::getNext(int effects)
 {
+    /* equal probabilities for each block (1/6)
+       except 1/12 probablity for SBlock and ZBlock
+       as desired for this level
+    */
     short blockType = rng() % 12;
     Block *block;
+    // picking Block to construct for specific Block type
     switch (blockType) {
         case 0:
             block = new SBlock(Position { 0, 0 }, effects, 1);
@@ -34,6 +39,7 @@ std::unique_ptr<Block> Level1Factory::getNext(int effects)
 }
 
 
+// setting seed for Level1Factory (also need to set seed for rng)
 void Level1Factory::setSeed(int seed)
 {
     this->seed = seed;

@@ -1,10 +1,10 @@
 #include "LBlock.h"
 
 // storing rotations for LBlock as vectors
-const vector<Position> LBlock::rotation0 = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 2 } };
-const vector<Position> LBlock::rotation1 = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 0, 2 } };
-const vector<Position> LBlock::rotation2 = { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 1, 2 } };
-const vector<Position> LBlock::rotation3 = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 2, 1 } };
+const std::vector<Position> LBlock::rotation0 = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 2 } };
+const std::vector<Position> LBlock::rotation1 = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 0, 2 } };
+const std::vector<Position> LBlock::rotation2 = { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 1, 2 } };
+const std::vector<Position> LBlock::rotation3 = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 2, 1 } };
 
 LBlock::LBlock(Position p, int effects, short rotation, int startingLevel)
 {

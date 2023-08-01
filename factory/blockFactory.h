@@ -12,14 +12,21 @@
 #include "block.h"
 #include <memory>
 
+/* Abstract block factory (for factory pattern) 
+where specific factories are used for each level (inherit this class)
+*/
 class BlockFactory {
 protected:
     int seed;
 
 public:
+    // function to setsSeed 
     virtual void setSeed(int seed) = 0;
+    // get Next Block function for BlockFactory
     virtual std::unique_ptr<Block> getNext(int effects) = 0;
+    // virtual destructor for BlockFactory
     virtual ~BlockFactory() {}; 
+    // set Random function 
     virtual void setRandom(bool random, std::string file = "") = 0;
 };
 

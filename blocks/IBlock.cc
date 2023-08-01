@@ -1,8 +1,8 @@
 #include "IBlock.h"
 
 // storing rotations for IBlock as vectors
-const vector<Position> IBlock::rotation0 = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
-const vector<Position> IBlock::rotation1 = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 } };
+const std::vector<Position> IBlock::rotation0 = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
+const std::vector<Position> IBlock::rotation1 = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 } };
 
 // constructor for IBlock
 IBlock::IBlock(Position p, int effects, short rotation, int startingLevel)

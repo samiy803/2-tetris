@@ -147,6 +147,7 @@ void Board::drop()
     currentBlock = std::move(nextBlock);
 }
 
+// function to drop Star block
 void Board::dropStar()
 {
     currentBlock = make_unique<StarBlock>(Position { 5, 0 }, 0, 0, 4);
