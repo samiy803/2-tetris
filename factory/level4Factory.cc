@@ -23,6 +23,7 @@ Block* Level4Factory::getNext(int effects)
     case 8:
         return new OBlock(Position { 0, 0 }, effects, 0);
     }
+    return nullptr; // Just to make the compiler happy
 }
 
 Level4Factory::~Level4Factory() { }

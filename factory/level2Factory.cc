@@ -19,6 +19,7 @@ Block* Level2Factory::getNext(int effects)
     case 6:
         return new TBlock(Position { 0, 0 }, effects, 0);
     }
+    return nullptr; // Just to make the compiler happy
 }
 
 Level2Factory::~Level2Factory() { }
