@@ -187,13 +187,15 @@ void Board::drop()
 // function to drop Star block
 void Board::dropStar()
 {
-    currentBlock = make_unique<StarBlock>(Position { 5, 0 }, 0, 0, 4);
-    // TODO
-    while (validBoard()) {
-        currentBlock->down();
+    unique_ptr<Block> sb = make_unique<StarBlock>(Position { 5, 0 }, 0, 0, 4);
+
+    blocks.push_back(unique_ptr<Block>(sb.get()));
+
+    while (validBoard(false)) {
+        sb->down();
     }
-    currentBlock->up();
-    blocks.push_back(std::move(currentBlock));
+    sb->up();
+    sb.release();
 }
 
 int Board::gc()

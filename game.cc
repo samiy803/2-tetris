@@ -173,10 +173,8 @@ void Game::textInput()
 
 void Game::runMainLoop()
 {
-
     while (isRunning) {
         cout << (player1.get() == currentPlayer ? "Player 1" : "Player 2") << "'s turn" << endl;
-
 
         string command = (player1.get() == currentPlayer ? player1->q : player2->q)->pop();
         
@@ -209,15 +207,17 @@ void Game::runMainLoop()
             currentPlayer->effect = 1;
             currentPlayer->gameBoard.drop(); // next block is now nullptr
             currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect); // no longer nullptr
-            if (currentPlayer->clearRow() && isGraphics)
+            int linesCleared = currentPlayer->clearRow();
+            cout << "Lines cleared: " << linesCleared << endl;
+            if (linesCleared && isGraphics)
                 window->playSound(2);
             else if (isGraphics)
                 window->playSound(0);
             highScore = currentPlayer->score > highScore ? currentPlayer->score : highScore;
-            if(currentPlayer->triggereffect > 0){
-                currentPlayer == player1.get() ? player2->effect *= currentPlayer->triggereffect : player1->effect *= currentPlayer->triggereffect;
-            }
-            currentPlayer->triggereffect = 0;
+            // if(currentPlayer->triggereffect > 0){
+            //     currentPlayer == player1.get() ? player2->effect *= currentPlayer->triggereffect : player1->effect *= currentPlayer->triggereffect;
+            // }
+            // currentPlayer->triggereffect = 0;
             currentPlayer = currentPlayer == player1.get() ? player2.get() : player1.get();
             window->setQueue(currentPlayer->q.get());
             turn_count++;
@@ -231,12 +231,51 @@ void Game::runMainLoop()
                     currentPlayer->score5turnsago = currentPlayer->score;
                 }
             }
+            if (linesCleared >= 2) {
+                if (isGraphics) {
+                    renderGame();
+                }
+
+                printGame();
+                cout << "Special action triggered! Enter your desired effect:" << endl;
+                string effect = (player1.get() == currentPlayer ? player1->q : player2->q)->pop();
+                while (true) {
+                    if (effect == "heavy") {
+                        currentPlayer == player1.get() ? player1->effect *= 2 : player2->effect *= 2;
+                        break;
+                    } else if (effect == "blind") {
+                        currentPlayer == player1.get() ? player1->effect *= 3 : player2->effect *= 3;
+                        break;
+                    } else if (effect == "force") {
+                        string block = (player1.get() == currentPlayer ? player1->q : player2->q)->pop();
+                        if (block == "I") {
+                            currentPlayer->gameBoard.currentBlock = make_unique<IBlock>(Position{0, 0}, currentPlayer->effect);
+                        } else if (block == "J") {
+                            currentPlayer->gameBoard.currentBlock = make_unique<JBlock>(Position{0, 0}, currentPlayer->effect);
+                        } else if (block == "L") {
+                            currentPlayer->gameBoard.currentBlock = make_unique<LBlock>(Position{0, 0}, currentPlayer->effect);
+                        } else if (block == "O") {
+                            currentPlayer->gameBoard.currentBlock = make_unique<OBlock>(Position{0, 0}, currentPlayer->effect);
+                        } else if (block == "S") {
+                            currentPlayer->gameBoard.currentBlock = make_unique<SBlock>(Position{0, 0}, currentPlayer->effect);
+                        } else if (block == "Z") {
+                            currentPlayer->gameBoard.currentBlock = make_unique<ZBlock>(Position{0, 0}, currentPlayer->effect);
+                        } else if (block == "T") {
+                            currentPlayer->gameBoard.currentBlock = make_unique<TBlock>(Position{0, 0}, currentPlayer->effect);
+                        }
+                        break;
+                    }
+                    effect = (player1.get() == currentPlayer ? player1->q : player2->q)->pop();
+                }
+                continue;
+            }
         }
         else if (command == "levelup") {
-            currentPlayer->setLevel(currentPlayer->level + 1);
-            currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect);
+            if(currentPlayer->setLevel(currentPlayer->level + 1))
+                currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect);
         } else if (command == "leveldown") {
-            currentPlayer->setLevel(currentPlayer->level - 1);
+            if(currentPlayer->setLevel(currentPlayer->level - 1))
+                currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect);
         } else if (command == "I") {
             currentPlayer->gameBoard.currentBlock = make_unique<IBlock>(Position{0, 0}, currentPlayer->effect);
         } else if (command == "J") {

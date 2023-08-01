@@ -89,10 +89,10 @@ void Player::setForce(string block)
         effect /= prime;
 }
 
-void Player::setLevel(int level)
+bool Player::setLevel(int level)
 {
     if (level < 0 || level > 4)
-        return;
+        return false;
     this->level = level;
     gameBoard.level = level;
     BlockFactory *bf;
@@ -118,9 +118,10 @@ void Player::setLevel(int level)
         break;
     }
     blockFactory = unique_ptr<BlockFactory>(bf);
+    return true;
 }
 
-bool Player::clearRow()
+int Player::clearRow()
 {
     string board = gameBoard.toString(false);
 
@@ -149,60 +150,10 @@ bool Player::clearRow()
             block->shiftDown(i);
         }
     }
-
-    if (size >= 2) {
-        triggereffect = 2;
-        // while(1){
-        //     string effectinput;
-        //     cout << "Apply Effect: " << endl;
-        //     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        //     getline(cin, effectinput);
-        //     cout << effectinput << endl;
-        //     istringstream iss{effectinput};
-        //     string firstword;
-        //     if(firstword == "blind"){ 
-        //         triggereffect = 3;
-        //         break;
-        //     }else if(firstword == "heavy"){
-        //         triggereffect = 2;
-        //         break;
-        //     }else if(firstword == "force"){
-        //         string block;
-        //         iss >> block;
-        //         if(block == "I"){
-        //             triggereffect = 5;
-        //             break;
-        //         }else if(block == "J"){
-        //             triggereffect = 7;
-        //             break;
-        //         }else if(block == "L"){
-        //             triggereffect = 11;
-        //             break;
-        //         }else if(block == "O"){
-        //             triggereffect = 13;
-        //             break;
-        //         }else if(block == "S"){
-        //             triggereffect = 17;
-        //             break;
-        //         }else if(block == "T"){
-        //             triggereffect = 19;
-        //             break;
-        //         }else if(block == "Z"){
-        //             triggereffect = 23;
-        //             break;
-        //         }else{
-        //             cout << "Invalid block" << endl;
-        //         }
-        //     }
-        //     else{
-        //         cout << "Invalid Effect" << endl;
-        //     }
-        // }
-        
-    }
+    
     score += gameBoard.gc();
 
-    return size > 0;
+    return size;
 }
 
 Player::~Player()

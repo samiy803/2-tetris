@@ -36,8 +36,8 @@ public:
     void setBlind(bool blind);
     void setHeavy(bool heavy);
     void setForce(std::string block);
-    void setLevel(int level);
-    bool clearRow();
+    bool setLevel(int level);
+    int clearRow();
     ~Player();
 };
 
