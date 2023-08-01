@@ -7,7 +7,7 @@
 
 using namespace std;
 
-string Board::toString(bool includeCurrentBlock, bool ghost)
+string Board::toString(bool includeCurrentBlock, bool ghost, bool blind)
 {
     char board[ROWS * COLS + 1];
     for (int i = 0; i < ROWS * COLS; i++) {
@@ -41,6 +41,13 @@ string Board::toString(bool includeCurrentBlock, bool ghost)
     if (includeCurrentBlock) {
         for (Position pos : currentBlock->getPositions()) {
             board[pos.y * COLS + pos.x] = currentBlock->c;
+        }
+    }
+    if(blind){
+        for(int rows = 3; rows < 12; rows++){
+            for(int cols = 3; cols < 9; cols++){
+                board[rows * COLS + cols] = '?';
+            }
         }
     }
     string s = board;
@@ -174,6 +181,7 @@ void Board::drop()
 
     blocks.push_back(std::move(currentBlock));
     currentBlock = std::move(nextBlock);
+    nextBlock.release();
 }
 
 // function to drop Star block

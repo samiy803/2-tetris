@@ -47,15 +47,15 @@ void Game::restart()
 }
 
 void Game::renderGame() {
-    shared_ptr<Window::RenderData> d(new Window::RenderData{ player1->gameBoard.toString(true, bonusEnable, player1->effect % 3 == 0),
+    unique_ptr<Window::RenderData> d(new Window::RenderData{ player1->gameBoard.toString(true, bonusEnabled, player1->effect % 3 == 0),
                                                     player2->gameBoard.toString(true, bonusEnabled, player2->effect % 3 == 0),
                                                     player1->score, player2->score,
                                                     player1->level, player2->level,
-                                                    currentPlayer == player1 ? player1->gameBoard.nextBlock : nullptr,
-                                                    currentPlayer == player2 ? player2->gameBoard.nextBlock : nullptr,
+                                                    currentPlayer == player1.get() ? player1->gameBoard.nextBlock.get() : nullptr,
+                                                    currentPlayer == player2.get() ? player2->gameBoard.nextBlock.get() : nullptr,
                                                     player1->gameBoard.ROWS, player1->gameBoard.COLS,
                                                     highScore });
-    window->renderGame(d);
+    window->renderGame(std::move(d));
 }
 
 void Game::startGame()
@@ -91,8 +91,8 @@ void Game::printGame()
     assert(currentPlayer != nullptr);
     assert(player1->gameBoard.COLS == player2->gameBoard.COLS);
     assert(player1->gameBoard.ROWS == player2->gameBoard.ROWS);
-    string player1Board = player1->gameBoard.toString(true, bonusEnabled, player1->effect % 3 == 0);
-    string player2Board = player2->gameBoard.toString(true, bonusEnabled, player2->effect % 3 == 0);
+    string player1Board = player1->gameBoard.toString(true, false, player1->effect % 3 == 0);
+    string player2Board = player2->gameBoard.toString(true, false, player2->effect % 3 == 0);
     assert(player1Board.length() == player2Board.length());
     cout << "\t  "
          << "Highscore: " << highScore << endl;
@@ -175,7 +175,11 @@ void Game::runMainLoop()
 {
 
     while (isRunning) {
+        cout << (player1.get() == currentPlayer ? "Player 1" : "Player 2") << "'s turn" << endl;
 
+
+        string command = (player1.get() == currentPlayer ? player1->q : player2->q)->pop();
+        
         // Check if game is over
         if (!player1->gameBoard.validBoard()) {
             cout << "Player 2 wins!" << endl;
@@ -186,9 +190,6 @@ void Game::runMainLoop()
             restart();
             continue;
         }
-
-        cout << (player1.get() == currentPlayer ? "Player 1" : "Player 2") << "'s turn" << endl;
-        string command = (player1.get() == currentPlayer ? player1->q : player2->q)->pop();
 
         if (command == "left") {
             currentPlayer->gameBoard.left(currentPlayer->effect % 2 == 0);
@@ -233,6 +234,7 @@ void Game::runMainLoop()
         }
         else if (command == "levelup") {
             currentPlayer->setLevel(currentPlayer->level + 1);
+            currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect);
         } else if (command == "leveldown") {
             currentPlayer->setLevel(currentPlayer->level - 1);
         } else if (command == "I") {

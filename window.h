@@ -80,7 +80,7 @@ private:
     SDL_GLContext glc;
     TTF_Font* reg;
     TTF_Font* smaller;
-    std::shared_ptr<RenderData> renderData;
+    std::unique_ptr<RenderData> renderData;
     Queue* q;
     static std::vector<std::unique_ptr<AudioData>> audioData;
     std::vector<Button> buttons;

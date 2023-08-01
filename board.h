@@ -29,7 +29,7 @@ class Board {
 public:
     static const int COLS = 11;
     static const int ROWS = 15;
-    string toString(bool includeCurrentBlock, bool ghost = false, bool blind = false);
+    std::string toString(bool includeCurrentBlock, bool ghost = false, bool blind = false);
     Board();
 };
 

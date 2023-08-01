@@ -23,7 +23,6 @@ Window::Window(bool bonusEnabled, int width, int height)
     , bonusEnabled { bonusEnabled }
     , width { width }
     , height { height }
-    , renderData { nullptr }
 {
     if (bonusEnabled) {
         loadAudio();
