@@ -9,6 +9,7 @@ public:
     StarBlock(Position p = Position { 5, 0 }, int effects = 0, short rotation = 0, int startingLevel = 4);
     void clockwise() override;
     void counterClockwise() override;
+    ~StarBlock() = default;
 };
 
 #endif // !STARBLOCK_H

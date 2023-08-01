@@ -16,7 +16,7 @@ public:
     Level0Factory(std::string filename);
     std::unique_ptr<Block> getNext(int effects) override;
     void setSeed(int seed) override;
-    ~Level0Factory();
+    ~Level0Factory() = default;
 };
 
 #endif // !LEVEL0_FACTORY_H

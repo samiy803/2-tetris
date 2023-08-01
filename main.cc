@@ -44,12 +44,10 @@ int main(int argc, char* argv[])
     }
 
     try {
-        std::unique_ptr<Game> game = std::make_unique<Game>(isGraphics, seed, file1, file2, startLevel, bonusEnabled);
-        game->startGame();
+        Game game(isGraphics, seed, file1, file2, startLevel, bonusEnabled);
+        game.startGame();
     } catch (...) {
         cerr << "Fatal error, could not create game. Contact DMK for more info" << endl;
-        return 1;
     }
-
     return 0;
 }

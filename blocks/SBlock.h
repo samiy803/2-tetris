@@ -10,6 +10,7 @@ public:
     SBlock(Position p = Position { 0, 0 }, int effects = 1, short rotation = 0, int startingLevel = 0);
     void clockwise() override;
     void counterClockwise() override;
+    ~SBlock() = default;
 };
 
 #endif // !SBLOCK_H

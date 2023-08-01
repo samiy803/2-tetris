@@ -33,7 +33,6 @@ std::unique_ptr<Block> Level1Factory::getNext(int effects)
     return std::unique_ptr<Block> { block };
 }
 
-Level1Factory::~Level1Factory() { }
 
 void Level1Factory::setSeed(int seed)
 {

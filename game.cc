@@ -149,6 +149,11 @@ void Game::textInput()
             command = match;
         }
 
+        if (command == "quit") {
+            (currentPlayer == player1 ? player1->q : player2->q)->push("quit");
+            break;
+        }
+
         for (auto& c : PROHIB) {
             if (c == command) {
                 (currentPlayer == player1 ? player1->q : player2->q)->push(c);
@@ -158,10 +163,6 @@ void Game::textInput()
 
         for (int i = 0; i < multiplier; ++i) {
             (currentPlayer == player1 ? player1->q : player2->q)->push(command);
-        }
-
-        if (command == "quit") {
-            break;
         }
     }
 }

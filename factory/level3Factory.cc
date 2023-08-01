@@ -27,8 +27,6 @@ std::unique_ptr<Block> Level3Factory::getNext(int effects)
     return std::unique_ptr<Block> { block };
 }
 
-Level3Factory::~Level3Factory() { }
-
 void Level3Factory::setSeed(int seed)
 {
     this->seed = seed;

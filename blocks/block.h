@@ -40,7 +40,7 @@ public:
     int startingLevel;
     char c;
     vector<Position> getOffsets();
-    virtual ~Block() = default;
+    virtual ~Block() {}
     std::unique_ptr<Block> clone();
 };
 #endif // !BLOCK_H

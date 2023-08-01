@@ -19,7 +19,7 @@ protected:
 public:
     virtual void setSeed(int seed) = 0;
     virtual std::unique_ptr<Block> getNext(int effects) = 0;
-    virtual ~BlockFactory() { } // hmmm
+    virtual ~BlockFactory() {}; 
 };
 
 #endif // !BLOCK_FACTORY_H

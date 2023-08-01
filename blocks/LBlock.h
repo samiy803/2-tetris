@@ -12,6 +12,7 @@ public:
     LBlock(Position p = Position { 0, 0 }, int effects = 1, short rotation = 0, int startingLevel = 0);
     void clockwise() override;
     void counterClockwise() override;
+    ~LBlock() = default;
 };
 
 #endif // !LBLOCK_H

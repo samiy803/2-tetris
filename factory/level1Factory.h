@@ -14,7 +14,7 @@ class Level1Factory : public BlockFactory {
 public:
     std::unique_ptr<Block> getNext(int effects) override;
     void setSeed(int seed) override;
-    ~Level1Factory();
+    ~Level1Factory() = default;
 };
 
 #endif // !LEVEL1_FACTORY_H

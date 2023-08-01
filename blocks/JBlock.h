@@ -12,6 +12,7 @@ public:
     JBlock(Position p = Position { 1, 0 }, int effects = 1, short rotation = 0, int startingLevel = 0);
     void clockwise() override;
     void counterClockwise() override;
+    ~JBlock() = default;
 };
 
 #endif // !JBLOCK_H

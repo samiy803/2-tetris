@@ -51,8 +51,6 @@ unique_ptr<Block> Level0Factory::getNext(int effects)
     return unique_ptr<Block> { block };
 }
 
-Level0Factory::~Level0Factory() { }
-
 void Level0Factory::setSeed(int seed)
 {
 

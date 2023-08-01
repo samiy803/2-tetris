@@ -23,8 +23,6 @@ std::unique_ptr<Block> Level2Factory::getNext(int effects)
     return std::unique_ptr<Block> { block };
 }
 
-Level2Factory::~Level2Factory() { }
-
 void Level2Factory::setSeed(int seed)
 {
     this->seed = seed;
