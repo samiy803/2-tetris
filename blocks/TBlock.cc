@@ -7,11 +7,11 @@ const std::vector<Position> TBlock::rotation2 = { { 0, 1 }, { 1, 1 }, { 2, 1 }, 
 const std::vector<Position> TBlock::rotation3 = { { 0, -1 }, { 0, 0 }, { 0, 1 }, { 1, 0 } };
 
 // constructor for TBlock
-TBlock::TBlock(Position p, int effects, short rotation, int startingLevel)
+TBlock::TBlock(int effects, int startingLevel, short rotation)
 {
     this->effects = effects;
     this->rotation = rotation;
-    start = p;
+    start = {0,2};
     c = 'T';
     // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {

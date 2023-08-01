@@ -6,12 +6,12 @@ const std::vector<Position> LBlock::rotation1 = { { 0, 1 }, { 1, 1 }, { 2, 1 }, 
 const std::vector<Position> LBlock::rotation2 = { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 1, 2 } };
 const std::vector<Position> LBlock::rotation3 = { { 0, 2 }, { 1, 2 }, { 2, 2 }, { 2, 1 } };
 
-LBlock::LBlock(Position p, int effects, short rotation, int startingLevel)
+LBlock::LBlock(int effects, int startingLevel, short rotation)
 {
     this->effects = effects;
     this->rotation = rotation;
     this->startingLevel = startingLevel;
-    start = p;
+    start = {0,3};
     c = 'L';
     // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {

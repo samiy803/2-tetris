@@ -57,7 +57,7 @@ public:
     };
     bool quit;
     bool bonusEnabled;
-    Window(bool bonusEnabled = false, int width = 1024, int height = 768); // Constructor; displays the window.
+    Window(bool bonusEnabled = false, int width = 1024, int height = 820); // Constructor; displays the window.
     ~Window(); // Destructor; destroys the window.
     Window(const Window&) = delete; // Disallow copy ctor.
     Window& operator=(const Window&) = delete; // Disallow copy assign.
@@ -98,6 +98,7 @@ private:
         CYAN,
         PURPLE,
         DARK_GREY,
+        BROWN,
         NUM_COLORS
     };
     const float NORMAL_COLORS[NUM_COLORS][3] = {
@@ -110,7 +111,8 @@ private:
         {1.0, 0.0, 1.0}, // MAGENTA
         {0.0, 1.0, 1.0}, // CYAN
         {0.5, 0.0, 0.5}, // PURPLE
-        {210 / 255.0, 211 / 255.0, 219 / 255.0} // DARK_GREY
+        {210 / 255.0, 211 / 255.0, 219 / 255.0}, // DARK_GREY
+        {160/255.0, 82/255.0, 45/255.0} // BROWN
     };
 
     const float DARKMODE_COLORS[NUM_COLORS][3] = {
@@ -123,7 +125,8 @@ private:
         {1.0, 0.0, 1.0}, // MAGENTA
         {0.0, 1.0, 1.0}, // CYAN
         {1, 0.75, 0.4}, // PURPLE
-        {0.1, 0.1, 0.1} // DARK_GREY
+        {0.1, 0.1, 0.1}, // DARK_GREY
+        {139 / 255.0, 69/255.0, 19/255.0 } // BROWN
     };
 
     const float DRACULA_COLORS[NUM_COLORS][3] = {
@@ -136,7 +139,8 @@ private:
         {255.0 / 255.0, 121.0 / 255.0, 198.0 / 255.0}, // MAGENTA
         {139.0 / 255.0, 233.0 / 255.0, 253.0 / 255.0}, // CYAN
         {189.0 / 255.0, 147.0 / 255.0, 249.0 / 255.0}, // PURPLE
-        {40.0 / 255.0, 42.0 / 255.0, 54.0 / 255.0} // DARK_GREY, but not really
+        {40.0 / 255.0, 42.0 / 255.0, 54.0 / 255.0}, // DARK_GREY, but not really
+        {160/255.0, 82/255.0, 45/255.0} // BROWN
     };
 
     typedef float ColorArray[NUM_COLORS][3];

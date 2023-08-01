@@ -3,11 +3,11 @@
 // storing rotations for OBlock as vector
 const std::vector<Position> OBlock::rotation0 = { { 0, 0 }, { 1, 0 }, { 0, 1 }, { 1, 1 } };
 
-OBlock::OBlock(Position p, int effects, short rotation, int startingLevel)
+OBlock::OBlock(int effects, int startingLevel, short rotation)
 {
     this->effects = effects;
     this->rotation = rotation;
-    start = p;
+    start = {0,2};
     c = 'O';
     // using switch case to set offsets for each rotation (in this case 1)
     switch (rotation) {

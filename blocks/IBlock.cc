@@ -5,12 +5,12 @@ const std::vector<Position> IBlock::rotation0 = { { 0, 0 }, { 0, 1 }, { 0, 2 }, 
 const std::vector<Position> IBlock::rotation1 = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 } };
 
 // constructor for IBlock
-IBlock::IBlock(Position p, int effects, short rotation, int startingLevel)
+IBlock::IBlock(int effects, int startingLevel, short rotation)
 {
     this->effects = effects;
     this->rotation = rotation;
     this->startingLevel = startingLevel;
-    start = p;
+    start = {0,3};
     c = 'I';
     // using switch case to set offsets for each rotation (in this case 2)
     switch (rotation) {

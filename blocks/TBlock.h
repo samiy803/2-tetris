@@ -11,7 +11,7 @@ class TBlock : public Block {
 
 public:
     // constructor for TBlock
-    TBlock(Position p = Position { 0, 0 }, int effects = 1, short rotation = 0, int startingLevel = 0);
+    TBlock(int effects = 1, int startingLevel = 0, short rotation = 0);
     // specific rotations for TBlock (override the default)
     void clockwise() override;
     void counterClockwise() override;

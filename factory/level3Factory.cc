@@ -7,31 +7,31 @@ std::unique_ptr<Block> Level3Factory::getNext(int effects)
         short blockType = rng() % 9;
         switch (blockType) {
         case 0:
-            block = new SBlock(Position { 0, 0 }, effects, 3);
+            block = new SBlock(effects, 3);
             break;
         case 1:
-            block = new SBlock(Position { 0, 0 }, effects, 3);
+            block = new SBlock(effects, 3);
             break;
         case 2:
-            block = new ZBlock(Position { 0, 0 }, effects, 3);
+            block = new ZBlock(effects, 3);
             break;
         case 3:
-            block = new ZBlock(Position { 0, 0 }, effects, 3);
+            block = new ZBlock(effects, 3);
             break;
         case 4:
-            block = new LBlock(Position { 0, 0 }, effects, 3);
+            block = new LBlock(effects, 3);
             break;
         case 5:
-            block = new JBlock(Position { 0, 0 }, effects, 3);
+            block = new JBlock(effects, 3);
             break;
         case 6:
-            block = new IBlock(Position { 0, 0 }, effects, 3);
+            block = new IBlock(effects, 3);
             break;
         case 7:
-            block = new TBlock(Position { 0, 0 }, effects, 3);
+            block = new TBlock(effects, 3);
             break;
         case 8:
-            block = new OBlock(Position { 0, 0 }, effects, 3);
+            block = new OBlock(effects, 3);
             break;
         }
     } else {
@@ -40,25 +40,25 @@ std::unique_ptr<Block> Level3Factory::getNext(int effects)
         }
         switch (seq[index++]) {
         case 'I':
-            block = new IBlock { Position { 0, 0 }, effects, 4};
+            block = new IBlock { effects, 3};
             break;
         case 'J':
-            block = new JBlock { Position { 0, 0 }, effects, 4};
+            block = new JBlock { effects, 3};
             break;
         case 'L':
-            block = new LBlock { Position { 0, 0 }, effects, 4};
+            block = new LBlock { effects, 3};
             break;
         case 'O':
-            block = new OBlock { Position { 0, 0 }, effects, 4};
+            block = new OBlock { effects, 3};
             break;
         case 'S':
-            block = new SBlock { Position { 0, 0 }, effects, 4};
+            block = new SBlock { effects, 3};
             break;
         case 'Z':
-            block = new ZBlock { Position { 0, 0 }, effects, 4};
+            block = new ZBlock { effects, 3};
             break;
         case 'T':
-            block = new TBlock { Position { 0, 0 }, effects, 4};
+            block = new TBlock { effects, 3};
             break;
         default:
             throw "Invalid block type found in sequence";

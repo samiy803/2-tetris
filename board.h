@@ -28,7 +28,7 @@ class Board {
 
 public:
     static const int COLS = 11;
-    static const int ROWS = 15;
+    static const int ROWS = 18;
     std::string toString(bool includeCurrentBlock, bool ghost = false, bool blind = false);
     Board();
 };

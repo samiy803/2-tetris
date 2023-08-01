@@ -9,7 +9,7 @@ class IBlock : public Block {
 
 public:
     // constructor for IBlock
-    IBlock(Position p = Position { 0, 0 }, int effects = 1, short rotation = 0, int startingLevel = 0);
+    IBlock(int effects = 1, int startingLevel = 0, short rotation = 0);
     // specific rotations for IBlock (override the default)
     void clockwise() override;
     void counterClockwise() override;

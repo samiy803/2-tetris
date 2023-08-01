@@ -8,7 +8,7 @@ class OBlock : public Block {
 
 public:
     // constructor for OBlock
-    OBlock(Position p = Position { 0, 0 }, int effects = 1, short rotation = 0, int startingLevel = 0);
+    OBlock(int effects = 1, int startingLevel = 0, short rotation = 0);
     // specific rotations for OBlock (override the default)
     void clockwise() override;
     void counterClockwise() override;

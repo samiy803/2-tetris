@@ -8,19 +8,26 @@ std::unique_ptr<Block> Level2Factory::getNext(int effects)
     // picking Block to construct for specific Block type
     switch (blockType) {
         case 0:
-            block = new SBlock(Position { 0, 0 }, effects, 2);
+            block = new SBlock(effects, 2);
+            break;
         case 1:
-            block = new ZBlock(Position { 0, 0 }, effects, 2);
+            block = new ZBlock(effects, 2);
+            break;
         case 2:
-            block = new IBlock(Position { 0, 0 }, effects, 2);
+            block = new IBlock(effects, 2);
+            break;
         case 3:
-            block = new JBlock(Position { 0, 0 }, effects, 2);
+            block = new JBlock(effects, 2);
+            break;
         case 4:
-            block = new LBlock(Position { 0, 0 }, effects, 2);
+            block = new LBlock(effects, 2);
+            break;
         case 5:
-            block = new OBlock(Position { 0, 0 }, effects, 2);
+            block = new OBlock(effects, 2);
+            break;
         case 6:
-            block = new TBlock(Position { 0, 0 }, effects, 2);
+            block = new TBlock(effects, 2);
+            break;
         }
     return std::unique_ptr<Block> { block };
 }

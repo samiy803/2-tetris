@@ -8,7 +8,7 @@
 #include <vector>
 #include <memory>
 
-// public inhertiance of abstract class BlockFactory
+// public inheritance of abstract class BlockFactory
 class Level2Factory : public BlockFactory {
     // used to randomize blocks
     std::mt19937 rng;

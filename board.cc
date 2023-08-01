@@ -187,7 +187,7 @@ void Board::drop()
 // function to drop Star block
 void Board::dropStar()
 {
-    unique_ptr<Block> sb = make_unique<StarBlock>(Position { 5, 0 }, 0, 0, 4);
+    unique_ptr<Block> sb = make_unique<StarBlock>();
 
     blocks.push_back(unique_ptr<Block>(sb.get()));
 

@@ -9,7 +9,7 @@ class ZBlock : public Block {
 
 public:
      // constructor for ZBlock
-    ZBlock(Position p = Position { 0, 0 }, int effects = 1, short rotation = 0, int startingLevel = 0);
+    ZBlock(int effects = 1, int startingLevel = 0, short rotation = 0);
     // specific rotations for ZBlock (override the default)
     void clockwise() override;
     void counterClockwise() override;

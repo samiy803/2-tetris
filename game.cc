@@ -249,19 +249,19 @@ void Game::runMainLoop()
                     } else if (effect == "force") {
                         string block = (player1.get() == currentPlayer ? player1->q : player2->q)->pop();
                         if (block == "I") {
-                            currentPlayer->gameBoard.currentBlock = make_unique<IBlock>(Position{0, 0}, currentPlayer->effect);
+                            currentPlayer->gameBoard.currentBlock = make_unique<IBlock>(currentPlayer->effect);
                         } else if (block == "J") {
-                            currentPlayer->gameBoard.currentBlock = make_unique<JBlock>(Position{0, 0}, currentPlayer->effect);
+                            currentPlayer->gameBoard.currentBlock = make_unique<JBlock>(currentPlayer->effect);
                         } else if (block == "L") {
-                            currentPlayer->gameBoard.currentBlock = make_unique<LBlock>(Position{0, 0}, currentPlayer->effect);
+                            currentPlayer->gameBoard.currentBlock = make_unique<LBlock>(currentPlayer->effect);
                         } else if (block == "O") {
-                            currentPlayer->gameBoard.currentBlock = make_unique<OBlock>(Position{0, 0}, currentPlayer->effect);
+                            currentPlayer->gameBoard.currentBlock = make_unique<OBlock>(currentPlayer->effect);
                         } else if (block == "S") {
-                            currentPlayer->gameBoard.currentBlock = make_unique<SBlock>(Position{0, 0}, currentPlayer->effect);
+                            currentPlayer->gameBoard.currentBlock = make_unique<SBlock>(currentPlayer->effect);
                         } else if (block == "Z") {
-                            currentPlayer->gameBoard.currentBlock = make_unique<ZBlock>(Position{0, 0}, currentPlayer->effect);
+                            currentPlayer->gameBoard.currentBlock = make_unique<ZBlock>(currentPlayer->effect);
                         } else if (block == "T") {
-                            currentPlayer->gameBoard.currentBlock = make_unique<TBlock>(Position{0, 0}, currentPlayer->effect);
+                            currentPlayer->gameBoard.currentBlock = make_unique<TBlock>(currentPlayer->effect);
                         }
                         break;
                     }
@@ -277,19 +277,19 @@ void Game::runMainLoop()
             if(currentPlayer->setLevel(currentPlayer->level - 1))
                 currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect);
         } else if (command == "I") {
-            currentPlayer->gameBoard.currentBlock = make_unique<IBlock>(Position{0, 0}, currentPlayer->effect);
+            currentPlayer->gameBoard.currentBlock = make_unique<IBlock>(currentPlayer->effect);
         } else if (command == "J") {
-            currentPlayer->gameBoard.currentBlock = make_unique<JBlock>(Position{0, 0}, currentPlayer->effect);
+            currentPlayer->gameBoard.currentBlock = make_unique<JBlock>(currentPlayer->effect);
         } else if (command == "L") {
-            currentPlayer->gameBoard.currentBlock = make_unique<LBlock>(Position{0, 0}, currentPlayer->effect);
+            currentPlayer->gameBoard.currentBlock = make_unique<LBlock>(currentPlayer->effect);
         } else if (command == "O") {
-            currentPlayer->gameBoard.currentBlock = make_unique<OBlock>(Position{0, 0}, currentPlayer->effect);
+            currentPlayer->gameBoard.currentBlock = make_unique<OBlock>(currentPlayer->effect);
         } else if (command == "S") {
-            currentPlayer->gameBoard.currentBlock = make_unique<SBlock>(Position{0, 0}, currentPlayer->effect);
+            currentPlayer->gameBoard.currentBlock = make_unique<SBlock>(currentPlayer->effect);
         } else if (command == "T") {
-            currentPlayer->gameBoard.currentBlock = make_unique<TBlock>(Position{0, 0}, currentPlayer->effect);
+            currentPlayer->gameBoard.currentBlock = make_unique<TBlock>(currentPlayer->effect);
         } else if (command == "Z") {
-            currentPlayer->gameBoard.currentBlock = make_unique<ZBlock>(Position{0, 0}, currentPlayer->effect);
+            currentPlayer->gameBoard.currentBlock = make_unique<ZBlock>(currentPlayer->effect);
         } else if (command == "restart") {
             restart();
             continue;

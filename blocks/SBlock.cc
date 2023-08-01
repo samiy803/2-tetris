@@ -5,11 +5,11 @@ const std::vector<Position> SBlock::rotation0 = { { 0, 1 }, { 1, 1 }, { 1, 0 }, 
 const std::vector<Position> SBlock::rotation1 = { { 0, -1 }, { 0, 0 }, { 1, 0 }, { 1, 1 } };
 
 // constructor for SBlock
-SBlock::SBlock(Position p, int effects, short rotation, int startingLevel)
+SBlock::SBlock(int effects, int startingLevel, short rotation)
 {
     this->effects = effects;
     this->rotation = rotation;
-    start = p;
+    start = {0,2};
     c = 'S';
     // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {

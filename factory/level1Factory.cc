@@ -9,31 +9,44 @@ std::unique_ptr<Block> Level1Factory::getNext(int effects)
     short blockType = rng() % 12;
     Block *block;
     // picking Block to construct for specific Block type
+    std::cout << blockType << std::endl;
     switch (blockType) {
         case 0:
-            block = new SBlock(Position { 0, 0 }, effects, 1);
+            block = new SBlock(effects, 1);
+            break;
         case 1:
-            block = new ZBlock(Position { 0, 0 }, effects, 1);
+            block = new ZBlock(effects, 1);
+            break;
         case 2:
-            block = new IBlock(Position { 0, 0 }, effects, 1);
+            block = new IBlock(effects, 1);
+            break;
         case 3:
-            block = new IBlock(Position { 0, 0 }, effects, 1);
+            block = new IBlock(effects, 1);
+            break;
         case 4:
-            block = new LBlock(Position { 0, 0 }, effects, 1);
+            block = new LBlock(effects, 1);
+            break;
         case 5:
-            block = new LBlock(Position { 0, 0 }, effects, 1);
+            block = new LBlock(effects, 1);
+            break;
         case 6:
-            block = new JBlock(Position { 0, 0 }, effects, 1);
+            block = new JBlock(effects, 1);
+            break;
         case 7:
-            block = new JBlock(Position { 0, 0 }, effects, 1);
+            block = new JBlock(effects, 1);
+            break;
         case 8:
-            block = new TBlock(Position { 0, 0 }, effects, 1);
+            block = new TBlock(effects, 1);
+            break;
         case 9:
-            block = new TBlock(Position { 0, 0 }, effects, 1);
+            block = new TBlock(effects, 1);
+            break;
         case 10:
-            block = new OBlock(Position { 0, 0 }, effects, 1);
+            block = new OBlock(effects, 1);
+            break;
         case 11:
-            block = new OBlock(Position { 0, 0 }, effects, 1);
+            block = new OBlock(effects, 1);
+            break;
     }
     return std::unique_ptr<Block> { block };
 }

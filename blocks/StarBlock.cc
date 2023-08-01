@@ -4,10 +4,10 @@ using namespace std;
 
 const vector<Position> StarBlock::rotation0 = {{0, 0}};
 
-StarBlock::StarBlock(Position p, int effects, short rotation, int startingLevel) {
+StarBlock::StarBlock(int effects, int startingLevel, short rotation) {
     this->effects = effects;
     this->rotation = rotation;
-    start = p;
+    start = {5,0};
     c = '*';
     switch (rotation) {
         case 0:

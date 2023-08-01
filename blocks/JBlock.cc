@@ -6,12 +6,12 @@ const std::vector<Position> JBlock::rotation1 = { { 0, 1 }, { 0, 2 }, { 1, 2 }, 
 const std::vector<Position> JBlock::rotation2 = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 0 } };
 const std::vector<Position> JBlock::rotation3 = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 2, 2 } };
 
-JBlock::JBlock(Position p, int effects, short rotation, int startingLevel)
+JBlock::JBlock(int effects, int startingLevel, short rotation)
 {
     this->effects = effects;
     this->rotation = rotation;
     this->startingLevel = startingLevel;
-    start = p;
+    start = {0,3};
     c = 'J';
     // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {

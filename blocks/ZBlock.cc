@@ -5,11 +5,11 @@ const std::vector<Position> ZBlock::rotation0 = { { 0, 0 }, { 1, 0 }, { 1, 1 }, 
 const std::vector<Position> ZBlock::rotation1 = { { 0, 1 }, { 0, 0 }, { 1, 0 }, { 1, -1 } };
 
 // constructor for ZBlock
-ZBlock::ZBlock(Position p, int effects, short rotation, int startingLevel)
+ZBlock::ZBlock(int effects, int startingLevel, short rotation)
 {
     this->effects = effects;
     this->rotation = rotation;
-    start = p;
+    start = {0,2};
     c = 'Z';
     // using switch case to set offsets for each rotation (in this case 2)
     switch (rotation) {

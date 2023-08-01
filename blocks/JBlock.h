@@ -11,7 +11,7 @@ class JBlock : public Block {
 
 public:
 // constructor for JBlock
-    JBlock(Position p = Position { 1, 0 }, int effects = 1, short rotation = 0, int startingLevel = 0);
+    JBlock(int effects = 1, int startingLevel = 0, short rotation = 0);
     // specific rotations for JBlock (override the default)
     void clockwise() override;
     void counterClockwise() override;

@@ -28,25 +28,25 @@ unique_ptr<Block> Level0Factory::getNext(int effects)
     switch (seq[index++]) {
         // generating specific Block for each case of Block type
         case 'I':
-            block = new IBlock { Position { 0, 0 }, effects };
+            block = new IBlock(effects);
             break;
         case 'J':
-            block = new JBlock { Position { 0, 0 }, effects };
+            block = new JBlock(effects);
             break;
         case 'L':
-            block = new LBlock { Position { 0, 0 }, effects };
+            block = new LBlock(effects);
             break;
         case 'O':
-            block = new OBlock { Position { 0, 0 }, effects };
+            block = new OBlock(effects);
             break;
         case 'S':
-            block = new SBlock { Position { 0, 0 }, effects };
+            block = new SBlock(effects);
             break;
         case 'Z':
-            block = new ZBlock { Position { 0, 0 }, effects };
+            block = new ZBlock(effects);
             break;
         case 'T':
-            block = new TBlock { Position { 0, 0 }, effects };
+            block = new TBlock(effects);
             break;
         default:
             throw "Invalid block type found in sequence";

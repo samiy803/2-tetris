@@ -231,7 +231,7 @@ void Window::setColor(char curChar)
     } else if (curChar == 'T') {
         glColor3fv((*colors)[PURPLE]);
     } else if (curChar == '*') {
-        glColor3fv((*colors)[WHITE]);
+        glColor3fv((*colors)[BROWN]);
     } else if (curChar == 'i') {
         glColor3f((*colors)[CYAN][0] - alpha, (*colors)[CYAN][1] - alpha, (*colors)[CYAN][2] - alpha);
     } else if (curChar == 'j') {
@@ -246,6 +246,8 @@ void Window::setColor(char curChar)
         glColor3f((*colors)[RED][0] - alpha, (*colors)[RED][1] - alpha, (*colors)[RED][2] - alpha);
     } else if (curChar == 't') {
         glColor3f((*colors)[PURPLE][0] - alpha, (*colors)[PURPLE][1] - alpha, (*colors)[PURPLE][2] - alpha);
+    } else if (curChar == '.') {
+        glColor3fv((*colors)[WHITE]);
     } else {
         glColor3fv((*colors)[BLACK]);
     }
@@ -418,7 +420,7 @@ void Window::playSound(int i)
 void Window::drawBG()
 {
     // Draw grid for player 1
-    setColor('*');
+    setColor('.');
     glBegin(GL_LINES);
     for (int i = 0; i <= renderData->COLS; i++) {
         glVertex2f(-1 + borderX + i * blockWidth, 1 - borderY);
@@ -551,7 +553,7 @@ void Window::drawMenu()
         }
         glEnd();
 
-        setColor('*');
+        setColor('.');
 
         drawText(smaller, button.text.at(button.state), ((button.x + button.w / 2) / 2 + 0.5) * width, ((button.y + button.h / 2) / 2 + 0.5) * height, true);
     }
