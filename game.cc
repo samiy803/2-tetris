@@ -257,6 +257,7 @@ void Game::endGame()
     isRunning = false;
     try {
         if (textThread.joinable())
+            textThread.join();
         if (mainThread.joinable())
             mainThread.join();
     } catch (...) {
@@ -267,6 +268,7 @@ void Game::endGame()
 
 Game::~Game()
 {
+    endGame();
     delete player1;
     delete player2;
     if (isGraphics)
