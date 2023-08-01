@@ -17,7 +17,6 @@ else
 endif
 
 ${EXEC}: ${OBJECTS}
-	@echo $(OSFLAG)
 	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} ${ENDLIBS}
 
 -include ${DEPENDS}
