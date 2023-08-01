@@ -55,6 +55,7 @@ Window::~Window()
     TTF_CloseFont(smaller);
     SDL_GL_DeleteContext(glc);
     SDL_DestroyWindow(w);
+    TTF_Quit();
     SDL_Quit();
 }
 
