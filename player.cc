@@ -15,6 +15,18 @@ Player::Player(string filename, int score, int level, int effect)
     case 0:
         blockFactory = new Level0Factory(filename);
         break;
+    case 1:
+        blockFactory = new Level1Factory();
+        break;
+    case 2:
+        blockFactory = new Level2Factory();
+        break;
+    case 3:
+        blockFactory = new Level3Factory();
+        break;
+    case 4:
+        blockFactory = new Level4Factory();
+        break;
     default:
         throw "Invalid level";
         break;

@@ -170,3 +170,10 @@ int Board::gc()
     }
     return 0;
 }
+
+Board::Board() {
+    currentBlock = nullptr;
+    nextBlock = nullptr;
+    turn_count = 0;
+    level = 0;
+}
