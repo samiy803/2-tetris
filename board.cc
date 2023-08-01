@@ -5,7 +5,7 @@
 #include <memory>
 #include "level0Factory.h"
 
-string Board::toString(bool includeCurrentBlock, bool ghost) {
+string Board::toString(bool includeCurrentBlock, bool ghost, bool blind) {
     char board[ROWS * COLS];
     for (int i = 0; i < ROWS * COLS; i++) {
         board[i] = ' ';
@@ -38,6 +38,13 @@ string Board::toString(bool includeCurrentBlock, bool ghost) {
     if (includeCurrentBlock) {
         for (Position pos : currentBlock->getPositions()) {
             board[pos.y * COLS + pos.x] = currentBlock->c;
+        }
+    }
+    if(blind){
+        for(int rows = 3; rows < 12; rows++){
+            for(int cols = 3; cols < 9; cols++){
+                board[rows * COLS + cols] = '?';
+            }
         }
     }
     string s = board;
@@ -73,39 +80,57 @@ bool Board::validBoard(bool includeCurrentBlock) {
     return true;
 }
 
-void Board::left() {
+void Board::left(bool heavyeffect) {
     currentBlock->left();
     if(level == 3 || level == 4){
         currentBlock->down();
     }
+    if(heavyeffect) {
+        currentBlock->down();
+    }
     if (!validBoard()) {
         if(level == 4 || level == 3){
+            currentBlock->up();
+        }
+        if(heavyeffect){
             currentBlock->up();
         }
         currentBlock->right();
     }
 }
 
-void Board::right() {
+void Board::right(bool heavyeffect) {
     currentBlock->right();
     if(level == 3 || level == 4){
+        currentBlock->down();
+    }
+    if(heavyeffect) {
         currentBlock->down();
     }
     if (!validBoard()) {
         if(level == 4 || level == 3){
             currentBlock->up();
         }
+        if(heavyeffect){
+            currentBlock->up();
+        }
         currentBlock->left();
     }
 }
 
-void Board::down() {
+void Board::down(bool heavyeffect) {
     currentBlock->down();
     if(level == 3 || level == 4){
         currentBlock->down();
     }
+    if(heavyeffect) {
+        currentBlock->down();
+    }
     if (!validBoard()) {
         if(level == 4 || level == 3){
+            currentBlock->up();
+        }
+        if(heavyeffect){
             currentBlock->up();
         }
         currentBlock->up();

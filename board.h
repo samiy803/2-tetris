@@ -17,9 +17,9 @@ class Board {
     void drop();
     void dropStar();
     bool validBoard(bool includeCurrentBlock = true);
-    void left();
-    void right();
-    void down();
+    void left(bool heavyeffect = false);
+    void right(bool heavyeffect = false);
+    void down(bool heavyeffect = false);
     void clockwise();
     void counterClockwise();
     int gc();
@@ -28,7 +28,7 @@ class Board {
     public:
     static const int COLS = 11;
     static const int ROWS = 15;
-    string toString(bool includeCurrentBlock, bool ghost = false);
+    string toString(bool includeCurrentBlock, bool ghost = false, bool blind = false);
 };
 
 #endif // !BOARD_H

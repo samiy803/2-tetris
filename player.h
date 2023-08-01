@@ -26,6 +26,7 @@ class Player {
     int score5turnsago;
     int level;
     int effect;
+    int triggereffect;
     int seed;
     string filename;
     Queue* q;

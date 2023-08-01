@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include "queue.h"
+#include <sstream>
 
 using namespace std;
 
@@ -128,6 +129,56 @@ bool Player::clearRow() {
         }
     }
 
+    if (size >= 2) {
+        while(1){
+            string effectinput;
+            cout << "Apply Effect: " << endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            getline(cin, effectinput);
+            cout << effectinput << endl;
+            istringstream iss{effectinput};
+            string firstword;
+            if(firstword == "blind"){ 
+                triggereffect = 3;
+                break;
+            }else if(firstword == "heavy"){
+                triggereffect = 2;
+                break;
+            }else if(firstword == "force"){
+                string block;
+                iss >> block;
+                if(block == "I"){
+                    triggereffect = 5;
+                    break;
+                }else if(block == "J"){
+                    triggereffect = 7;
+                    break;
+                }else if(block == "L"){
+                    triggereffect = 11;
+                    break;
+                }else if(block == "O"){
+                    triggereffect = 13;
+                    break;
+                }else if(block == "S"){
+                    triggereffect = 17;
+                    break;
+                }else if(block == "T"){
+                    triggereffect = 19;
+                    break;
+                }else if(block == "Z"){
+                    triggereffect = 23;
+                    break;
+                }else{
+                    cout << "Invalid block" << endl;
+                }
+            }
+            else{
+                cout << "Invalid Effect" << endl;
+            }
+        }
+        
+    }
+    cout << triggereffect << endl;
     score += gameBoard.gc();
 
     return size > 0;

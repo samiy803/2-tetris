@@ -42,8 +42,8 @@ void Game::restart() {
 }
 
 void Game::renderGame() {
-    shared_ptr<Window::RenderData> d(new Window::RenderData{ player1->gameBoard.toString(true, bonusEnabled),
-                                                    player2->gameBoard.toString(true, bonusEnabled),
+    shared_ptr<Window::RenderData> d(new Window::RenderData{ player1->gameBoard.toString(true, bonusEnabled, player1->effect % 3 == 0),
+                                                    player2->gameBoard.toString(true, bonusEnabled, player2->effect % 3 == 0),
                                                     player1->score, player2->score,
                                                     player1->level, player2->level,
                                                     currentPlayer == player1 ? player1->gameBoard.nextBlock : nullptr,
@@ -81,8 +81,8 @@ void Game::printGame() {
     assert(currentPlayer != nullptr);
     assert(player1->gameBoard.COLS == player2->gameBoard.COLS);
     assert(player1->gameBoard.ROWS == player2->gameBoard.ROWS);
-    string player1Board = player1->gameBoard.toString(true);
-    string player2Board = player2->gameBoard.toString(true);
+    string player1Board = player1->gameBoard.toString(true, bonusEnabled, player1->effect % 3 == 0);
+    string player2Board = player2->gameBoard.toString(true, bonusEnabled, player2->effect % 3 == 0);
     assert(player1Board.length() == player2Board.length());
     cout << "\t  " << "Highscore: " << highScore << endl;
     cout << "-----------------------------------" << endl;
@@ -169,13 +169,13 @@ void Game::runMainLoop() {
         string command = (player1 == currentPlayer ? player1->q : player2->q)->pop();
 
         if (command == "left") {
-            currentPlayer->gameBoard.left();
+            currentPlayer->gameBoard.left(currentPlayer->effect % 2 == 0);
         }
         else if (command == "right") {
-            currentPlayer->gameBoard.right();
+            currentPlayer->gameBoard.right(currentPlayer->effect % 2 == 0);
         }
         else if (command == "down") {
-            currentPlayer->gameBoard.down();
+            currentPlayer->gameBoard.down(currentPlayer->effect % 2 == 0);
         }
         else if (command == "clockwise") {
             currentPlayer->gameBoard.clockwise();
@@ -184,6 +184,7 @@ void Game::runMainLoop() {
             currentPlayer->gameBoard.counterClockwise();
         }
         else if (command == "drop") {
+            currentPlayer->effect = 1;
             currentPlayer->gameBoard.drop(); // next block is now nullptr
             currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect); // no longer nullptr
             if (currentPlayer->clearRow() && isGraphics)
@@ -191,6 +192,10 @@ void Game::runMainLoop() {
             else if (isGraphics)
                 window->playSound(0);
             highScore = currentPlayer->score > highScore ? currentPlayer->score : highScore;
+            if(currentPlayer->triggereffect > 0){
+                currentPlayer == player1 ? player2->effect *= currentPlayer->triggereffect : player1->effect *= currentPlayer->triggereffect;
+            }
+            currentPlayer->triggereffect = 0;
             currentPlayer = currentPlayer == player1 ? player2 : player1;
             window->setQueue(currentPlayer->q);
             turn_count++;
