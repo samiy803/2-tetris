@@ -33,6 +33,7 @@ Player::Player(string filename, int score, int level, int effect)
     }
     score = 0;
     q = new Queue();
+    blockFactory = nullptr;
 }
 
 void Player::setBlind(bool blind)
