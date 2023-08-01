@@ -43,7 +43,6 @@ string Board::toString(bool includeCurrentBlock, bool ghost)
             board[pos.y * COLS + pos.x] = currentBlock->c;
         }
     }
-    board[ROWS * COLS] = '\0';
     string s = board;
     return s;
 }
@@ -78,42 +77,72 @@ bool Board::validBoard(bool includeCurrentBlock)
     return true;
 }
 
-void Board::left()
-{
+void Board::left(bool heavyeffect) {
     currentBlock->left();
     if (level == 3 || level == 4) {
         currentBlock->down();
     }
+    if(heavyeffect) {
+        currentBlock->down();
+    }
+    if(heavyeffect) {
+        currentBlock->down();
+    }
     if (!validBoard()) {
         if (level == 4 || level == 3) {
+            currentBlock->up();
+        }
+        if(heavyeffect){
+            currentBlock->up();
+        }
+        if(heavyeffect){
             currentBlock->up();
         }
         currentBlock->right();
     }
 }
 
-void Board::right()
-{
+void Board::right(bool heavyeffect) {
     currentBlock->right();
     if (level == 3 || level == 4) {
+        currentBlock->down();
+    }
+    if(heavyeffect) {
+        currentBlock->down();
+    }
+    if(heavyeffect) {
         currentBlock->down();
     }
     if (!validBoard()) {
         if (level == 4 || level == 3) {
             currentBlock->up();
         }
+        if(heavyeffect){
+            currentBlock->up();
+        }
+        if(heavyeffect){
+            currentBlock->up();
+        }
         currentBlock->left();
     }
 }
 
-void Board::down()
-{
+void Board::down(bool heavyeffect) {
     currentBlock->down();
     if (level == 3 || level == 4) {
         currentBlock->down();
     }
+    if (heavyeffect) {
+        currentBlock->down();
+    }
+    if(heavyeffect) {
+        currentBlock->down();
+    }
     if (!validBoard()) {
         if (level == 4 || level == 3) {
+            currentBlock->up();
+        }
+        if (heavyeffect){
             currentBlock->up();
         }
         currentBlock->up();
@@ -151,6 +180,7 @@ void Board::drop()
 void Board::dropStar()
 {
     currentBlock = make_unique<StarBlock>(Position { 5, 0 }, 0, 0, 4);
+    // TODO
     while (validBoard()) {
         currentBlock->down();
     }

@@ -46,19 +46,16 @@ void Game::restart()
     }
 }
 
-void Game::renderGame()
-{
-    if (!isGraphics)
-        return;
-    unique_ptr<Window::RenderData> d(new Window::RenderData { player1->gameBoard.toString(true, bonusEnabled),
-        player2->gameBoard.toString(true, bonusEnabled),
-        player1->score, player2->score,
-        player1->level, player2->level,
-        (currentPlayer == player1.get()) ? player1->gameBoard.nextBlock.get() : nullptr,
-        (currentPlayer == player2.get()) ? player2->gameBoard.nextBlock.get() : nullptr,
-        player1->gameBoard.ROWS, player1->gameBoard.COLS,
-        highScore });
-    window->renderGame(std::move(d));
+void Game::renderGame() {
+    shared_ptr<Window::RenderData> d(new Window::RenderData{ player1->gameBoard.toString(true, bonusEnable, player1->effect % 3 == 0),
+                                                    player2->gameBoard.toString(true, bonusEnabled, player2->effect % 3 == 0),
+                                                    player1->score, player2->score,
+                                                    player1->level, player2->level,
+                                                    currentPlayer == player1 ? player1->gameBoard.nextBlock : nullptr,
+                                                    currentPlayer == player2 ? player2->gameBoard.nextBlock : nullptr,
+                                                    player1->gameBoard.ROWS, player1->gameBoard.COLS,
+                                                    highScore });
+    window->renderGame(d);
 }
 
 void Game::startGame()
@@ -94,8 +91,8 @@ void Game::printGame()
     assert(currentPlayer != nullptr);
     assert(player1->gameBoard.COLS == player2->gameBoard.COLS);
     assert(player1->gameBoard.ROWS == player2->gameBoard.ROWS);
-    string player1Board = player1->gameBoard.toString(true);
-    string player2Board = player2->gameBoard.toString(true);
+    string player1Board = player1->gameBoard.toString(true, bonusEnabled, player1->effect % 3 == 0);
+    string player2Board = player2->gameBoard.toString(true, bonusEnabled, player2->effect % 3 == 0);
     assert(player1Board.length() == player2Board.length());
     cout << "\t  "
          << "Highscore: " << highScore << endl;
@@ -194,16 +191,21 @@ void Game::runMainLoop()
         string command = (player1.get() == currentPlayer ? player1->q : player2->q)->pop();
 
         if (command == "left") {
-            currentPlayer->gameBoard.left();
-        } else if (command == "right") {
-            currentPlayer->gameBoard.right();
-        } else if (command == "down") {
-            currentPlayer->gameBoard.down();
-        } else if (command == "clockwise") {
+            currentPlayer->gameBoard.left(currentPlayer->effect % 2 == 0);
+        }
+        else if (command == "right") {
+            currentPlayer->gameBoard.right(currentPlayer->effect % 2 == 0);
+        }
+        else if (command == "down") {
+            currentPlayer->gameBoard.down(currentPlayer->effect % 2 == 0);
+        }
+        else if (command == "clockwise") {
             currentPlayer->gameBoard.clockwise();
         } else if (command == "counterclockwise") {
             currentPlayer->gameBoard.counterClockwise();
-        } else if (command == "drop") {
+        }
+        else if (command == "drop") {
+            currentPlayer->effect = 1;
             currentPlayer->gameBoard.drop(); // next block is now nullptr
             currentPlayer->gameBoard.nextBlock = currentPlayer->blockFactory->getNext(currentPlayer->effect); // no longer nullptr
             if (currentPlayer->clearRow() && isGraphics)
@@ -211,10 +213,25 @@ void Game::runMainLoop()
             else if (isGraphics)
                 window->playSound(0);
             highScore = currentPlayer->score > highScore ? currentPlayer->score : highScore;
+            if(currentPlayer->triggereffect > 0){
+                currentPlayer == player1.get() ? player2->effect *= currentPlayer->triggereffect : player1->effect *= currentPlayer->triggereffect;
+            }
+            currentPlayer->triggereffect = 0;
             currentPlayer = currentPlayer == player1.get() ? player2.get() : player1.get();
             window->setQueue(currentPlayer->q.get());
             turn_count++;
-        } else if (command == "levelup") {
+            if (currentPlayer->level == 4){
+                currentPlayer->gameBoard.turn_count++;
+            }
+            if (currentPlayer->level == 4 && currentPlayer->gameBoard.turn_count % 5 == 0){
+                if (currentPlayer->score == currentPlayer->score5turnsago) {
+                    currentPlayer->gameBoard.dropStar();
+                } else{
+                    currentPlayer->score5turnsago = currentPlayer->score;
+                }
+            }
+        }
+        else if (command == "levelup") {
             currentPlayer->setLevel(currentPlayer->level + 1);
         } else if (command == "leveldown") {
             currentPlayer->setLevel(currentPlayer->level - 1);

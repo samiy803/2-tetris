@@ -11,6 +11,8 @@
 #include "ZBlock.h"
 #include "block.h"
 #include <memory>
+#include "IBlock.h"
+#include "StarBlock.h"
 
 /* Abstract block factory (for factory pattern) 
 where specific factories are used for each level (inherit this class)
