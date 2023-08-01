@@ -4,7 +4,7 @@
 #include <vector>
 #include "block.h"
 #include <string>
-#include "STARBlock.h"
+#include "StarBlock.h"
 
 using std::string;
 

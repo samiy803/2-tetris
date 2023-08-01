@@ -163,7 +163,7 @@ void Board::drop() {
 }
 
 void Board::dropStar(){
-    STARBlock* starblock = new STARBlock(Position{5, 0}, 0, 0, 4);
+    StarBlock* starblock = new StarBlock(Position{5, 0}, 0, 0, 4);
     Block* temp = currentBlock;
     currentBlock = starblock;
     while(validBoard()){

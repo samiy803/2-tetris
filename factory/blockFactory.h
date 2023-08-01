@@ -9,7 +9,7 @@
 #include "ZBlock.h"
 #include "TBlock.h"
 #include "IBlock.h"
-#include "STARBlock.h"
+#include "StarBlock.h"
 
 class BlockFactory {
     protected:
