@@ -14,8 +14,9 @@ class Level0Factory : public BlockFactory {
 
 public:
     Level0Factory(std::string filename);
-    std::unique_ptr<Block> getNext(int effects) override;
+    std::unique_ptr<Block> getNext(int effects) override; 
     void setSeed(int seed) override;
+    void setRandom(bool random, std::string file = "") override {}
     ~Level0Factory() = default;
 };
 

@@ -15,6 +15,7 @@ public:
     std::unique_ptr<Block> getNext(int effects) override;
     void setSeed(int seed) override;
     ~Level2Factory() = default;
+    void setRandom(bool random, std::string file = "") override {}
 };
 
 #endif // !LEVEL2_FACTORY_H

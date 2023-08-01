@@ -20,6 +20,7 @@ public:
     virtual void setSeed(int seed) = 0;
     virtual std::unique_ptr<Block> getNext(int effects) = 0;
     virtual ~BlockFactory() {}; 
+    virtual void setRandom(bool random, std::string file = "") = 0;
 };
 
 #endif // !BLOCK_FACTORY_H

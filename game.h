@@ -16,12 +16,11 @@
 
 class Game {
     const std::vector<std::string> COMMANDS = { "left", "right", "down", "clockwise", "counterclockwise", "drop", "levelup", "leveldown", "norandom", "random", "sequence", "I", "J", "L", "O", "S", "Z", "T", "restart", "hint", "rename", "bonus", "force" };
-    const std::vector<std::string> PROHIB = { "restart", "hint", "norandom", "random" };
     std::unique_ptr<Player> player1;
     std::unique_ptr<Player> player2;
     int highScore = 0;
     Player* currentPlayer;
-    Window* window;
+    std::unique_ptr<Window> window;
     unsigned long turn_count;
     bool isGraphics;
     bool bonusEnabled;

@@ -10,7 +10,15 @@
 #include <memory>
 #include <string>
 #include <vector>
-
+/**
+ * @brief The Window class is responsible for displaying the game.
+ * 
+ * Note to marker: A lot of raw pointers are used here because SDL is a C library and doesn't
+ *  support smart pointers. It does not make sense to use smart pointers and then have to
+ * cast them to raw pointers to pass them to SDL functions. The only exception is the
+ * unique_ptr<RenderData> in renderGame, which is passed to drawGame, which is a member
+ * function of Window, so it is safe to use a smart pointer. Same for audio.
+*/
 class Window {
 public:
     struct RenderData {

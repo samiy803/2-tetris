@@ -20,7 +20,7 @@ Game::Game(bool isGraphics, int seed, string file1, string file2, int startLevel
     currentPlayer = player1.get();
     turn_count = 0;
     if (isGraphics) {
-        window = new Window(bonusEnabled);
+        window =  make_unique<Window>(bonusEnabled);
         window->setQueue(player1->q.get());
     }
 }
@@ -147,20 +147,29 @@ void Game::textInput()
             command = match;
         }
 
+        Queue* q = (currentPlayer == player1.get() ? player1->q.get() : player2->q.get());
+
         if (command == "quit") {
-            (currentPlayer == player1.get() ? player1->q : player2->q)->push("quit");
-            break;
+            q->push("quit");
+            break; // break out of while loop
         }
 
-        for (auto& c : PROHIB) {
-            if (c == command) {
-                (currentPlayer == player1.get() ? player1->q : player2->q)->push(c);
-                return;
-            }
+        if (command == "norandom" || command == "sequence") {
+            string filename;
+            cin >> filename;
+            q->push(command); // push the command and filename to the queue
+            q->push(filename);
+            continue; 
+        }
+
+
+        if (command == "random" || command == "restart" || command == "hint") {
+            q->push(command); // multipliers don't work for these commands
+            continue;
         }
 
         for (int i = 0; i < multiplier; ++i) {
-            (currentPlayer == player1.get() ? player1->q : player2->q)->push(command);
+            q->push(command); // push the command to the queue multiplier times
         }
     }
 }
@@ -210,19 +219,19 @@ void Game::runMainLoop()
         } else if (command == "leveldown") {
             currentPlayer->setLevel(currentPlayer->level - 1);
         } else if (command == "I") {
-            currentPlayer->setForce("I");
+            currentPlayer->gameBoard.currentBlock = make_unique<IBlock>(Position{0, 0}, currentPlayer->effect);
         } else if (command == "J") {
-            currentPlayer->setForce("J");
+            currentPlayer->gameBoard.currentBlock = make_unique<JBlock>(Position{0, 0}, currentPlayer->effect);
         } else if (command == "L") {
-            currentPlayer->setForce("L");
+            currentPlayer->gameBoard.currentBlock = make_unique<LBlock>(Position{0, 0}, currentPlayer->effect);
         } else if (command == "O") {
-            currentPlayer->setForce("O");
+            currentPlayer->gameBoard.currentBlock = make_unique<OBlock>(Position{0, 0}, currentPlayer->effect);
         } else if (command == "S") {
-            currentPlayer->setForce("S");
+            currentPlayer->gameBoard.currentBlock = make_unique<SBlock>(Position{0, 0}, currentPlayer->effect);
         } else if (command == "T") {
-            currentPlayer->setForce("T");
+            currentPlayer->gameBoard.currentBlock = make_unique<TBlock>(Position{0, 0}, currentPlayer->effect);
         } else if (command == "Z") {
-            currentPlayer->setForce("Z");
+            currentPlayer->gameBoard.currentBlock = make_unique<ZBlock>(Position{0, 0}, currentPlayer->effect);
         } else if (command == "restart") {
             restart();
             continue;
@@ -232,11 +241,11 @@ void Game::runMainLoop()
         } else if (command == "sequence") {
             cerr << "Sequence not implemented yet" << endl;
         } else if (command == "random") {
-            cerr << "Random not implemented yet" << endl;
+            currentPlayer->blockFactory->setRandom(true);
         } else if (command == "norandom") {
-            string filename;
-            cin >> filename;
-            cerr << "Norandom not implemented yet" << endl;
+            string filename = (player1.get() == currentPlayer ? player1->q : player2->q)->pop();
+            currentPlayer->blockFactory->setRandom(false, filename);
+            cout << "Sequence set to " << filename << endl;
         } else if (command == "hint") {
             cerr << "Hint not implemented yet" << endl;
         }
@@ -268,6 +277,4 @@ void Game::endGame()
 Game::~Game()
 {
     endGame();
-    if (isGraphics)
-        delete window;
 }
