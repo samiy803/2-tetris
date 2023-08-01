@@ -4,15 +4,19 @@
 
 vector<Position> Block::getPositions()
 {
+    //vector of Positions (coordinates) for that specific block
     vector<Position> positions;
     for (Position offset : offsets) {
+        // adding start Position (x and y coordinate to offsets)
         offset.x += start.x;
         offset.y += start.y;
+        // add offset to positions array
         positions.push_back(offset);
     }
     return positions;
 }
 
+//functions to move block
 void Block::left()
 {
     start.x--;
@@ -31,10 +35,12 @@ void Block::up()
     start.y--;
 }
 
+//functions to delete the rows when the row is full
 void Block::deleteRow(int row)
 {
     for (auto it = offsets.begin(); it != offsets.end();) {
         if (it->y + start.y == row) {
+            // erasing offset from out vector
             offsets.erase(it);
         } else {
             ++it;
@@ -46,16 +52,19 @@ void Block::shiftDown(int row)
 {
     for (auto& offset : offsets) {
         if (offset.y + start.y < row) {
+            // adding to y position of each offset
             offset.y++;
         }
     }
 }
 
+// getter for offsets
 vector<Position> Block::getOffsets()
 {
     return offsets;
 }
 
+// printing Block
 void Block::printBlock(bool player1)
 {
     int maxX = 0;
@@ -83,9 +92,11 @@ void Block::printBlock(bool player1)
     }
 }
 
+// clone for block
 std::unique_ptr<Block> Block::clone()
 {
     Block* b = nullptr;
+    // switch case for each specific block
     switch (c) {
     case 'I':
         b = new IBlock();

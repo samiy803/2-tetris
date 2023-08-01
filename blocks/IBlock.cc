@@ -1,8 +1,10 @@
 #include "IBlock.h"
 
+// storing rotations for IBlock as vectors
 const vector<Position> IBlock::rotation0 = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } };
 const vector<Position> IBlock::rotation1 = { { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 } };
 
+// constructor for IBlock
 IBlock::IBlock(Position p, int effects, short rotation, int startingLevel)
 {
     this->effects = effects;
@@ -10,6 +12,7 @@ IBlock::IBlock(Position p, int effects, short rotation, int startingLevel)
     this->startingLevel = startingLevel;
     start = p;
     c = 'I';
+    // using switch case to set offsets for each rotation (in this case 2)
     switch (rotation) {
     case 0:
         offsets = rotation0;
@@ -29,6 +32,7 @@ IBlock::IBlock(Position p, int effects, short rotation, int startingLevel)
 void IBlock::clockwise()
 {
     rotation = (rotation + 1) % 4;
+    // using switch case to set offsets for each rotation (in this case 2)
     switch (rotation) {
     case 0:
         offsets = rotation0;
@@ -52,6 +56,7 @@ void IBlock::counterClockwise()
     } else {
         rotation = (rotation - 1) % 4;
     }
+    // using switch case to set offsets for each rotation (in this case 2)
     switch (rotation) {
     case 0:
         offsets = rotation0;

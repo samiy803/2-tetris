@@ -1,5 +1,6 @@
 #include "JBlock.h"
 
+// storing rotations for JBlock as vectors
 const vector<Position> JBlock::rotation0 = { { 1, 0 }, { 1, 1 }, { 1, 2 }, { 0, 2 } };
 const vector<Position> JBlock::rotation1 = { { 0, 1 }, { 0, 2 }, { 1, 2 }, { 2, 2 } };
 const vector<Position> JBlock::rotation2 = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 0 } };
@@ -12,6 +13,7 @@ JBlock::JBlock(Position p, int effects, short rotation, int startingLevel)
     this->startingLevel = startingLevel;
     start = p;
     c = 'J';
+    // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {
     case 0:
         offsets = rotation0;
@@ -31,6 +33,7 @@ JBlock::JBlock(Position p, int effects, short rotation, int startingLevel)
 void JBlock::clockwise()
 {
     rotation = (rotation + 1) % 4;
+    // using switch case to set offsts for each rotation (in this case 4)
     switch (rotation) {
     case 0:
         offsets = rotation0;
@@ -54,7 +57,7 @@ void JBlock::counterClockwise()
     } else {
         rotation = (rotation - 1) % 4;
     }
-
+    // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {
     case 0:
         offsets = rotation0;

@@ -1,5 +1,6 @@
 #include "LBlock.h"
 
+// storing rotations for LBlock as vectors
 const vector<Position> LBlock::rotation0 = { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 2 } };
 const vector<Position> LBlock::rotation1 = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 0, 2 } };
 const vector<Position> LBlock::rotation2 = { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 1, 2 } };
@@ -12,6 +13,7 @@ LBlock::LBlock(Position p, int effects, short rotation, int startingLevel)
     this->startingLevel = startingLevel;
     start = p;
     c = 'L';
+    // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {
     case 0:
         offsets = rotation0;
@@ -31,6 +33,7 @@ LBlock::LBlock(Position p, int effects, short rotation, int startingLevel)
 void LBlock::clockwise()
 {
     rotation = (rotation + 1) % 4;
+    // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {
     case 0:
         offsets = rotation0;
@@ -54,6 +57,7 @@ void LBlock::counterClockwise()
     } else {
         rotation = (rotation - 1) % 4;
     }
+    // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {
     case 0:
         offsets = rotation0;

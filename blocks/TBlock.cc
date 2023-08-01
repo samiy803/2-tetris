@@ -1,16 +1,19 @@
 #include "TBlock.h"
 
+// storing rotations for TBlock as vectors
 const vector<Position> TBlock::rotation0 = { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 1, 1 } };
 const vector<Position> TBlock::rotation1 = { { 0, 0 }, { 1, -1 }, { 1, 0 }, { 1, 1 } };
 const vector<Position> TBlock::rotation2 = { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 1, 0 } };
 const vector<Position> TBlock::rotation3 = { { 0, -1 }, { 0, 0 }, { 0, 1 }, { 1, 0 } };
 
+// constructor for TBlock
 TBlock::TBlock(Position p, int effects, short rotation, int startingLevel)
 {
     this->effects = effects;
     this->rotation = rotation;
     start = p;
     c = 'T';
+    // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {
     case 0:
         offsets = rotation0;
@@ -30,6 +33,7 @@ TBlock::TBlock(Position p, int effects, short rotation, int startingLevel)
 void TBlock::clockwise()
 {
     rotation = (rotation + 1) % 4;
+    // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {
     case 0:
         offsets = rotation0;
@@ -53,6 +57,7 @@ void TBlock::counterClockwise()
     } else {
         rotation = (rotation - 1) % 4;
     }
+    // using switch case to set offsets for each rotation (in this case 4)
     switch (rotation) {
     case 0:
         offsets = rotation0;
