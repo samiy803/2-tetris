@@ -54,7 +54,7 @@ public:
     Window(const Window&) = delete; // Disallow copy ctor.
     Window& operator=(const Window&) = delete; // Disallow copy assign.
     void startDisplay();
-    void renderGame(std::shared_ptr<RenderData> renderData);
+    void renderGame(std::unique_ptr<RenderData> renderData);
     void drawGame();
     void playSound(int i);
     void setQueue(Queue* q);
@@ -74,7 +74,7 @@ private:
     TTF_Font* smaller;
     std::shared_ptr<RenderData> renderData;
     Queue* q;
-    static vector<std::shared_ptr<AudioData>> audioData;
+    static vector<std::unique_ptr<AudioData>> audioData;
     vector<Button> buttons;
     std::string current_theme;
 

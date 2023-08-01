@@ -9,7 +9,7 @@
 
 using namespace std;
 
-vector<shared_ptr<Window::AudioData>> Window::audioData = {}; // Static member initialization
+vector<unique_ptr<Window::AudioData>> Window::audioData = {}; // Static member initialization
 
 /**
  * Constructor for Window.
@@ -119,7 +119,7 @@ void Window::startDisplay()
             drawGame();
             renderData.reset();
         }
-        for (auto audio : audioData) {
+        for (auto &audio : audioData) {
             if (audio->remaining <= 0) {
                 SDL_CloseAudio();
 
@@ -134,9 +134,9 @@ void Window::startDisplay()
 /**
  * Adds render data to the window. This function is called by the game when it wants to update the window.
  */
-void Window::renderGame(shared_ptr<RenderData> data)
+void Window::renderGame(unique_ptr<RenderData> data)
 {
-    renderData = data;
+    renderData = std::move(data);
 }
 
 /**
@@ -347,7 +347,7 @@ void Window::loadAudio()
 {
     vector<string> audioPaths = { "audio/drop.wav", "audio/click.wav", "audio/clear.wav" };
     for (auto audioPath : audioPaths) {
-        shared_ptr<Window::AudioData> aud(new Window::AudioData());
+        unique_ptr<Window::AudioData> aud(new Window::AudioData());
         if (SDL_LoadWAV(audioPath.c_str(), &aud->spec, &aud->buffer, &aud->length) == NULL) {
             bonusEnabled = false;
             std::cout << "Error loading " << audioPath << std::endl;
@@ -359,7 +359,7 @@ void Window::loadAudio()
         aud->currentBuffer = aud->buffer;
         aud->remaining = aud->length;
 
-        audioData.push_back(aud);
+        audioData.push_back(std::move(aud));
     }
 }
 

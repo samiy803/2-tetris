@@ -52,7 +52,7 @@ void Game::renderGame()
 {
     if (!isGraphics)
         return;
-    shared_ptr<Window::RenderData> d(new Window::RenderData { player1->gameBoard.toString(true, bonusEnabled),
+    unique_ptr<Window::RenderData> d(new Window::RenderData { player1->gameBoard.toString(true, bonusEnabled),
         player2->gameBoard.toString(true, bonusEnabled),
         player1->score, player2->score,
         player1->level, player2->level,
@@ -60,7 +60,7 @@ void Game::renderGame()
         currentPlayer == player2 ? player2->gameBoard.nextBlock : nullptr,
         player1->gameBoard.ROWS, player1->gameBoard.COLS,
         highScore });
-    window->renderGame(d);
+    window->renderGame(std::move(d));
 }
 
 void Game::startGame()
