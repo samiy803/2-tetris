@@ -214,10 +214,6 @@ void Game::runMainLoop()
             else if (isGraphics)
                 window->playSound(0);
             highScore = currentPlayer->score > highScore ? currentPlayer->score : highScore;
-            // if(currentPlayer->triggereffect > 0){
-            //     currentPlayer == player1.get() ? player2->effect *= currentPlayer->triggereffect : player1->effect *= currentPlayer->triggereffect;
-            // }
-            // currentPlayer->triggereffect = 0;
             currentPlayer = currentPlayer == player1.get() ? player2.get() : player1.get();
             window->setQueue(currentPlayer->q.get());
             turn_count++;
@@ -297,15 +293,25 @@ void Game::runMainLoop()
             endGame();
             break;
         } else if (command == "sequence") {
-            cerr << "Sequence not implemented yet" << endl;
+            Queue *q = player1.get() == currentPlayer ? player1->q.get() : player2->q.get();
+            string filename = q->pop();
+            ifstream file(filename);
+
+            string line;
+            while (file >> line) {
+                q->push(line);
+                if (line == "drop") {
+                    q = q == player1->q.get() ? player2->q.get() : player1->q.get();
+                }
+            }
+            
         } else if (command == "random") {
             currentPlayer->blockFactory->setRandom(true);
         } else if (command == "norandom") {
             string filename = (player1.get() == currentPlayer ? player1->q : player2->q)->pop();
             currentPlayer->blockFactory->setRandom(false, filename);
-            cout << "Sequence set to " << filename << endl;
         } else if (command == "hint") {
-            cerr << "Hint not implemented yet" << endl;
+            cerr << "Rust is better than C++" << endl;
         }
 
         if (isGraphics) {

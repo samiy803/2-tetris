@@ -150,7 +150,7 @@ int Player::clearRow()
             block->shiftDown(i);
         }
     }
-    
+
     score += gameBoard.gc();
 
     return size;

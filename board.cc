@@ -84,72 +84,51 @@ bool Board::validBoard(bool includeCurrentBlock)
     return true;
 }
 
-void Board::left(bool heavyeffect) {
+void Board::left(bool heavyEffect) {
     currentBlock->left();
     if (level == 3 || level == 4) {
         currentBlock->down();
     }
-    if(heavyeffect) {
-        currentBlock->down();
-    }
-    if(heavyeffect) {
+    if(heavyEffect) {
         currentBlock->down();
     }
     if (!validBoard()) {
         if (level == 4 || level == 3) {
             currentBlock->up();
         }
-        if(heavyeffect){
-            currentBlock->up();
-        }
-        if(heavyeffect){
+        if(heavyEffect){
             currentBlock->up();
         }
         currentBlock->right();
     }
 }
 
-void Board::right(bool heavyeffect) {
+void Board::right(bool heavyEffect) {
     currentBlock->right();
     if (level == 3 || level == 4) {
         currentBlock->down();
     }
-    if(heavyeffect) {
-        currentBlock->down();
-    }
-    if(heavyeffect) {
+    if(heavyEffect) {
         currentBlock->down();
     }
     if (!validBoard()) {
         if (level == 4 || level == 3) {
             currentBlock->up();
         }
-        if(heavyeffect){
-            currentBlock->up();
-        }
-        if(heavyeffect){
+        if(heavyEffect){
             currentBlock->up();
         }
         currentBlock->left();
     }
 }
 
-void Board::down(bool heavyeffect) {
+void Board::down(bool heavyEffect) {
     currentBlock->down();
-    if (level == 3 || level == 4) {
-        currentBlock->down();
-    }
-    if (heavyeffect) {
-        currentBlock->down();
-    }
-    if(heavyeffect) {
+    if (level == 4 || level == 3) {
         currentBlock->down();
     }
     if (!validBoard()) {
-        if (level == 4 || level == 3) {
-            currentBlock->up();
-        }
-        if (heavyeffect){
+        if (level){
             currentBlock->up();
         }
         currentBlock->up();
@@ -159,7 +138,13 @@ void Board::down(bool heavyeffect) {
 void Board::clockwise()
 {
     currentBlock->clockwise();
+    if (level == 4 || level == 3) {
+        currentBlock->down();
+    }
     if (!validBoard()) {
+        if (level == 4 || level == 3) {
+            currentBlock->up();
+        }
         currentBlock->counterClockwise();
     }
 }
@@ -167,7 +152,13 @@ void Board::clockwise()
 void Board::counterClockwise()
 {
     currentBlock->counterClockwise();
+    if (level == 4 || level == 3) {
+        currentBlock->down();
+    }
     if (!validBoard()) {
+        if (level == 4 || level == 3) {
+            currentBlock->up();
+        }
         currentBlock->clockwise();
     }
 }
@@ -200,16 +191,16 @@ void Board::dropStar()
 
 int Board::gc()
 {
+    int scoreAddition = 0;
     for (auto it = blocks.begin(); it != blocks.end();) {
         if ((*it)->getOffsets().size() == 0) {
-            int scoreAddition = pow(((*it)->startingLevel + 1), 2);
+            scoreAddition += pow(((*it)->startingLevel + 1), 2);
             it = blocks.erase(it);
-            return scoreAddition;
         } else {
             ++it;
         }
     }
-    return 0;
+    return scoreAddition;
 }
 
 Board::Board() : turn_count(0), level(0) {}

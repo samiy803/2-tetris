@@ -17,9 +17,9 @@ class Board {
     void drop();
     void dropStar();
     bool validBoard(bool includeCurrentBlock = true);
-    void left(bool heavyeffect = false);
-    void right(bool heavyeffect = false);
-    void down(bool heavyeffect = false);
+    void left(bool heavyEffect = false);
+    void right(bool heavyEffect = false);
+    void down(bool heavyEffect = false);
     void clockwise();
     void counterClockwise();
     int gc();
