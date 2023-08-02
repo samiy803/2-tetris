@@ -195,13 +195,16 @@ int Board::gc()
     int scoreAddition = 0;
     for (auto it = blocks.begin(); it != blocks.end();) {
         if ((*it)->getOffsets().size() == 0) {
-            scoreAddition += pow(((*it)->startingLevel + 1), 2);
+            scoreAddition += pow<int, int>(((*it)->startingLevel + 1), 2);
             it = blocks.erase(it);
         } else {
             ++it;
         }
     }
-    return scoreAddition;
+    if (scoreAddition > 0)
+        return scoreAddition;
+    else
+        return 0;
 }
 
 Board::Board() : turn_count(0), level(0) {}

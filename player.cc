@@ -140,9 +140,9 @@ int Player::clearRow()
             }
         }
     }
-    int size = rows.size();
+    int size = (unsigned int) rows.size();
     if (size > 0) {
-        score += pow(size + level, 2);
+        score += pow<int, int>(size + level, 2);
     }
 
     for (int i : rows) {
