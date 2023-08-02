@@ -2,21 +2,28 @@
 #define LEVEL0_FACTORY_H
 
 #include "blockFactory.h"
-#include <vector>
-#include <fstream>
 #include <cassert>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <memory>
 
-using std::string;
-using std::ifstream;
-
+// public inhertiance of abstract class BlockFactory
 class Level0Factory : public BlockFactory {
-    vector<char> seq;
+    std::vector<char> seq;
     int index;
-    public:
-    Level0Factory(string filename);
-    Block* getNext(int effects) override;
+
+public:
+    // constructor for Level0Factory
+    Level0Factory(std::string filename);
+    // overriding default function to get  next Block for the specific Level0Factory
+    std::unique_ptr<Block> getNext(int effects) override; 
+    // overriding setSeed function
     void setSeed(int seed) override;
-    ~Level0Factory();
+    // overriding setRandom function
+    void setRandom(bool random, std::string file = "") override {}
+    // destructor for Level0Factory
+    ~Level0Factory() = default;
 };
 
 #endif // !LEVEL0_FACTORY_H

@@ -1,34 +1,36 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <vector>
+#include "StarBlock.h"
 #include "block.h"
 #include <string>
-#include "STARBlock.h"
-
-using std::string;
+#include <vector>
+#include <memory>
+#include "StarBlock.h"
 
 class Board {
     friend class Game; // Game and Player should have access to Board's privates
     friend class Player;
-    vector<Block*> blocks;
-    Block* currentBlock;
-    Block* nextBlock;
+    std::vector<std::unique_ptr<Block>> blocks;
+    std::unique_ptr<Block> currentBlock;
+    std::unique_ptr<Block> nextBlock;
     void drop();
     void dropStar();
     bool validBoard(bool includeCurrentBlock = true);
-    void left();
-    void right();
-    void down();
+    void left(bool heavyEffect = false);
+    void right(bool heavyEffect = false);
+    void down(bool heavyEffect = false);
     void clockwise();
     void counterClockwise();
     int gc();
     int turn_count;
     int level = 0;
-    public:
+
+public:
     static const int COLS = 11;
-    static const int ROWS = 15;
-    string toString(bool includeCurrentBlock, bool ghost = false);
+    static const int ROWS = 18;
+    std::string toString(bool includeCurrentBlock, bool ghost = false, bool blind = false);
+    Board();
 };
 
 #endif // !BOARD_H

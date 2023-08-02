@@ -1,55 +1,72 @@
 #include "block.h"
-#include "level0Factory.h"
 #include "../board.h"
+#include "level0Factory.h"
 
-vector<Position> Block::getPositions() {
-    vector<Position> positions;
+std::vector<Position> Block::getPositions()
+{
+    //vector of Positions (coordinates) for that specific block
+    std::vector<Position> positions;
     for (Position offset : offsets) {
+        // adding start Position (x and y coordinate to offsets)
         offset.x += start.x;
         offset.y += start.y;
+        // add offset to positions array
         positions.push_back(offset);
     }
     return positions;
 }
 
-void Block::left() {
+//functions to move block
+void Block::left()
+{
     start.x--;
 }
-void Block::right() {
+void Block::right()
+{
     start.x++;
 }
-void Block::down() {
+void Block::down()
+{
     start.y++;
 }
 
-void Block::up() {
+void Block::up()
+{
     start.y--;
 }
 
-void Block::deleteRow(int row) {
+//functions to delete the rows when the row is full
+void Block::deleteRow(int row)
+{
     for (auto it = offsets.begin(); it != offsets.end();) {
         if (it->y + start.y == row) {
+            // erasing offset from out vector
             offsets.erase(it);
-        }
-        else {
+        } else {
             ++it;
         }
     }
 }
 
-void Block::shiftDown(int row) {
-    for (auto &offset : offsets) {
+void Block::shiftDown(int row)
+{
+    for (auto& offset : offsets) {
         if (offset.y + start.y < row) {
+            // adding to y position of each offset
             offset.y++;
         }
     }
 }
 
-vector<Position> Block::getOffsets() {
+// getter for offsets
+std::vector<Position> Block::getOffsets()
+{
     return offsets;
 }
 
-void Block::printBlock(bool player1) {
+// printing Block
+void Block::printBlock(bool player1)
+{
     int maxX = 0;
     int maxY = 0;
 
@@ -75,30 +92,33 @@ void Block::printBlock(bool player1) {
     }
 }
 
-Block* Block::clone() {
-    Block *b = nullptr;
+// clone for block
+std::unique_ptr<Block> Block::clone()
+{
+    Block* b = nullptr;
+    // switch case for each specific block
     switch (c) {
-        case 'I':
-            b = new IBlock();
-            break;
-        case 'J':
-            b = new JBlock();
-            break;
-        case 'L':
-            b = new LBlock();
-            break;
-        case 'O':
-            b = new OBlock();
-            break;
-        case 'S':
-            b = new SBlock();
-            break;
-        case 'Z':
-            b = new ZBlock();
-            break;
-        case 'T':
-            b = new TBlock();
-            break;
+    case 'I':
+        b = new IBlock();
+        break;
+    case 'J':
+        b = new JBlock();
+        break;
+    case 'L':
+        b = new LBlock();
+        break;
+    case 'O':
+        b = new OBlock();
+        break;
+    case 'S':
+        b = new SBlock();
+        break;
+    case 'Z':
+        b = new ZBlock();
+        break;
+    case 'T':
+        b = new TBlock();
+        break;
     }
     b->start = start;
     b->offsets = offsets;
@@ -106,5 +126,5 @@ Block* Block::clone() {
     b->rotation = rotation;
     b->startingLevel = startingLevel;
     b->c = c;
-    return b;
+    return std::unique_ptr<Block>(b);
 }

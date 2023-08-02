@@ -1,8 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "board.h"
 #include "blockFactory.h"
+#include "board.h"
 #include "level0Factory.h"
 #include "level1Factory.h"
 #include "level2Factory.h"
@@ -16,26 +16,28 @@
  * 2: heavy
  * 3: blind
  * 5,7,11,13,17,19,23: force I, J, L, O, S, T, Z respectively
-*/
+ */
 
 class Player {
     friend class Game; // Game should have to access to Player's privates
     Board gameBoard;
-    BlockFactory* blockFactory;
+    std::unique_ptr<BlockFactory> blockFactory;
     int score;
     int score5turnsago;
     int level;
     int effect;
+    int triggereffect;
     int seed;
-    string filename;
-    Queue* q;
-    public:
-    Player(string filename = "", int score = 0, int level = 0, int effect = 1);
+    std::string filename;
+    std::unique_ptr<Queue> q;
+
+public:
+    Player(std::string filename = "", int score = 0, int level = 0, int effect = 1);
     void setBlind(bool blind);
     void setHeavy(bool heavy);
-    void setForce(string block);
-    void setLevel(int level);
-    bool clearRow();
+    void setForce(std::string block);
+    bool setLevel(int level);
+    int clearRow();
     ~Player();
 };
 

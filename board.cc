@@ -1,20 +1,23 @@
 #include "board.h"
-#include <map>
+#include "level0Factory.h"
 #include <cmath>
 #include <iostream>
+#include <map>
 #include <memory>
-#include "level0Factory.h"
 
-string Board::toString(bool includeCurrentBlock, bool ghost) {
-    char board[ROWS * COLS];
+using namespace std;
+
+string Board::toString(bool includeCurrentBlock, bool ghost, bool blind)
+{
+    char board[ROWS * COLS + 1];
     for (int i = 0; i < ROWS * COLS; i++) {
         board[i] = ' ';
     }
     if (ghost) {
         // Make a copy of the current block and store it in a unique_ptr
-        Block* ghostBlock = currentBlock->clone();
+        unique_ptr<Block> ghostBlock = currentBlock->clone();
 
-        blocks.push_back(ghostBlock);
+        blocks.push_back(unique_ptr<Block>(ghostBlock.get())); // Copy the ghost block into the blocks vector
 
         // Move the ghost block down until it hits something
         while (validBoard(false)) {
@@ -22,15 +25,15 @@ string Board::toString(bool includeCurrentBlock, bool ghost) {
         }
         ghostBlock->up();
 
-        blocks.pop_back();
-
         // Draw the ghost block in lowercase
         for (Position pos : ghostBlock->getPositions()) {
             board[pos.y * COLS + pos.x] = tolower(ghostBlock->c);
         }
 
+        blocks.pop_back();
+        ghostBlock.release(); // Release the ghost block from the unique_ptr since it already got freed when it was popped
     }
-    for (Block* block : blocks) {
+    for (auto &block : blocks) {
         for (Position pos : block->getPositions()) {
             board[pos.y * COLS + pos.x] = block->c;
         }
@@ -40,16 +43,24 @@ string Board::toString(bool includeCurrentBlock, bool ghost) {
             board[pos.y * COLS + pos.x] = currentBlock->c;
         }
     }
+    if(blind){
+        for(int rows = 3; rows < 12; rows++){
+            for(int cols = 3; cols < 9; cols++){
+                board[rows * COLS + cols] = '?';
+            }
+        }
+    }
     string s = board;
     return s;
 }
 
-bool Board::validBoard(bool includeCurrentBlock) {
+bool Board::validBoard(bool includeCurrentBlock)
+{
     // Check for overlap
     vector<Position> positions;
 
     if (includeCurrentBlock) {
-            for (Position pos : currentBlock->getPositions()) {
+        for (Position pos : currentBlock->getPositions()) {
             if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
                 return false;
             }
@@ -57,7 +68,7 @@ bool Board::validBoard(bool includeCurrentBlock) {
         }
     }
 
-    for (Block* block : blocks) {
+    for (auto &block : blocks) {
         for (Position pos : block->getPositions()) {
             if (pos.x < 0 || pos.x >= Board::COLS || pos.y < 0 || pos.y >= Board::ROWS) {
                 return false;
@@ -73,94 +84,123 @@ bool Board::validBoard(bool includeCurrentBlock) {
     return true;
 }
 
-void Board::left() {
+void Board::left(bool heavyEffect) {
     currentBlock->left();
-    if(level == 3 || level == 4){
+    if (level == 3 || level == 4) {
+        currentBlock->down();
+    }
+    if(heavyEffect) {
         currentBlock->down();
     }
     if (!validBoard()) {
-        if(level == 4 || level == 3){
+        if (level == 4 || level == 3) {
+            currentBlock->up();
+        }
+        if(heavyEffect){
             currentBlock->up();
         }
         currentBlock->right();
     }
 }
 
-void Board::right() {
+void Board::right(bool heavyEffect) {
     currentBlock->right();
-    if(level == 3 || level == 4){
+    if (level == 3 || level == 4) {
+        currentBlock->down();
+    }
+    if(heavyEffect) {
         currentBlock->down();
     }
     if (!validBoard()) {
-        if(level == 4 || level == 3){
+        if (level == 4 || level == 3) {
+            currentBlock->up();
+        }
+        if(heavyEffect){
             currentBlock->up();
         }
         currentBlock->left();
     }
 }
 
-void Board::down() {
+void Board::down(bool heavyEffect) {
     currentBlock->down();
-    if(level == 3 || level == 4){
+    if (level == 4 || level == 3) {
         currentBlock->down();
     }
     if (!validBoard()) {
-        if(level == 4 || level == 3){
+        if (level){
             currentBlock->up();
         }
         currentBlock->up();
     }
 }
 
-void Board::clockwise() {
+void Board::clockwise()
+{
     currentBlock->clockwise();
+    if (level == 4 || level == 3) {
+        currentBlock->down();
+    }
     if (!validBoard()) {
+        if (level == 4 || level == 3) {
+            currentBlock->up();
+        }
         currentBlock->counterClockwise();
     }
 }
 
-void Board::counterClockwise() {
+void Board::counterClockwise()
+{
     currentBlock->counterClockwise();
+    if (level == 4 || level == 3) {
+        currentBlock->down();
+    }
     if (!validBoard()) {
+        if (level == 4 || level == 3) {
+            currentBlock->up();
+        }
         currentBlock->clockwise();
     }
 }
 
-void Board::drop() {
-    while(validBoard()){
+void Board::drop()
+{
+    while (validBoard()) {
         currentBlock->down();
     }
     currentBlock->up();
 
-    blocks.push_back(currentBlock);
-    currentBlock = nextBlock;
-    nextBlock = nullptr;
+    blocks.push_back(std::move(currentBlock));
+    currentBlock = std::move(nextBlock);
+    nextBlock.release();
 }
 
-void Board::dropStar(){
-    STARBlock* starblock = new STARBlock(Position{5, 0}, 0, 0, 4);
-    Block* temp = currentBlock;
-    currentBlock = starblock;
-    while(validBoard()){
-        currentBlock->down();
+// function to drop Star block
+void Board::dropStar()
+{
+    unique_ptr<Block> sb = make_unique<StarBlock>();
+
+    blocks.push_back(unique_ptr<Block>(sb.get()));
+
+    while (validBoard(false)) {
+        sb->down();
     }
-    currentBlock->up();
-    blocks.push_back(currentBlock);
-    currentBlock = temp;
+    sb->up();
+    sb.release();
 }
 
-int Board::gc() {
+int Board::gc()
+{
+    int scoreAddition = 0;
     for (auto it = blocks.begin(); it != blocks.end();) {
         if ((*it)->getOffsets().size() == 0) {
-            delete *it;
-            int scoreAddition = pow(((*it)->startingLevel + 1), 2);
+            scoreAddition += pow(((*it)->startingLevel + 1), 2);
             it = blocks.erase(it);
-            return scoreAddition;
-            it = blocks.erase(it);
-        }
-        else {
+        } else {
             ++it;
         }
     }
-    return 0;
+    return scoreAddition;
 }
+
+Board::Board() : turn_count(0), level(0) {}

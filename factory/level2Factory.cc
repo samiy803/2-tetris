@@ -1,28 +1,40 @@
 #include "level2Factory.h"
 
-Block* Level2Factory::getNext(int effects) {
+std::unique_ptr<Block> Level2Factory::getNext(int effects)
+{
+   // equal probability for each block as desired for Level 2
     short blockType = rng() % 7;
+    Block *block;
+    // picking Block to construct for specific Block type
     switch (blockType) {
         case 0:
-            return new SBlock(Position{0, 0}, effects, 0);
+            block = new SBlock(effects, 2);
+            break;
         case 1:
-            return new ZBlock(Position{0, 0}, effects, 0);
+            block = new ZBlock(effects, 2);
+            break;
         case 2:
-            return new IBlock(Position{0, 0}, effects, 0);
+            block = new IBlock(effects, 2);
+            break;
         case 3:
-            return new JBlock(Position{0, 0}, effects, 0);
+            block = new JBlock(effects, 2);
+            break;
         case 4:
-            return new LBlock(Position{0, 0}, effects, 0);
+            block = new LBlock(effects, 2);
+            break;
         case 5:
-            return new OBlock(Position{0, 0}, effects, 0);
+            block = new OBlock(effects, 2);
+            break;
         case 6:
-            return new TBlock(Position{0, 0}, effects, 0);
-    }
+            block = new TBlock(effects, 2);
+            break;
+        }
+    return std::unique_ptr<Block> { block };
 }
 
-Level2Factory::~Level2Factory() {}
-
-void Level2Factory::setSeed(int seed) {
+// setting seed for Level2Factory (also need to set seed for rng)
+void Level2Factory::setSeed(int seed)
+{
     this->seed = seed;
     rng.seed(seed);
 }

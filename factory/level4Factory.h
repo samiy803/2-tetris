@@ -2,18 +2,23 @@
 #define LEVEL4_FACTORY_H
 
 #include "blockFactory.h"
-#include <vector>
-#include <fstream>
 #include <cassert>
+#include <fstream>
 #include <random>
-
+#include <vector>
+#include <memory>
 
 class Level4Factory : public BlockFactory {
     std::mt19937 rng;
-    public:
-    Block* getNext(int effects) override;
+    std::vector<char> seq;
+    bool random;
+    int index;
+public:
+    std::unique_ptr<Block> getNext(int effects) override;
     void setSeed(int seed) override;
-    ~Level4Factory();
+    void setRandom(bool random, std::string file = "") override;
+    ~Level4Factory() = default;
+    Level4Factory();
 };
 
 #endif // !LEVEL4_FACTORY_H

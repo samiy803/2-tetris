@@ -1,38 +1,60 @@
 #include "level1Factory.h"
 
-Block* Level1Factory::getNext(int effects) {
+std::unique_ptr<Block> Level1Factory::getNext(int effects)
+{
+    /* equal probabilities for each block (1/6)
+       except 1/12 probablity for SBlock and ZBlock
+       as desired for this level
+    */
     short blockType = rng() % 12;
+    Block *block;
+    // picking Block to construct for specific Block type
+    std::cout << blockType << std::endl;
     switch (blockType) {
         case 0:
-            return new SBlock(Position{0, 0}, effects, 0);
+            block = new SBlock(effects, 1);
+            break;
         case 1:
-            return new ZBlock(Position{0, 0}, effects, 0);
+            block = new ZBlock(effects, 1);
+            break;
         case 2:
-            return new IBlock(Position{0, 0}, effects, 0);
+            block = new IBlock(effects, 1);
+            break;
         case 3:
-            return new IBlock(Position{0, 0}, effects, 0);
+            block = new IBlock(effects, 1);
+            break;
         case 4:
-            return new LBlock(Position{0, 0}, effects, 0);
+            block = new LBlock(effects, 1);
+            break;
         case 5:
-            return new LBlock(Position{0, 0}, effects, 0);
+            block = new LBlock(effects, 1);
+            break;
         case 6:
-            return new JBlock(Position{0, 0}, effects, 0);
+            block = new JBlock(effects, 1);
+            break;
         case 7:
-            return new JBlock(Position{0, 0}, effects, 0);
+            block = new JBlock(effects, 1);
+            break;
         case 8:
-            return new TBlock(Position{0, 0}, effects, 0);
+            block = new TBlock(effects, 1);
+            break;
         case 9:
-            return new TBlock(Position{0, 0}, effects, 0);
+            block = new TBlock(effects, 1);
+            break;
         case 10:
-            return new OBlock(Position{0, 0}, effects, 0);
+            block = new OBlock(effects, 1);
+            break;
         case 11:
-            return new OBlock(Position{0, 0}, effects, 0);
+            block = new OBlock(effects, 1);
+            break;
     }
+    return std::unique_ptr<Block> { block };
 }
 
-Level1Factory::~Level1Factory() {}
 
-void Level1Factory::setSeed(int seed) {
+// setting seed for Level1Factory (also need to set seed for rng)
+void Level1Factory::setSeed(int seed)
+{
     this->seed = seed;
     rng.seed(seed);
 }
