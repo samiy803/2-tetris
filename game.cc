@@ -47,6 +47,8 @@ void Game::restart()
 }
 
 void Game::renderGame() {
+    if(!isGraphics)
+        return;
     unique_ptr<Window::RenderData> d(new Window::RenderData{ player1->gameBoard.toString(true, bonusEnabled, player1->effect % 3 == 0),
                                                     player2->gameBoard.toString(true, bonusEnabled, player2->effect % 3 == 0),
                                                     player1->score, player2->score,
