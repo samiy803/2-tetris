@@ -50,6 +50,7 @@ string Board::toString(bool includeCurrentBlock, bool ghost, bool blind)
             }
         }
     }
+    board[ROWS * COLS] = '\0';
     string s = board;
     return s;
 }
