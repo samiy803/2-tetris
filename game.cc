@@ -217,7 +217,7 @@ void Game::runMainLoop()
                 window->playSound(0);
             highScore = currentPlayer->score > highScore ? currentPlayer->score : highScore;
             currentPlayer = currentPlayer == player1.get() ? player2.get() : player1.get();
-            window->setQueue(currentPlayer->q.get());
+            if(isGraphics) window->setQueue(currentPlayer->q.get());
             turn_count++;
             if (currentPlayer->level == 4){
                 currentPlayer->gameBoard.turn_count++;
