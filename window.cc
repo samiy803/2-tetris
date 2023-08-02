@@ -114,6 +114,9 @@ void Window::startDisplay()
             } else if (e.type == SDL_KEYDOWN || e.type == SDL_MOUSEBUTTONDOWN) {
                 handleInput(e);
             }
+            if (quit) {
+                return;
+            }
         }
         if (renderData.get()) {
             drawGame();

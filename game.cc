@@ -338,6 +338,7 @@ void Game::endGame()
         // Many things can go wrong here, especially if the mutex is still locked
         // We don't care about any of them, the game is over and we just want to kill the threads
     }
+    exit(0);
 }
 
 Game::~Game()
