@@ -69,6 +69,6 @@ We made lots of design decisions that contributed to the final product. See full
 5. See [here](./Documents/biquadris.pdf) for rules, controls, and more.
 
 ## 🤝 Contributors
-<a href="https://github.com/samiy803/246-project/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=samiy803/246-project" />
+<a href="https://github.com/samiy803/2-tetris/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=samiy803/2-tetris" />
 </a>
