@@ -19,12 +19,6 @@ Born from a school project deadline for an OOP class, this game showcases the re
 
 Grab a friend, warm up those fingers, and prepare to stack and clear blocks in this Tetris face-off. Let's see who comes out on top!
 
-## ️️⚙️ Class Diagram (UML)
-A very simplified UML of the project. This was kind of rushed, but it gets the point across.
-![UML Architecture](./Documents/uml.png)
-
-
-
 ## 🧠 Design Decisions
 We made lots of design decisions that contributed to the final product. See full writeup [here](./design.pdf). Here are some of the most important ones:
 
@@ -67,6 +61,10 @@ We made lots of design decisions that contributed to the final product. See full
 3. Run `make` to compile the game. Ensure you have the necessary dependencies installed.
 4. Run the executable generated. To get the full experience, run it with the `-bonus` flag.
 5. See [here](./Documents/biquadris.pdf) for rules, controls, and more.
+
+## ️️⚙️ Class Diagram (UML)
+A very simplified UML of the project. This was kind of rushed, but it gets the point across.
+![UML Architecture](./Documents/uml.png)
 
 ## 🤝 Contributors
 <a href="https://github.com/samiy803/2-tetris/graphs/contributors">
