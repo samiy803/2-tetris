@@ -1,3 +1,7 @@
+<p align="center">
+<img src="images/hero.png" width="600">
+</p>
+
 # 🧩 Tetris Showdown: A 2-Player Battle of Blocks!
 
 ## 🚀 Epic Features
@@ -65,6 +69,10 @@ We made lots of design decisions that contributed to the final product. See full
 ## ️️⚙️ Class Diagram (UML)
 A very simplified UML of the project. This was kind of rushed, but it gets the point across.
 ![UML Architecture](./Documents/uml.png)
+
+## Gameplay Preview
+<img src="images/screenshot.png">
+
 
 ## 🤝 Contributors
 <a href="https://github.com/samiy803/2-tetris/graphs/contributors">
